@@ -1,0 +1,20 @@
+[4.756s] Invoking command in '/home/matheus/thesis_ws/src/game_session': PYTHONPATH=/home/matheus/thesis_ws/build/game_session/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_session/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_session build --build-base /home/matheus/thesis_ws/build/game_session/build install --record /home/matheus/thesis_ws/build/game_session/install.log --install-scripts $base/lib/game_session --single-version-externally-managed install_data
+[5.588s] running egg_info
+[5.589s] writing ../../build/game_session/game_session.egg-info/PKG-INFO
+[5.600s] writing dependency_links to ../../build/game_session/game_session.egg-info/dependency_links.txt
+[5.600s] writing entry points to ../../build/game_session/game_session.egg-info/entry_points.txt
+[5.604s] writing requirements to ../../build/game_session/game_session.egg-info/requires.txt
+[5.604s] writing top-level names to ../../build/game_session/game_session.egg-info/top_level.txt
+[5.622s] reading manifest file '../../build/game_session/game_session.egg-info/SOURCES.txt'
+[5.638s] writing manifest file '../../build/game_session/game_session.egg-info/SOURCES.txt'
+[5.640s] running build
+[5.640s] running build_py
+[5.653s] running install
+[5.655s] running install_lib
+[5.666s] running install_data
+[5.679s] running install_egg_info
+[5.695s] removing '/home/matheus/thesis_ws/install/game_session/lib/python3.10/site-packages/game_session-0.0.0-py3.10.egg-info' (and everything under it)
+[5.698s] Copying ../../build/game_session/game_session.egg-info to /home/matheus/thesis_ws/install/game_session/lib/python3.10/site-packages/game_session-0.0.0-py3.10.egg-info
+[5.712s] running install_scripts
+[5.737s] writing list of installed files to '/home/matheus/thesis_ws/build/game_session/install.log'
+[5.788s] Invoked command in '/home/matheus/thesis_ws/src/game_session' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/game_session/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_session/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_session build --build-base /home/matheus/thesis_ws/build/game_session/build install --record /home/matheus/thesis_ws/build/game_session/install.log --install-scripts $base/lib/game_session --single-version-externally-managed install_data

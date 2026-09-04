@@ -1,0 +1,6 @@
+source;share/controller_guidao/hook/pythonpath.ps1
+source;share/controller_guidao/hook/pythonpath.dsv
+source;share/controller_guidao/hook/pythonpath.sh
+source;share/controller_guidao/hook/ament_prefix_path.ps1
+source;share/controller_guidao/hook/ament_prefix_path.dsv
+source;share/controller_guidao/hook/ament_prefix_path.sh

@@ -1,0 +1,21 @@
+[2.360s] Invoking command in '/home/matheus/thesis_ws/src/hal_signal_processing': PYTHONPATH=/home/matheus/thesis_ws/build/hal_signal_processing/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/hal_signal_processing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/hal_signal_processing build --build-base /home/matheus/thesis_ws/build/hal_signal_processing/build install --record /home/matheus/thesis_ws/build/hal_signal_processing/install.log --install-scripts $base/lib/hal_signal_processing --single-version-externally-managed install_data
+[2.704s] running egg_info
+[2.705s] writing ../../build/hal_signal_processing/hal_signal_processing.egg-info/PKG-INFO
+[2.705s] writing dependency_links to ../../build/hal_signal_processing/hal_signal_processing.egg-info/dependency_links.txt
+[2.747s] writing entry points to ../../build/hal_signal_processing/hal_signal_processing.egg-info/entry_points.txt
+[2.750s] writing requirements to ../../build/hal_signal_processing/hal_signal_processing.egg-info/requires.txt
+[2.751s] writing top-level names to ../../build/hal_signal_processing/hal_signal_processing.egg-info/top_level.txt
+[2.754s] reading manifest file '../../build/hal_signal_processing/hal_signal_processing.egg-info/SOURCES.txt'
+[2.765s] writing manifest file '../../build/hal_signal_processing/hal_signal_processing.egg-info/SOURCES.txt'
+[2.765s] running build
+[2.765s] running build_py
+[2.765s] running install
+[2.765s] running install_lib
+[2.766s] running install_data
+[2.767s] running install_egg_info
+[2.769s] removing '/home/matheus/thesis_ws/install/hal_signal_processing/lib/python3.10/site-packages/hal_signal_processing-0.0.0-py3.10.egg-info' (and everything under it)
+[2.770s] Copying ../../build/hal_signal_processing/hal_signal_processing.egg-info to /home/matheus/thesis_ws/install/hal_signal_processing/lib/python3.10/site-packages/hal_signal_processing-0.0.0-py3.10.egg-info
+[2.771s] running install_scripts
+[2.788s] Installing signal_processing_node script to /home/matheus/thesis_ws/install/hal_signal_processing/lib/hal_signal_processing
+[2.796s] writing list of installed files to '/home/matheus/thesis_ws/build/hal_signal_processing/install.log'
+[2.821s] Invoked command in '/home/matheus/thesis_ws/src/hal_signal_processing' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/hal_signal_processing/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/hal_signal_processing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/hal_signal_processing build --build-base /home/matheus/thesis_ws/build/hal_signal_processing/build install --record /home/matheus/thesis_ws/build/hal_signal_processing/install.log --install-scripts $base/lib/hal_signal_processing --single-version-externally-managed install_data

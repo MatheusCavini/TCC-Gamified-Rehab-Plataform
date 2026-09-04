@@ -1,0 +1,37 @@
+[2.446s] Invoking command in '/home/matheus/thesis_ws/src/controller_guidao': PYTHONPATH=/home/matheus/thesis_ws/build/controller_guidao/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/controller_guidao build --build-base /home/matheus/thesis_ws/build/controller_guidao/build install --record /home/matheus/thesis_ws/build/controller_guidao/install.log --install-scripts $base/lib/controller_guidao --single-version-externally-managed install_data
+[2.764s] running egg_info
+[2.765s] creating ../../build/controller_guidao/controller_guidao.egg-info
+[2.765s] writing ../../build/controller_guidao/controller_guidao.egg-info/PKG-INFO
+[2.765s] writing dependency_links to ../../build/controller_guidao/controller_guidao.egg-info/dependency_links.txt
+[2.765s] writing entry points to ../../build/controller_guidao/controller_guidao.egg-info/entry_points.txt
+[2.765s] writing requirements to ../../build/controller_guidao/controller_guidao.egg-info/requires.txt
+[2.765s] writing top-level names to ../../build/controller_guidao/controller_guidao.egg-info/top_level.txt
+[2.765s] writing manifest file '../../build/controller_guidao/controller_guidao.egg-info/SOURCES.txt'
+[2.767s] reading manifest file '../../build/controller_guidao/controller_guidao.egg-info/SOURCES.txt'
+[2.767s] writing manifest file '../../build/controller_guidao/controller_guidao.egg-info/SOURCES.txt'
+[2.767s] running build
+[2.767s] running build_py
+[2.768s] creating /home/matheus/thesis_ws/build/controller_guidao/build
+[2.768s] creating /home/matheus/thesis_ws/build/controller_guidao/build/lib
+[2.768s] creating /home/matheus/thesis_ws/build/controller_guidao/build/lib/controller_guidao
+[2.768s] copying controller_guidao/controller_guidao_node.py -> /home/matheus/thesis_ws/build/controller_guidao/build/lib/controller_guidao
+[2.768s] copying controller_guidao/__init__.py -> /home/matheus/thesis_ws/build/controller_guidao/build/lib/controller_guidao
+[2.768s] running install
+[2.768s] running install_lib
+[2.769s] creating /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao
+[2.769s] copying /home/matheus/thesis_ws/build/controller_guidao/build/lib/controller_guidao/controller_guidao_node.py -> /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao
+[2.769s] copying /home/matheus/thesis_ws/build/controller_guidao/build/lib/controller_guidao/__init__.py -> /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao
+[2.769s] byte-compiling /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao/controller_guidao_node.py to controller_guidao_node.cpython-310.pyc
+[2.771s] byte-compiling /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao/__init__.py to __init__.cpython-310.pyc
+[2.771s] running install_data
+[2.771s] creating /home/matheus/thesis_ws/install/controller_guidao/share/ament_index
+[2.771s] creating /home/matheus/thesis_ws/install/controller_guidao/share/ament_index/resource_index
+[2.771s] creating /home/matheus/thesis_ws/install/controller_guidao/share/ament_index/resource_index/packages
+[2.771s] copying resource/controller_guidao -> /home/matheus/thesis_ws/install/controller_guidao/share/ament_index/resource_index/packages
+[2.771s] copying package.xml -> /home/matheus/thesis_ws/install/controller_guidao/share/controller_guidao
+[2.771s] running install_egg_info
+[2.772s] Copying ../../build/controller_guidao/controller_guidao.egg-info to /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao-0.0.0-py3.10.egg-info
+[2.773s] running install_scripts
+[2.789s] Installing controller_guidao_node script to /home/matheus/thesis_ws/install/controller_guidao/lib/controller_guidao
+[2.789s] writing list of installed files to '/home/matheus/thesis_ws/build/controller_guidao/install.log'
+[2.873s] Invoked command in '/home/matheus/thesis_ws/src/controller_guidao' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/controller_guidao/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/controller_guidao build --build-base /home/matheus/thesis_ws/build/controller_guidao/build install --record /home/matheus/thesis_ws/build/controller_guidao/install.log --install-scripts $base/lib/controller_guidao --single-version-externally-managed install_data

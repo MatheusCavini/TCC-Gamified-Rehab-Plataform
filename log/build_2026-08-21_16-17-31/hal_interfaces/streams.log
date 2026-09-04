@@ -1,0 +1,246 @@
+[1.607s] Invoking command in '/home/matheus/thesis_ws/build/hal_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake /home/matheus/thesis_ws/src/hal_interfaces -DCMAKE_INSTALL_PREFIX=/home/matheus/thesis_ws/install/hal_interfaces
+[2.227s] -- The C compiler identification is GNU 11.4.0
+[2.414s] -- The CXX compiler identification is GNU 11.4.0
+[2.566s] -- Detecting C compiler ABI info
+[2.733s] -- Detecting C compiler ABI info - done
+[2.739s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.744s] -- Detecting C compile features
+[2.746s] -- Detecting C compile features - done
+[2.768s] -- Detecting CXX compiler ABI info
+[2.852s] -- Detecting CXX compiler ABI info - done
+[2.859s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.859s] -- Detecting CXX compile features
+[2.860s] -- Detecting CXX compile features - done
+[2.888s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[3.108s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[3.604s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[3.841s] -- Found rosidl_default_generators: 1.2.1 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[3.855s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[3.930s] -- Found rosidl_adapter: 3.1.9 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[4.913s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[6.174s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[6.901s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[7.303s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[7.370s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[7.394s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[7.537s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[7.537s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[7.537s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[7.537s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[7.563s] -- Found PythonExtra: .so  
+[7.771s] -- Added test 'lint_cmake' to check CMake code style
+[7.773s] -- Added test 'xmllint' to check XML markup files
+[7.979s] -- Configuring done
+[8.050s] -- Generating done
+[8.057s] -- Build files have been written to: /home/matheus/thesis_ws/build/hal_interfaces
+[8.062s] Invoked command in '/home/matheus/thesis_ws/build/hal_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake /home/matheus/thesis_ws/src/hal_interfaces -DCMAKE_INSTALL_PREFIX=/home/matheus/thesis_ws/install/hal_interfaces
+[8.063s] Invoking command in '/home/matheus/thesis_ws/build/hal_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --build /home/matheus/thesis_ws/build/hal_interfaces -- -j12 -l12
+[8.103s] [  3%] [34m[1mGenerating C code for ROS interfaces[0m
+[8.117s] [  9%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[8.117s] [  9%] [34m[1mGenerating Rust code for ROS interfaces[0m
+[8.122s] [  9%] Built target ament_cmake_python_copy_hal_interfaces
+[8.290s] running egg_info
+[8.291s] creating hal_interfaces.egg-info
+[8.291s] writing hal_interfaces.egg-info/PKG-INFO
+[8.291s] writing dependency_links to hal_interfaces.egg-info/dependency_links.txt
+[8.291s] writing top-level names to hal_interfaces.egg-info/top_level.txt
+[8.291s] writing manifest file 'hal_interfaces.egg-info/SOURCES.txt'
+[8.292s] reading manifest file 'hal_interfaces.egg-info/SOURCES.txt'
+[8.293s] writing manifest file 'hal_interfaces.egg-info/SOURCES.txt'
+[8.401s] [  9%] Built target ament_cmake_python_build_hal_interfaces_egg
+[8.826s] [  9%] Built target hal_interfaces__rs
+[8.923s] [  9%] Built target hal_interfaces__cpp
+[8.932s] [ 12%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[8.933s] [ 15%] [32mBuilding C object CMakeFiles/hal_interfaces__rosidl_generator_c.dir/rosidl_generator_c/hal_interfaces/srv/detail/set_string__functions.c.o[0m
+[8.933s] [ 18%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[8.933s] [ 21%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[9.100s] [ 25%] [32mBuilding CXX object CMakeFiles/hal_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/hal_interfaces/srv/set_string__type_support.cpp.o[0m
+[9.147s] [ 28%] [32mBuilding CXX object CMakeFiles/hal_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/hal_interfaces/srv/detail/set_string__type_support.cpp.o[0m
+[9.186s] [ 31%] [32mBuilding CXX object CMakeFiles/hal_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/hal_interfaces/srv/detail/dds_fastrtps/set_string__type_support.cpp.o[0m
+[9.240s] [ 34%] [32m[1mLinking C shared library libhal_interfaces__rosidl_generator_c.so[0m
+[9.307s] [ 34%] Built target hal_interfaces__rosidl_generator_c
+[9.320s] [ 37%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[9.321s] [ 43%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[9.321s] [ 43%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[9.573s] [ 46%] [32mBuilding CXX object CMakeFiles/hal_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/hal_interfaces/srv/detail/set_string__type_support_c.cpp.o[0m
+[9.580s] [ 50%] [32mBuilding CXX object CMakeFiles/hal_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/hal_interfaces/srv/set_string__type_support.cpp.o[0m
+[9.623s] [ 53%] [32mBuilding C object CMakeFiles/hal_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/hal_interfaces/srv/detail/set_string__type_support.c.o[0m
+[9.639s] [ 56%] [32m[1mLinking CXX shared library libhal_interfaces__rosidl_typesupport_c.so[0m
+[9.678s] [ 59%] [32m[1mLinking C shared library libhal_interfaces__rosidl_typesupport_introspection_c.so[0m
+[9.694s] [ 59%] Built target hal_interfaces__rosidl_typesupport_c
+[9.723s] [ 59%] Built target hal_interfaces__rosidl_typesupport_introspection_c
+[9.804s] [ 62%] [32m[1mLinking CXX shared library libhal_interfaces__rosidl_typesupport_cpp.so[0m
+[9.831s] [ 65%] [32m[1mLinking CXX shared library libhal_interfaces__rosidl_typesupport_introspection_cpp.so[0m
+[9.850s] [ 65%] Built target hal_interfaces__rosidl_typesupport_cpp
+[9.906s] [ 65%] Built target hal_interfaces__rosidl_typesupport_introspection_cpp
+[9.955s] [ 68%] [32m[1mLinking CXX shared library libhal_interfaces__rosidl_typesupport_fastrtps_c.so[0m
+[10.054s] [ 71%] [32m[1mLinking CXX shared library libhal_interfaces__rosidl_typesupport_fastrtps_cpp.so[0m
+[10.054s] [ 71%] Built target hal_interfaces__rosidl_typesupport_fastrtps_c
+[10.123s] [ 71%] Built target hal_interfaces__rosidl_typesupport_fastrtps_cpp
+[10.142s] [ 71%] Built target hal_interfaces
+[10.163s] [ 75%] [34m[1mGenerating Python code for ROS interfaces[0m
+[10.508s] [ 75%] Built target hal_interfaces__py
+[10.527s] [ 78%] [32mBuilding C object CMakeFiles/hal_interfaces__rosidl_generator_py.dir/rosidl_generator_py/hal_interfaces/srv/_set_string_s.c.o[0m
+[11.355s] [ 81%] [32m[1mLinking C shared library rosidl_generator_py/hal_interfaces/libhal_interfaces__rosidl_generator_py.so[0m
+[11.390s] [ 81%] Built target hal_interfaces__rosidl_generator_py
+[11.411s] [ 90%] [32mBuilding C object CMakeFiles/hal_interfaces__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/hal_interfaces/_hal_interfaces_s.ep.rosidl_typesupport_c.c.o[0m
+[11.411s] [ 90%] [32mBuilding C object CMakeFiles/hal_interfaces__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/hal_interfaces/_hal_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[11.412s] [ 90%] [32mBuilding C object CMakeFiles/hal_interfaces__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/hal_interfaces/_hal_interfaces_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[11.484s] [ 93%] [32m[1mLinking C shared library rosidl_generator_py/hal_interfaces/hal_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[11.496s] [ 96%] [32m[1mLinking C shared library rosidl_generator_py/hal_interfaces/hal_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[11.497s] [100%] [32m[1mLinking C shared library rosidl_generator_py/hal_interfaces/hal_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[11.522s] [100%] Built target hal_interfaces__rosidl_typesupport_fastrtps_c__pyext
+[11.529s] [100%] Built target hal_interfaces__rosidl_typesupport_c__pyext
+[11.533s] [100%] Built target hal_interfaces__rosidl_typesupport_introspection_c__pyext
+[11.546s] Invoked command in '/home/matheus/thesis_ws/build/hal_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --build /home/matheus/thesis_ws/build/hal_interfaces -- -j12 -l12
+[11.548s] Invoking command in '/home/matheus/thesis_ws/build/hal_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --install /home/matheus/thesis_ws/build/hal_interfaces
+[11.557s] -- Install configuration: ""
+[11.557s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/ament_index/resource_index/rosidl_interfaces/hal_interfaces
+[11.557s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[11.557s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg
+[11.558s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg/rosidl_generator_c__visibility_control.h
+[11.558s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[11.558s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/set_string.h
+[11.558s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[11.558s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__struct.h
+[11.558s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__functions.h
+[11.558s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__type_support.h
+[11.558s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__functions.c
+[11.559s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/library_path.sh
+[11.559s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/library_path.dsv
+[11.559s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_generator_c.so
+[11.559s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_generator_c.so" to ""
+[11.559s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[11.559s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg
+[11.559s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[11.559s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[11.560s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[11.560s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__rosidl_typesupport_fastrtps_c.h
+[11.560s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_fastrtps_c.so
+[11.560s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_fastrtps_c.so" to ""
+[11.560s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[11.560s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg
+[11.560s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[11.560s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[11.560s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[11.561s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__type_support.c
+[11.561s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__rosidl_typesupport_introspection_c.h
+[11.561s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_introspection_c.so
+[11.561s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_introspection_c.so" to ""
+[11.561s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_c.so
+[11.561s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_c.so" to ""
+[11.561s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[11.561s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg
+[11.561s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp
+[11.562s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[11.562s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/set_string.hpp
+[11.562s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[11.562s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__builder.hpp
+[11.562s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__struct.hpp
+[11.562s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__type_support.hpp
+[11.562s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__traits.hpp
+[11.562s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[11.562s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg
+[11.562s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[11.562s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[11.562s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[11.562s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/dds_fastrtps
+[11.562s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__rosidl_typesupport_fastrtps_cpp.hpp
+[11.563s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_fastrtps_cpp.so
+[11.563s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_fastrtps_cpp.so" to ""
+[11.563s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[11.563s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[11.563s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[11.563s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__rosidl_typesupport_introspection_cpp.hpp
+[11.563s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__type_support.cpp
+[11.563s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_introspection_cpp.so
+[11.563s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_introspection_cpp.so" to ""
+[11.563s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_cpp.so
+[11.563s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_cpp.so" to ""
+[11.563s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/pythonpath.sh
+[11.563s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/pythonpath.dsv
+[11.563s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces-0.0.0-py3.10.egg-info
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces-0.0.0-py3.10.egg-info/dependency_links.txt
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces-0.0.0-py3.10.egg-info/top_level.txt
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces-0.0.0-py3.10.egg-info/SOURCES.txt
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces-0.0.0-py3.10.egg-info/PKG-INFO
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/_hal_interfaces_s.ep.rosidl_typesupport_introspection_c.c
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv/_set_string_s.c
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv/_set_string.py
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv/__init__.py
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/libhal_interfaces__rosidl_generator_py.so
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/_hal_interfaces_s.ep.rosidl_typesupport_c.c
+[11.564s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/_hal_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c
+[11.565s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[11.565s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/__init__.py
+[11.565s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[11.565s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[11.710s] Listing '/home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces'...
+[11.710s] Compiling '/home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/__init__.py'...
+[11.710s] Listing '/home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv'...
+[11.710s] Compiling '/home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv/__init__.py'...
+[11.710s] Compiling '/home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv/_set_string.py'...
+[11.714s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[11.714s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+[11.714s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[11.714s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+[11.714s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[11.714s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+[11.714s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_generator_py.so
+[11.715s] -- Set runtime path of "/home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_generator_py.so" to ""
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/ament_index/resource_index/rust_packages/hal_interfaces
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/Cargo.toml
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/src
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/src/lib.rs
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/src/srv
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/src/srv/rmw.rs
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/src/srv.rs
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/build.rs
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/srv/SetString.idl
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/srv/SetString.srv
+[11.715s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/srv/SetString_Request.msg
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/srv/SetString_Response.msg
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/ament_index/resource_index/package_run_dependencies/hal_interfaces
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/ament_index/resource_index/parent_prefix_path/hal_interfaces
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/ament_prefix_path.sh
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/ament_prefix_path.dsv
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/path.sh
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/path.dsv
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/local_setup.bash
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/local_setup.sh
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/local_setup.zsh
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/local_setup.dsv
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.dsv
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/ament_index/resource_index/packages/hal_interfaces
+[11.716s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_generator_cExport.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_generator_cExport-noconfig.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_typesupport_fastrtps_cExport.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_introspection_cExport.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_cExport.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_cExport-noconfig.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_generator_cppExport.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_typesupport_fastrtps_cppExport.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_introspection_cppExport.cmake
+[11.717s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_cppExport.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_cppExport-noconfig.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_generator_pyExport.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_generator_pyExport-noconfig.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/rosidl_cmake-extras.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/ament_cmake_export_include_directories-extras.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/ament_cmake_export_libraries-extras.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/ament_cmake_export_targets-extras.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/rosidl_cmake_aggregate_target-extras.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfacesConfig.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfacesConfig-version.cmake
+[11.718s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.xml
+[11.720s] Invoked command in '/home/matheus/thesis_ws/build/hal_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --install /home/matheus/thesis_ws/build/hal_interfaces

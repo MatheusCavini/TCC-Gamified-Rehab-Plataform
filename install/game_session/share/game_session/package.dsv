@@ -1,0 +1,6 @@
+source;share/game_session/hook/pythonpath.ps1
+source;share/game_session/hook/pythonpath.dsv
+source;share/game_session/hook/pythonpath.sh
+source;share/game_session/hook/ament_prefix_path.ps1
+source;share/game_session/hook/ament_prefix_path.dsv
+source;share/game_session/hook/ament_prefix_path.sh

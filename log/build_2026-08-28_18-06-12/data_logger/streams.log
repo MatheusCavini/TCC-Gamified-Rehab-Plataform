@@ -1,0 +1,20 @@
+[2.814s] Invoking command in '/home/matheus/thesis_ws/src/data_logger': PYTHONPATH=/home/matheus/thesis_ws/build/data_logger/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/data_logger/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/data_logger build --build-base /home/matheus/thesis_ws/build/data_logger/build install --record /home/matheus/thesis_ws/build/data_logger/install.log --install-scripts $base/lib/data_logger --single-version-externally-managed install_data
+[3.189s] running egg_info
+[3.190s] writing ../../build/data_logger/data_logger.egg-info/PKG-INFO
+[3.191s] writing dependency_links to ../../build/data_logger/data_logger.egg-info/dependency_links.txt
+[3.191s] writing entry points to ../../build/data_logger/data_logger.egg-info/entry_points.txt
+[3.191s] writing requirements to ../../build/data_logger/data_logger.egg-info/requires.txt
+[3.191s] writing top-level names to ../../build/data_logger/data_logger.egg-info/top_level.txt
+[3.194s] reading manifest file '../../build/data_logger/data_logger.egg-info/SOURCES.txt'
+[3.196s] writing manifest file '../../build/data_logger/data_logger.egg-info/SOURCES.txt'
+[3.196s] running build
+[3.196s] running build_py
+[3.196s] running install
+[3.196s] running install_lib
+[3.197s] running install_data
+[3.198s] running install_egg_info
+[3.199s] removing '/home/matheus/thesis_ws/install/data_logger/lib/python3.10/site-packages/data_logger-0.0.0-py3.10.egg-info' (and everything under it)
+[3.200s] Copying ../../build/data_logger/data_logger.egg-info to /home/matheus/thesis_ws/install/data_logger/lib/python3.10/site-packages/data_logger-0.0.0-py3.10.egg-info
+[3.201s] running install_scripts
+[3.226s] writing list of installed files to '/home/matheus/thesis_ws/build/data_logger/install.log'
+[3.264s] Invoked command in '/home/matheus/thesis_ws/src/data_logger' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/data_logger/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/data_logger/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/data_logger build --build-base /home/matheus/thesis_ws/build/data_logger/build install --record /home/matheus/thesis_ws/build/data_logger/install.log --install-scripts $base/lib/data_logger --single-version-externally-managed install_data

@@ -1,0 +1,21 @@
+[2.331s] Invoking command in '/home/matheus/thesis_ws/src/controller_guidao': PYTHONPATH=/home/matheus/thesis_ws/build/controller_guidao/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/controller_guidao build --build-base /home/matheus/thesis_ws/build/controller_guidao/build install --record /home/matheus/thesis_ws/build/controller_guidao/install.log --install-scripts $base/lib/controller_guidao --single-version-externally-managed install_data
+[2.668s] running egg_info
+[2.669s] writing ../../build/controller_guidao/controller_guidao.egg-info/PKG-INFO
+[2.669s] writing dependency_links to ../../build/controller_guidao/controller_guidao.egg-info/dependency_links.txt
+[2.669s] writing entry points to ../../build/controller_guidao/controller_guidao.egg-info/entry_points.txt
+[2.669s] writing requirements to ../../build/controller_guidao/controller_guidao.egg-info/requires.txt
+[2.670s] writing top-level names to ../../build/controller_guidao/controller_guidao.egg-info/top_level.txt
+[2.672s] reading manifest file '../../build/controller_guidao/controller_guidao.egg-info/SOURCES.txt'
+[2.673s] writing manifest file '../../build/controller_guidao/controller_guidao.egg-info/SOURCES.txt'
+[2.682s] running build
+[2.682s] running build_py
+[2.683s] running install
+[2.683s] running install_lib
+[2.683s] running install_data
+[2.684s] running install_egg_info
+[2.686s] removing '/home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao-0.0.0-py3.10.egg-info' (and everything under it)
+[2.687s] Copying ../../build/controller_guidao/controller_guidao.egg-info to /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao-0.0.0-py3.10.egg-info
+[2.688s] running install_scripts
+[2.707s] Installing controller_guidao_node script to /home/matheus/thesis_ws/install/controller_guidao/lib/controller_guidao
+[2.707s] writing list of installed files to '/home/matheus/thesis_ws/build/controller_guidao/install.log'
+[2.733s] Invoked command in '/home/matheus/thesis_ws/src/controller_guidao' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/controller_guidao/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/controller_guidao build --build-base /home/matheus/thesis_ws/build/controller_guidao/build install --record /home/matheus/thesis_ws/build/controller_guidao/install.log --install-scripts $base/lib/controller_guidao --single-version-externally-managed install_data

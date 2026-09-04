@@ -1,0 +1,20 @@
+[2.116s] Invoking command in '/home/matheus/thesis_ws/src/game_input_mapping': PYTHONPATH=/home/matheus/thesis_ws/build/game_input_mapping/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_input_mapping build --build-base /home/matheus/thesis_ws/build/game_input_mapping/build install --record /home/matheus/thesis_ws/build/game_input_mapping/install.log --install-scripts $base/lib/game_input_mapping --single-version-externally-managed install_data
+[2.343s] running egg_info
+[2.343s] writing ../../build/game_input_mapping/game_input_mapping.egg-info/PKG-INFO
+[2.344s] writing dependency_links to ../../build/game_input_mapping/game_input_mapping.egg-info/dependency_links.txt
+[2.344s] writing entry points to ../../build/game_input_mapping/game_input_mapping.egg-info/entry_points.txt
+[2.344s] writing requirements to ../../build/game_input_mapping/game_input_mapping.egg-info/requires.txt
+[2.344s] writing top-level names to ../../build/game_input_mapping/game_input_mapping.egg-info/top_level.txt
+[2.345s] reading manifest file '../../build/game_input_mapping/game_input_mapping.egg-info/SOURCES.txt'
+[2.346s] writing manifest file '../../build/game_input_mapping/game_input_mapping.egg-info/SOURCES.txt'
+[2.356s] running build
+[2.357s] running build_py
+[2.357s] running install
+[2.357s] running install_lib
+[2.358s] running install_data
+[2.359s] running install_egg_info
+[2.361s] removing '/home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages/game_input_mapping-0.0.0-py3.10.egg-info' (and everything under it)
+[2.361s] Copying ../../build/game_input_mapping/game_input_mapping.egg-info to /home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages/game_input_mapping-0.0.0-py3.10.egg-info
+[2.362s] running install_scripts
+[2.388s] writing list of installed files to '/home/matheus/thesis_ws/build/game_input_mapping/install.log'
+[2.418s] Invoked command in '/home/matheus/thesis_ws/src/game_input_mapping' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/game_input_mapping/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_input_mapping build --build-base /home/matheus/thesis_ws/build/game_input_mapping/build install --record /home/matheus/thesis_ws/build/game_input_mapping/install.log --install-scripts $base/lib/game_input_mapping --single-version-externally-managed install_data

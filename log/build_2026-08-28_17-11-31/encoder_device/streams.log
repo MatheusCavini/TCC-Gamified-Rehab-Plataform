@@ -1,0 +1,20 @@
+[7.113s] Invoking command in '/home/matheus/thesis_ws/src/encoder_device': PYTHONPATH=/home/matheus/thesis_ws/build/encoder_device/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/encoder_device build --build-base /home/matheus/thesis_ws/build/encoder_device/build install --record /home/matheus/thesis_ws/build/encoder_device/install.log --install-scripts $base/lib/encoder_device --single-version-externally-managed install_data
+[8.251s] running egg_info
+[8.259s] writing ../../build/encoder_device/encoder_device.egg-info/PKG-INFO
+[8.263s] writing dependency_links to ../../build/encoder_device/encoder_device.egg-info/dependency_links.txt
+[8.263s] writing entry points to ../../build/encoder_device/encoder_device.egg-info/entry_points.txt
+[8.264s] writing requirements to ../../build/encoder_device/encoder_device.egg-info/requires.txt
+[8.264s] writing top-level names to ../../build/encoder_device/encoder_device.egg-info/top_level.txt
+[8.272s] reading manifest file '../../build/encoder_device/encoder_device.egg-info/SOURCES.txt'
+[8.277s] writing manifest file '../../build/encoder_device/encoder_device.egg-info/SOURCES.txt'
+[8.279s] running build
+[8.280s] running build_py
+[8.280s] running install
+[8.280s] running install_lib
+[8.293s] running install_data
+[8.296s] running install_egg_info
+[8.297s] removing '/home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages/encoder_device-0.0.0-py3.10.egg-info' (and everything under it)
+[8.297s] Copying ../../build/encoder_device/encoder_device.egg-info to /home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages/encoder_device-0.0.0-py3.10.egg-info
+[8.310s] running install_scripts
+[8.351s] writing list of installed files to '/home/matheus/thesis_ws/build/encoder_device/install.log'
+[8.452s] Invoked command in '/home/matheus/thesis_ws/src/encoder_device' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/encoder_device/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/encoder_device build --build-base /home/matheus/thesis_ws/build/encoder_device/build install --record /home/matheus/thesis_ws/build/encoder_device/install.log --install-scripts $base/lib/encoder_device --single-version-externally-managed install_data

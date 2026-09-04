@@ -1,0 +1,21 @@
+[2.244s] Invoking command in '/home/matheus/thesis_ws/src/encoder_guidao': PYTHONPATH=/home/matheus/thesis_ws/build/encoder_guidao/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/encoder_guidao build --build-base /home/matheus/thesis_ws/build/encoder_guidao/build install --record /home/matheus/thesis_ws/build/encoder_guidao/install.log --install-scripts $base/lib/encoder_guidao --single-version-externally-managed install_data
+[2.595s] running egg_info
+[2.596s] writing ../../build/encoder_guidao/encoder_guidao.egg-info/PKG-INFO
+[2.596s] writing dependency_links to ../../build/encoder_guidao/encoder_guidao.egg-info/dependency_links.txt
+[2.596s] writing entry points to ../../build/encoder_guidao/encoder_guidao.egg-info/entry_points.txt
+[2.596s] writing requirements to ../../build/encoder_guidao/encoder_guidao.egg-info/requires.txt
+[2.596s] writing top-level names to ../../build/encoder_guidao/encoder_guidao.egg-info/top_level.txt
+[2.599s] reading manifest file '../../build/encoder_guidao/encoder_guidao.egg-info/SOURCES.txt'
+[2.600s] writing manifest file '../../build/encoder_guidao/encoder_guidao.egg-info/SOURCES.txt'
+[2.600s] running build
+[2.600s] running build_py
+[2.600s] running install
+[2.601s] running install_lib
+[2.602s] running install_data
+[2.602s] running install_egg_info
+[2.604s] removing '/home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages/encoder_guidao-0.0.0-py3.10.egg-info' (and everything under it)
+[2.605s] Copying ../../build/encoder_guidao/encoder_guidao.egg-info to /home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages/encoder_guidao-0.0.0-py3.10.egg-info
+[2.606s] running install_scripts
+[2.631s] Installing encoder_guidao_node script to /home/matheus/thesis_ws/install/encoder_guidao/lib/encoder_guidao
+[2.631s] writing list of installed files to '/home/matheus/thesis_ws/build/encoder_guidao/install.log'
+[2.657s] Invoked command in '/home/matheus/thesis_ws/src/encoder_guidao' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/encoder_guidao/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/encoder_guidao build --build-base /home/matheus/thesis_ws/build/encoder_guidao/build install --record /home/matheus/thesis_ws/build/encoder_guidao/install.log --install-scripts $base/lib/encoder_guidao --single-version-externally-managed install_data

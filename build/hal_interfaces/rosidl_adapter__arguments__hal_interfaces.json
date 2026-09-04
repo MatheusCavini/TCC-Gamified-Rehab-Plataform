@@ -1,0 +1,6 @@
+{
+  "package_name": "hal_interfaces",
+  "non_idl_tuples": [
+    "/home/matheus/thesis_ws/src/hal_interfaces:srv/SetString.srv"
+  ]
+}

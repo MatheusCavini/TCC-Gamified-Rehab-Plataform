@@ -1,0 +1,3 @@
+[console_scripts]
+encoder_guidao_node = encoder_guidao.encoder_guidao_node:main
+

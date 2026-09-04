@@ -1,0 +1,691 @@
+[1.874s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[1.874s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=12, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x7be0d0592cb0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7be0d05926e0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7be0d05926e0>>, mixin_verb=('build',))
+[6.815s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[6.815s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[6.815s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[6.815s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[6.815s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[6.816s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[6.816s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/matheus/thesis_ws'
+[6.816s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[6.816s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[6.817s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[6.817s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[6.817s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[6.817s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[6.817s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[6.817s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[6.817s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[6.921s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[6.921s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[6.921s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[6.921s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[6.921s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[6.921s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[6.921s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extensions ['ignore', 'ignore_ament_install']
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extension 'ignore'
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extension 'ignore_ament_install'
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extensions ['colcon_pkg']
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extension 'colcon_pkg'
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extensions ['colcon_meta']
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extension 'colcon_meta'
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extensions ['ros']
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extension 'ros'
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extensions ['cmake', 'python']
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extension 'cmake'
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extension 'python'
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extensions ['python_setup_py']
+[6.922s] Level 1:colcon.colcon_core.package_identification:_identify(firmware) by extension 'python_setup_py'
+[6.933s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extensions ['ignore', 'ignore_ament_install']
+[6.934s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extension 'ignore'
+[6.934s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extension 'ignore_ament_install'
+[6.934s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extensions ['colcon_pkg']
+[6.934s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extension 'colcon_pkg'
+[6.934s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extensions ['colcon_meta']
+[6.934s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extension 'colcon_meta'
+[6.934s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extensions ['ros']
+[6.934s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extension 'ros'
+[6.935s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extensions ['cmake', 'python']
+[6.935s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extension 'cmake'
+[6.935s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extension 'python'
+[6.935s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extensions ['python_setup_py']
+[6.935s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/include) by extension 'python_setup_py'
+[6.946s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extensions ['ignore', 'ignore_ament_install']
+[6.946s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extension 'ignore'
+[6.947s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extension 'ignore_ament_install'
+[6.947s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extensions ['colcon_pkg']
+[6.947s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extension 'colcon_pkg'
+[6.947s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extensions ['colcon_meta']
+[6.947s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extension 'colcon_meta'
+[6.947s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extensions ['ros']
+[6.947s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extension 'ros'
+[6.947s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extensions ['cmake', 'python']
+[6.947s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extension 'cmake'
+[6.948s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extension 'python'
+[6.948s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extensions ['python_setup_py']
+[6.948s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/lib) by extension 'python_setup_py'
+[6.959s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extensions ['ignore', 'ignore_ament_install']
+[6.959s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extension 'ignore'
+[6.959s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extension 'ignore_ament_install'
+[6.959s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extensions ['colcon_pkg']
+[6.959s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extension 'colcon_pkg'
+[6.959s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extensions ['colcon_meta']
+[6.959s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extension 'colcon_meta'
+[6.960s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extensions ['ros']
+[6.960s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extension 'ros'
+[6.960s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extensions ['cmake', 'python']
+[6.960s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extension 'cmake'
+[6.960s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extension 'python'
+[6.960s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extensions ['python_setup_py']
+[6.960s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/src) by extension 'python_setup_py'
+[6.971s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extensions ['ignore', 'ignore_ament_install']
+[6.971s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extension 'ignore'
+[6.971s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extension 'ignore_ament_install'
+[6.971s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extensions ['colcon_pkg']
+[6.971s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extension 'colcon_pkg'
+[6.971s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extensions ['colcon_meta']
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extension 'colcon_meta'
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extensions ['ros']
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extension 'ros'
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extensions ['cmake', 'python']
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extension 'cmake'
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extension 'python'
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extensions ['python_setup_py']
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(firmware/test) by extension 'python_setup_py'
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[6.972s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[6.973s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/data_logger) by extensions ['ignore', 'ignore_ament_install']
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/data_logger) by extension 'ignore'
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/data_logger) by extension 'ignore_ament_install'
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/data_logger) by extensions ['colcon_pkg']
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/data_logger) by extension 'colcon_pkg'
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/data_logger) by extensions ['colcon_meta']
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/data_logger) by extension 'colcon_meta'
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/data_logger) by extensions ['ros']
+[6.974s] Level 1:colcon.colcon_core.package_identification:_identify(src/data_logger) by extension 'ros'
+[7.025s] DEBUG:colcon.colcon_core.package_identification:Package 'src/data_logger' with type 'ros.ament_python' and name 'data_logger'
+[7.025s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_device) by extensions ['ignore', 'ignore_ament_install']
+[7.025s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_device) by extension 'ignore'
+[7.025s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_device) by extension 'ignore_ament_install'
+[7.026s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_device) by extensions ['colcon_pkg']
+[7.026s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_device) by extension 'colcon_pkg'
+[7.026s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_device) by extensions ['colcon_meta']
+[7.026s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_device) by extension 'colcon_meta'
+[7.026s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_device) by extensions ['ros']
+[7.026s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_device) by extension 'ros'
+[7.039s] DEBUG:colcon.colcon_core.package_identification:Package 'src/encoder_device' with type 'ros.ament_python' and name 'encoder_device'
+[7.039s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_guidao) by extensions ['ignore', 'ignore_ament_install']
+[7.039s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_guidao) by extension 'ignore'
+[7.039s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_guidao) by extension 'ignore_ament_install'
+[7.040s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_guidao) by extensions ['colcon_pkg']
+[7.040s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_guidao) by extension 'colcon_pkg'
+[7.040s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_guidao) by extensions ['colcon_meta']
+[7.040s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_guidao) by extension 'colcon_meta'
+[7.040s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_guidao) by extensions ['ros']
+[7.040s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_guidao) by extension 'ros'
+[7.053s] DEBUG:colcon.colcon_core.package_identification:Package 'src/encoder_guidao' with type 'ros.ament_python' and name 'encoder_guidao'
+[7.053s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_input_mapping) by extensions ['ignore', 'ignore_ament_install']
+[7.053s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_input_mapping) by extension 'ignore'
+[7.053s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_input_mapping) by extension 'ignore_ament_install'
+[7.053s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_input_mapping) by extensions ['colcon_pkg']
+[7.054s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_input_mapping) by extension 'colcon_pkg'
+[7.054s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_input_mapping) by extensions ['colcon_meta']
+[7.054s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_input_mapping) by extension 'colcon_meta'
+[7.054s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_input_mapping) by extensions ['ros']
+[7.054s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_input_mapping) by extension 'ros'
+[7.067s] DEBUG:colcon.colcon_core.package_identification:Package 'src/game_input_mapping' with type 'ros.ament_python' and name 'game_input_mapping'
+[7.067s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_session) by extensions ['ignore', 'ignore_ament_install']
+[7.067s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_session) by extension 'ignore'
+[7.068s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_session) by extension 'ignore_ament_install'
+[7.068s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_session) by extensions ['colcon_pkg']
+[7.068s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_session) by extension 'colcon_pkg'
+[7.068s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_session) by extensions ['colcon_meta']
+[7.068s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_session) by extension 'colcon_meta'
+[7.068s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_session) by extensions ['ros']
+[7.068s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_session) by extension 'ros'
+[7.081s] DEBUG:colcon.colcon_core.package_identification:Package 'src/game_session' with type 'ros.ament_python' and name 'game_session'
+[7.081s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_unity_bridge) by extensions ['ignore', 'ignore_ament_install']
+[7.081s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_unity_bridge) by extension 'ignore'
+[7.081s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_unity_bridge) by extension 'ignore_ament_install'
+[7.082s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_unity_bridge) by extensions ['colcon_pkg']
+[7.082s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_unity_bridge) by extension 'colcon_pkg'
+[7.082s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_unity_bridge) by extensions ['colcon_meta']
+[7.082s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_unity_bridge) by extension 'colcon_meta'
+[7.082s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_unity_bridge) by extensions ['ros']
+[7.082s] Level 1:colcon.colcon_core.package_identification:_identify(src/game_unity_bridge) by extension 'ros'
+[7.094s] DEBUG:colcon.colcon_core.package_identification:Package 'src/game_unity_bridge' with type 'ros.ament_python' and name 'game_unity_bridge'
+[7.095s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_device_manager) by extensions ['ignore', 'ignore_ament_install']
+[7.095s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_device_manager) by extension 'ignore'
+[7.095s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_device_manager) by extension 'ignore_ament_install'
+[7.095s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_device_manager) by extensions ['colcon_pkg']
+[7.095s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_device_manager) by extension 'colcon_pkg'
+[7.095s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_device_manager) by extensions ['colcon_meta']
+[7.095s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_device_manager) by extension 'colcon_meta'
+[7.095s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_device_manager) by extensions ['ros']
+[7.095s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_device_manager) by extension 'ros'
+[7.108s] DEBUG:colcon.colcon_core.package_identification:Package 'src/hal_device_manager' with type 'ros.ament_python' and name 'hal_device_manager'
+[7.109s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_interfaces) by extensions ['ignore', 'ignore_ament_install']
+[7.109s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_interfaces) by extension 'ignore'
+[7.109s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_interfaces) by extension 'ignore_ament_install'
+[7.109s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_interfaces) by extensions ['colcon_pkg']
+[7.109s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_interfaces) by extension 'colcon_pkg'
+[7.109s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_interfaces) by extensions ['colcon_meta']
+[7.109s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_interfaces) by extension 'colcon_meta'
+[7.109s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_interfaces) by extensions ['ros']
+[7.110s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_interfaces) by extension 'ros'
+[7.122s] DEBUG:colcon.colcon_core.package_identification:Package 'src/hal_interfaces' with type 'ros.ament_cmake' and name 'hal_interfaces'
+[7.123s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_signal_processing) by extensions ['ignore', 'ignore_ament_install']
+[7.123s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_signal_processing) by extension 'ignore'
+[7.123s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_signal_processing) by extension 'ignore_ament_install'
+[7.123s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_signal_processing) by extensions ['colcon_pkg']
+[7.123s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_signal_processing) by extension 'colcon_pkg'
+[7.123s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_signal_processing) by extensions ['colcon_meta']
+[7.123s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_signal_processing) by extension 'colcon_meta'
+[7.123s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_signal_processing) by extensions ['ros']
+[7.123s] Level 1:colcon.colcon_core.package_identification:_identify(src/hal_signal_processing) by extension 'ros'
+[7.137s] DEBUG:colcon.colcon_core.package_identification:Package 'src/hal_signal_processing' with type 'ros.ament_python' and name 'hal_signal_processing'
+[7.137s] Level 1:colcon.colcon_core.package_identification:_identify(src/thesis_interfaces) by extensions ['ignore', 'ignore_ament_install']
+[7.137s] Level 1:colcon.colcon_core.package_identification:_identify(src/thesis_interfaces) by extension 'ignore'
+[7.137s] Level 1:colcon.colcon_core.package_identification:_identify(src/thesis_interfaces) by extension 'ignore_ament_install'
+[7.138s] Level 1:colcon.colcon_core.package_identification:_identify(src/thesis_interfaces) by extensions ['colcon_pkg']
+[7.138s] Level 1:colcon.colcon_core.package_identification:_identify(src/thesis_interfaces) by extension 'colcon_pkg'
+[7.138s] Level 1:colcon.colcon_core.package_identification:_identify(src/thesis_interfaces) by extensions ['colcon_meta']
+[7.138s] Level 1:colcon.colcon_core.package_identification:_identify(src/thesis_interfaces) by extension 'colcon_meta'
+[7.138s] Level 1:colcon.colcon_core.package_identification:_identify(src/thesis_interfaces) by extensions ['ros']
+[7.138s] Level 1:colcon.colcon_core.package_identification:_identify(src/thesis_interfaces) by extension 'ros'
+[7.151s] DEBUG:colcon.colcon_core.package_identification:Package 'src/thesis_interfaces' with type 'ros.ament_cmake' and name 'thesis_interfaces'
+[7.151s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[7.151s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[7.151s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[7.151s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[7.151s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[7.457s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[7.457s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[7.531s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 10 installed packages in /home/matheus/thesis_ws/install
+[7.532s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 1 installed packages in /home/matheus/Desktop/TestesROS2/ros_unity_ws/install
+[7.533s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 3 installed packages in /home/matheus/Desktop/TestesROS2/microros_ws/install
+[7.535s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 282 installed packages in /opt/ros/humble
+[7.537s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[7.664s] Level 5:colcon.colcon_core.verb:set package 'data_logger' build argument 'cmake_args' from command line to 'None'
+[7.664s] Level 5:colcon.colcon_core.verb:set package 'data_logger' build argument 'cmake_target' from command line to 'None'
+[7.664s] Level 5:colcon.colcon_core.verb:set package 'data_logger' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.664s] Level 5:colcon.colcon_core.verb:set package 'data_logger' build argument 'cmake_clean_cache' from command line to 'False'
+[7.664s] Level 5:colcon.colcon_core.verb:set package 'data_logger' build argument 'cmake_clean_first' from command line to 'False'
+[7.664s] Level 5:colcon.colcon_core.verb:set package 'data_logger' build argument 'cmake_force_configure' from command line to 'False'
+[7.664s] Level 5:colcon.colcon_core.verb:set package 'data_logger' build argument 'ament_cmake_args' from command line to 'None'
+[7.664s] Level 5:colcon.colcon_core.verb:set package 'data_logger' build argument 'catkin_cmake_args' from command line to 'None'
+[7.664s] Level 5:colcon.colcon_core.verb:set package 'data_logger' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.664s] DEBUG:colcon.colcon_core.verb:Building package 'data_logger' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/matheus/thesis_ws/build/data_logger', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/matheus/thesis_ws/install/data_logger', 'merge_install': False, 'path': '/home/matheus/thesis_ws/src/data_logger', 'symlink_install': False, 'test_result_base': None}
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_device' build argument 'cmake_args' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_device' build argument 'cmake_target' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_device' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_device' build argument 'cmake_clean_cache' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_device' build argument 'cmake_clean_first' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_device' build argument 'cmake_force_configure' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_device' build argument 'ament_cmake_args' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_device' build argument 'catkin_cmake_args' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_device' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.665s] DEBUG:colcon.colcon_core.verb:Building package 'encoder_device' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/matheus/thesis_ws/build/encoder_device', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/matheus/thesis_ws/install/encoder_device', 'merge_install': False, 'path': '/home/matheus/thesis_ws/src/encoder_device', 'symlink_install': False, 'test_result_base': None}
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_guidao' build argument 'cmake_args' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_guidao' build argument 'cmake_target' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_guidao' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_guidao' build argument 'cmake_clean_cache' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_guidao' build argument 'cmake_clean_first' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_guidao' build argument 'cmake_force_configure' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_guidao' build argument 'ament_cmake_args' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_guidao' build argument 'catkin_cmake_args' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'encoder_guidao' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.665s] DEBUG:colcon.colcon_core.verb:Building package 'encoder_guidao' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/matheus/thesis_ws/build/encoder_guidao', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/matheus/thesis_ws/install/encoder_guidao', 'merge_install': False, 'path': '/home/matheus/thesis_ws/src/encoder_guidao', 'symlink_install': False, 'test_result_base': None}
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'game_input_mapping' build argument 'cmake_args' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'game_input_mapping' build argument 'cmake_target' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'game_input_mapping' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'game_input_mapping' build argument 'cmake_clean_cache' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'game_input_mapping' build argument 'cmake_clean_first' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'game_input_mapping' build argument 'cmake_force_configure' from command line to 'False'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'game_input_mapping' build argument 'ament_cmake_args' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'game_input_mapping' build argument 'catkin_cmake_args' from command line to 'None'
+[7.665s] Level 5:colcon.colcon_core.verb:set package 'game_input_mapping' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.665s] DEBUG:colcon.colcon_core.verb:Building package 'game_input_mapping' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/matheus/thesis_ws/build/game_input_mapping', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/matheus/thesis_ws/install/game_input_mapping', 'merge_install': False, 'path': '/home/matheus/thesis_ws/src/game_input_mapping', 'symlink_install': False, 'test_result_base': None}
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_session' build argument 'cmake_args' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_session' build argument 'cmake_target' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_session' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_session' build argument 'cmake_clean_cache' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_session' build argument 'cmake_clean_first' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_session' build argument 'cmake_force_configure' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_session' build argument 'ament_cmake_args' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_session' build argument 'catkin_cmake_args' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_session' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.666s] DEBUG:colcon.colcon_core.verb:Building package 'game_session' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/matheus/thesis_ws/build/game_session', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/matheus/thesis_ws/install/game_session', 'merge_install': False, 'path': '/home/matheus/thesis_ws/src/game_session', 'symlink_install': False, 'test_result_base': None}
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_unity_bridge' build argument 'cmake_args' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_unity_bridge' build argument 'cmake_target' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_unity_bridge' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_unity_bridge' build argument 'cmake_clean_cache' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_unity_bridge' build argument 'cmake_clean_first' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_unity_bridge' build argument 'cmake_force_configure' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_unity_bridge' build argument 'ament_cmake_args' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_unity_bridge' build argument 'catkin_cmake_args' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'game_unity_bridge' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.666s] DEBUG:colcon.colcon_core.verb:Building package 'game_unity_bridge' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/matheus/thesis_ws/build/game_unity_bridge', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/matheus/thesis_ws/install/game_unity_bridge', 'merge_install': False, 'path': '/home/matheus/thesis_ws/src/game_unity_bridge', 'symlink_install': False, 'test_result_base': None}
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'hal_device_manager' build argument 'cmake_args' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'hal_device_manager' build argument 'cmake_target' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'hal_device_manager' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'hal_device_manager' build argument 'cmake_clean_cache' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'hal_device_manager' build argument 'cmake_clean_first' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'hal_device_manager' build argument 'cmake_force_configure' from command line to 'False'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'hal_device_manager' build argument 'ament_cmake_args' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'hal_device_manager' build argument 'catkin_cmake_args' from command line to 'None'
+[7.666s] Level 5:colcon.colcon_core.verb:set package 'hal_device_manager' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.666s] DEBUG:colcon.colcon_core.verb:Building package 'hal_device_manager' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/matheus/thesis_ws/build/hal_device_manager', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/matheus/thesis_ws/install/hal_device_manager', 'merge_install': False, 'path': '/home/matheus/thesis_ws/src/hal_device_manager', 'symlink_install': False, 'test_result_base': None}
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_interfaces' build argument 'cmake_args' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_interfaces' build argument 'cmake_target' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_interfaces' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_interfaces' build argument 'cmake_clean_cache' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_interfaces' build argument 'cmake_clean_first' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_interfaces' build argument 'cmake_force_configure' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_interfaces' build argument 'ament_cmake_args' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_interfaces' build argument 'catkin_cmake_args' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_interfaces' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.667s] DEBUG:colcon.colcon_core.verb:Building package 'hal_interfaces' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/matheus/thesis_ws/build/hal_interfaces', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/matheus/thesis_ws/install/hal_interfaces', 'merge_install': False, 'path': '/home/matheus/thesis_ws/src/hal_interfaces', 'symlink_install': False, 'test_result_base': None}
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_signal_processing' build argument 'cmake_args' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_signal_processing' build argument 'cmake_target' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_signal_processing' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_signal_processing' build argument 'cmake_clean_cache' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_signal_processing' build argument 'cmake_clean_first' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_signal_processing' build argument 'cmake_force_configure' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_signal_processing' build argument 'ament_cmake_args' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_signal_processing' build argument 'catkin_cmake_args' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'hal_signal_processing' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.667s] DEBUG:colcon.colcon_core.verb:Building package 'hal_signal_processing' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/matheus/thesis_ws/build/hal_signal_processing', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/matheus/thesis_ws/install/hal_signal_processing', 'merge_install': False, 'path': '/home/matheus/thesis_ws/src/hal_signal_processing', 'symlink_install': False, 'test_result_base': None}
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'thesis_interfaces' build argument 'cmake_args' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'thesis_interfaces' build argument 'cmake_target' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'thesis_interfaces' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'thesis_interfaces' build argument 'cmake_clean_cache' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'thesis_interfaces' build argument 'cmake_clean_first' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'thesis_interfaces' build argument 'cmake_force_configure' from command line to 'False'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'thesis_interfaces' build argument 'ament_cmake_args' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'thesis_interfaces' build argument 'catkin_cmake_args' from command line to 'None'
+[7.667s] Level 5:colcon.colcon_core.verb:set package 'thesis_interfaces' build argument 'catkin_skip_building_tests' from command line to 'False'
+[7.667s] DEBUG:colcon.colcon_core.verb:Building package 'thesis_interfaces' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/matheus/thesis_ws/build/thesis_interfaces', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/matheus/thesis_ws/install/thesis_interfaces', 'merge_install': False, 'path': '/home/matheus/thesis_ws/src/thesis_interfaces', 'symlink_install': False, 'test_result_base': None}
+[7.667s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[7.668s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[7.669s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/matheus/thesis_ws/src/data_logger' with build type 'ament_python'
+[7.669s] Level 1:colcon.colcon_core.shell:create_environment_hook('data_logger', 'ament_prefix_path')
+[7.750s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[7.750s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/data_logger/share/data_logger/hook/ament_prefix_path.ps1'
+[7.763s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/data_logger/share/data_logger/hook/ament_prefix_path.dsv'
+[7.775s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/data_logger/share/data_logger/hook/ament_prefix_path.sh'
+[7.787s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.787s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.812s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/matheus/thesis_ws/src/encoder_device' with build type 'ament_python'
+[7.812s] Level 1:colcon.colcon_core.shell:create_environment_hook('encoder_device', 'ament_prefix_path')
+[7.813s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/hook/ament_prefix_path.ps1'
+[7.814s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/hook/ament_prefix_path.dsv'
+[7.814s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/hook/ament_prefix_path.sh'
+[7.815s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.815s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.823s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/matheus/thesis_ws/src/encoder_guidao' with build type 'ament_python'
+[7.823s] Level 1:colcon.colcon_core.shell:create_environment_hook('encoder_guidao', 'ament_prefix_path')
+[7.824s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/hook/ament_prefix_path.ps1'
+[7.824s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/hook/ament_prefix_path.dsv'
+[7.825s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/hook/ament_prefix_path.sh'
+[7.825s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.825s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.837s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/matheus/thesis_ws/src/game_input_mapping' with build type 'ament_python'
+[7.838s] Level 1:colcon.colcon_core.shell:create_environment_hook('game_input_mapping', 'ament_prefix_path')
+[7.838s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/hook/ament_prefix_path.ps1'
+[7.839s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/hook/ament_prefix_path.dsv'
+[7.839s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/hook/ament_prefix_path.sh'
+[7.840s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.840s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.849s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/matheus/thesis_ws/src/game_session' with build type 'ament_python'
+[7.849s] Level 1:colcon.colcon_core.shell:create_environment_hook('game_session', 'ament_prefix_path')
+[7.850s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_session/share/game_session/hook/ament_prefix_path.ps1'
+[7.850s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/game_session/share/game_session/hook/ament_prefix_path.dsv'
+[7.851s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_session/share/game_session/hook/ament_prefix_path.sh'
+[7.851s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.851s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.863s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/matheus/thesis_ws/src/game_unity_bridge' with build type 'ament_python'
+[7.863s] Level 1:colcon.colcon_core.shell:create_environment_hook('game_unity_bridge', 'ament_prefix_path')
+[7.864s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/hook/ament_prefix_path.ps1'
+[7.865s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/hook/ament_prefix_path.dsv'
+[7.865s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/hook/ament_prefix_path.sh'
+[7.866s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.866s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.877s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/matheus/thesis_ws/src/hal_device_manager' with build type 'ament_python'
+[7.877s] Level 1:colcon.colcon_core.shell:create_environment_hook('hal_device_manager', 'ament_prefix_path')
+[7.878s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/hook/ament_prefix_path.ps1'
+[7.879s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/hook/ament_prefix_path.dsv'
+[7.879s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/hook/ament_prefix_path.sh'
+[7.880s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.880s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.891s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/matheus/thesis_ws/src/hal_interfaces' with build type 'ament_cmake'
+[7.892s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/matheus/thesis_ws/src/hal_interfaces'
+[7.892s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.892s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.910s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/matheus/thesis_ws/src/hal_signal_processing' with build type 'ament_python'
+[7.911s] Level 1:colcon.colcon_core.shell:create_environment_hook('hal_signal_processing', 'ament_prefix_path')
+[7.911s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/hook/ament_prefix_path.ps1'
+[7.912s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/hook/ament_prefix_path.dsv'
+[7.913s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/hook/ament_prefix_path.sh'
+[7.914s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.914s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.922s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/matheus/thesis_ws/src/thesis_interfaces' with build type 'ament_cmake'
+[7.922s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/matheus/thesis_ws/src/thesis_interfaces'
+[7.922s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.922s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[8.227s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/matheus/thesis_ws/src/data_logger'
+[8.228s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[8.228s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[8.433s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/matheus/thesis_ws/src/encoder_device'
+[8.434s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[8.434s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[8.634s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/matheus/thesis_ws/src/encoder_guidao'
+[8.635s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[8.635s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[8.829s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/matheus/thesis_ws/src/game_input_mapping'
+[8.829s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[8.829s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[9.030s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/matheus/thesis_ws/src/game_session'
+[9.030s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[9.030s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[9.225s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/matheus/thesis_ws/src/game_unity_bridge'
+[9.225s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[9.225s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[9.418s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/matheus/thesis_ws/src/hal_device_manager'
+[9.418s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[9.418s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[9.448s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/build/hal_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --build /home/matheus/thesis_ws/build/hal_interfaces -- -j12 -l12
+[9.682s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/matheus/thesis_ws/src/hal_signal_processing'
+[9.683s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[9.683s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[9.700s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/build/thesis_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --build /home/matheus/thesis_ws/build/thesis_interfaces -- -j12 -l12
+[9.815s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/build/thesis_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --build /home/matheus/thesis_ws/build/thesis_interfaces -- -j12 -l12
+[9.855s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/build/thesis_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --install /home/matheus/thesis_ws/build/thesis_interfaces
+[9.878s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(thesis_interfaces)
+[9.879s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/build/thesis_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --install /home/matheus/thesis_ws/build/thesis_interfaces
+[9.899s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces' for CMake module files
+[9.900s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces' for CMake config files
+[9.900s] Level 1:colcon.colcon_core.shell:create_environment_hook('thesis_interfaces', 'cmake_prefix_path')
+[9.900s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/hook/cmake_prefix_path.ps1'
+[9.901s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/hook/cmake_prefix_path.dsv'
+[9.901s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/hook/cmake_prefix_path.sh'
+[9.902s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces/bin'
+[9.902s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces/lib/pkgconfig/thesis_interfaces.pc'
+[9.902s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces/lib/python3.10/site-packages'
+[9.903s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces/bin'
+[9.903s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.ps1'
+[9.913s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.dsv'
+[9.925s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.sh'
+[9.926s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.bash'
+[9.927s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.zsh'
+[9.939s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/thesis_interfaces/share/colcon-core/packages/thesis_interfaces)
+[9.939s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(thesis_interfaces)
+[9.940s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces' for CMake module files
+[9.940s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces' for CMake config files
+[9.940s] Level 1:colcon.colcon_core.shell:create_environment_hook('thesis_interfaces', 'cmake_prefix_path')
+[9.940s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/hook/cmake_prefix_path.ps1'
+[9.941s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/hook/cmake_prefix_path.dsv'
+[9.941s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/hook/cmake_prefix_path.sh'
+[9.941s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces/bin'
+[9.941s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces/lib/pkgconfig/thesis_interfaces.pc'
+[9.942s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces/lib/python3.10/site-packages'
+[9.942s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/thesis_interfaces/bin'
+[9.942s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.ps1'
+[9.943s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.dsv'
+[9.943s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.sh'
+[9.944s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.bash'
+[9.944s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.zsh'
+[9.945s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/thesis_interfaces/share/colcon-core/packages/thesis_interfaces)
+[10.157s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/build/hal_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --build /home/matheus/thesis_ws/build/hal_interfaces -- -j12 -l12
+[10.179s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/build/hal_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --install /home/matheus/thesis_ws/build/hal_interfaces
+[10.636s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hal_interfaces)
+[10.637s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces' for CMake module files
+[10.640s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/build/hal_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --install /home/matheus/thesis_ws/build/hal_interfaces
+[10.642s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces' for CMake config files
+[10.644s] Level 1:colcon.colcon_core.shell:create_environment_hook('hal_interfaces', 'cmake_prefix_path')
+[10.645s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/cmake_prefix_path.ps1'
+[10.646s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/cmake_prefix_path.dsv'
+[10.647s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/cmake_prefix_path.sh'
+[10.648s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces/lib'
+[10.649s] Level 1:colcon.colcon_core.shell:create_environment_hook('hal_interfaces', 'ld_library_path_lib')
+[10.650s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/ld_library_path_lib.ps1'
+[10.651s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/ld_library_path_lib.dsv'
+[10.658s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/ld_library_path_lib.sh'
+[10.659s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces/bin'
+[10.659s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces/lib/pkgconfig/hal_interfaces.pc'
+[10.659s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces/lib/python3.10/site-packages'
+[10.660s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces/bin'
+[10.660s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.ps1'
+[10.662s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.dsv'
+[10.662s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.sh'
+[10.663s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.bash'
+[10.670s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.zsh'
+[10.671s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/hal_interfaces/share/colcon-core/packages/hal_interfaces)
+[10.672s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hal_interfaces)
+[10.672s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces' for CMake module files
+[10.673s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces' for CMake config files
+[10.674s] Level 1:colcon.colcon_core.shell:create_environment_hook('hal_interfaces', 'cmake_prefix_path')
+[10.674s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/cmake_prefix_path.ps1'
+[10.675s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/cmake_prefix_path.dsv'
+[10.675s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/cmake_prefix_path.sh'
+[10.675s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces/lib'
+[10.675s] Level 1:colcon.colcon_core.shell:create_environment_hook('hal_interfaces', 'ld_library_path_lib')
+[10.675s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/ld_library_path_lib.ps1'
+[10.676s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/ld_library_path_lib.dsv'
+[10.685s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/hook/ld_library_path_lib.sh'
+[10.686s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces/bin'
+[10.686s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces/lib/pkgconfig/hal_interfaces.pc'
+[10.687s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces/lib/python3.10/site-packages'
+[10.688s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_interfaces/bin'
+[10.688s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.ps1'
+[10.689s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.dsv'
+[10.690s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.sh'
+[10.691s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.bash'
+[10.691s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.zsh'
+[10.699s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/hal_interfaces/share/colcon-core/packages/hal_interfaces)
+[12.220s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: install_lib, build_scripts, test, egg_info, setopt, develop, install_scripts, dist_info, bdist, compile_catalog, easy_install, sdist, nosetests, register, update_catalog, bdist_wheel, extract_messages, bdist_rpm, build_ext, build_py, symlink_data, install_data, upload, build_clib, build, bdist_egg, saveopts, upload_docs, check, install, rotate, install_egg_info, bdist_dumb, alias, clean, install_headers, init_catalog
+[12.223s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/src/game_session': PYTHONPATH=/home/matheus/thesis_ws/build/game_session/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_session/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_session build --build-base /home/matheus/thesis_ws/build/game_session/build install --record /home/matheus/thesis_ws/build/game_session/install.log --install-scripts $base/lib/game_session --single-version-externally-managed install_data
+[12.224s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: install_lib, build_scripts, test, egg_info, setopt, develop, install_scripts, dist_info, bdist, compile_catalog, easy_install, sdist, nosetests, register, update_catalog, bdist_wheel, extract_messages, bdist_rpm, build_ext, build_py, symlink_data, install_data, upload, build_clib, build, bdist_egg, saveopts, upload_docs, check, install, rotate, install_egg_info, bdist_dumb, alias, clean, install_headers, init_catalog
+[12.228s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/src/encoder_guidao': PYTHONPATH=/home/matheus/thesis_ws/build/encoder_guidao/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/encoder_guidao build --build-base /home/matheus/thesis_ws/build/encoder_guidao/build install --record /home/matheus/thesis_ws/build/encoder_guidao/install.log --install-scripts $base/lib/encoder_guidao --single-version-externally-managed install_data
+[12.241s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: install_lib, build_scripts, test, egg_info, setopt, develop, install_scripts, dist_info, bdist, compile_catalog, easy_install, sdist, nosetests, register, update_catalog, bdist_wheel, extract_messages, bdist_rpm, build_ext, build_py, symlink_data, install_data, upload, build_clib, build, bdist_egg, saveopts, upload_docs, check, install, rotate, install_egg_info, bdist_dumb, alias, clean, install_headers, init_catalog
+[12.243s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: install_lib, build_scripts, test, egg_info, setopt, develop, install_scripts, dist_info, bdist, compile_catalog, easy_install, sdist, nosetests, register, update_catalog, bdist_wheel, extract_messages, bdist_rpm, build_ext, build_py, symlink_data, install_data, upload, build_clib, build, bdist_egg, saveopts, upload_docs, check, install, rotate, install_egg_info, bdist_dumb, alias, clean, install_headers, init_catalog
+[12.244s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: install_lib, build_scripts, test, egg_info, setopt, develop, install_scripts, dist_info, bdist, compile_catalog, easy_install, sdist, nosetests, register, update_catalog, bdist_wheel, extract_messages, bdist_rpm, build_ext, build_py, symlink_data, install_data, upload, build_clib, build, bdist_egg, saveopts, upload_docs, check, install, rotate, install_egg_info, bdist_dumb, alias, clean, install_headers, init_catalog
+[12.245s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/src/encoder_device': PYTHONPATH=/home/matheus/thesis_ws/build/encoder_device/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/encoder_device build --build-base /home/matheus/thesis_ws/build/encoder_device/build install --record /home/matheus/thesis_ws/build/encoder_device/install.log --install-scripts $base/lib/encoder_device --single-version-externally-managed install_data
+[12.247s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/src/hal_signal_processing': PYTHONPATH=/home/matheus/thesis_ws/build/hal_signal_processing/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/hal_signal_processing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/hal_signal_processing build --build-base /home/matheus/thesis_ws/build/hal_signal_processing/build install --record /home/matheus/thesis_ws/build/hal_signal_processing/install.log --install-scripts $base/lib/hal_signal_processing --single-version-externally-managed install_data
+[12.249s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: install_lib, build_scripts, test, egg_info, setopt, develop, install_scripts, dist_info, bdist, compile_catalog, easy_install, sdist, nosetests, register, update_catalog, bdist_wheel, extract_messages, bdist_rpm, build_ext, build_py, symlink_data, install_data, upload, build_clib, build, bdist_egg, saveopts, upload_docs, check, install, rotate, install_egg_info, bdist_dumb, alias, clean, install_headers, init_catalog
+[12.249s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/src/game_input_mapping': PYTHONPATH=/home/matheus/thesis_ws/build/game_input_mapping/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_input_mapping build --build-base /home/matheus/thesis_ws/build/game_input_mapping/build install --record /home/matheus/thesis_ws/build/game_input_mapping/install.log --install-scripts $base/lib/game_input_mapping --single-version-externally-managed install_data
+[12.251s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: install_lib, build_scripts, test, egg_info, setopt, develop, install_scripts, dist_info, bdist, compile_catalog, easy_install, sdist, nosetests, register, update_catalog, bdist_wheel, extract_messages, bdist_rpm, build_ext, build_py, symlink_data, install_data, upload, build_clib, build, bdist_egg, saveopts, upload_docs, check, install, rotate, install_egg_info, bdist_dumb, alias, clean, install_headers, init_catalog
+[12.251s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/src/hal_device_manager': PYTHONPATH=/home/matheus/thesis_ws/build/hal_device_manager/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/hal_device_manager/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/hal_device_manager build --build-base /home/matheus/thesis_ws/build/hal_device_manager/build install --record /home/matheus/thesis_ws/build/hal_device_manager/install.log --install-scripts $base/lib/hal_device_manager --single-version-externally-managed install_data
+[12.253s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: install_lib, build_scripts, test, egg_info, setopt, develop, install_scripts, dist_info, bdist, compile_catalog, easy_install, sdist, nosetests, register, update_catalog, bdist_wheel, extract_messages, bdist_rpm, build_ext, build_py, symlink_data, install_data, upload, build_clib, build, bdist_egg, saveopts, upload_docs, check, install, rotate, install_egg_info, bdist_dumb, alias, clean, install_headers, init_catalog
+[12.255s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/src/data_logger': PYTHONPATH=/home/matheus/thesis_ws/build/data_logger/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/data_logger/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/data_logger build --build-base /home/matheus/thesis_ws/build/data_logger/build install --record /home/matheus/thesis_ws/build/data_logger/install.log --install-scripts $base/lib/data_logger --single-version-externally-managed install_data
+[12.257s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/matheus/thesis_ws/src/game_unity_bridge': PYTHONPATH=/home/matheus/thesis_ws/build/game_unity_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_unity_bridge/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_unity_bridge build --build-base /home/matheus/thesis_ws/build/game_unity_bridge/build install --record /home/matheus/thesis_ws/build/game_unity_bridge/install.log --install-scripts $base/lib/game_unity_bridge --single-version-externally-managed install_data
+[12.506s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_session' for CMake module files
+[12.507s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/src/game_session' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/game_session/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_session/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_session build --build-base /home/matheus/thesis_ws/build/game_session/build install --record /home/matheus/thesis_ws/build/game_session/install.log --install-scripts $base/lib/game_session --single-version-externally-managed install_data
+[12.507s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_session' for CMake config files
+[12.508s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_session/lib'
+[12.508s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_session/bin'
+[12.508s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_session/lib/pkgconfig/game_session.pc'
+[12.508s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_session/lib/python3.10/site-packages'
+[12.508s] Level 1:colcon.colcon_core.shell:create_environment_hook('game_session', 'pythonpath')
+[12.508s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_session/share/game_session/hook/pythonpath.ps1'
+[12.508s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/game_session/share/game_session/hook/pythonpath.dsv'
+[12.509s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_session/share/game_session/hook/pythonpath.sh'
+[12.509s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_session/bin'
+[12.509s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(game_session)
+[12.510s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_session/share/game_session/package.ps1'
+[12.510s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/game_session/share/game_session/package.dsv'
+[12.520s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_session/share/game_session/package.sh'
+[12.520s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_session/share/game_session/package.bash'
+[12.521s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_session/share/game_session/package.zsh'
+[12.522s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/game_session/share/colcon-core/packages/game_session)
+[12.523s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_guidao' for CMake module files
+[12.523s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/src/encoder_guidao' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/encoder_guidao/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/encoder_guidao build --build-base /home/matheus/thesis_ws/build/encoder_guidao/build install --record /home/matheus/thesis_ws/build/encoder_guidao/install.log --install-scripts $base/lib/encoder_guidao --single-version-externally-managed install_data
+[12.524s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_guidao' for CMake config files
+[12.524s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_guidao/lib'
+[12.524s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_guidao/bin'
+[12.524s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_guidao/lib/pkgconfig/encoder_guidao.pc'
+[12.524s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages'
+[12.524s] Level 1:colcon.colcon_core.shell:create_environment_hook('encoder_guidao', 'pythonpath')
+[12.525s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/hook/pythonpath.ps1'
+[12.525s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/hook/pythonpath.dsv'
+[12.525s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/hook/pythonpath.sh'
+[12.526s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_guidao/bin'
+[12.526s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(encoder_guidao)
+[12.526s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/package.ps1'
+[12.527s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/package.dsv'
+[12.527s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/package.sh'
+[12.527s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/package.bash'
+[12.536s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao/package.zsh'
+[12.537s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/encoder_guidao/share/colcon-core/packages/encoder_guidao)
+[12.597s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_unity_bridge' for CMake module files
+[12.597s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/src/game_unity_bridge' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/game_unity_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_unity_bridge/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_unity_bridge build --build-base /home/matheus/thesis_ws/build/game_unity_bridge/build install --record /home/matheus/thesis_ws/build/game_unity_bridge/install.log --install-scripts $base/lib/game_unity_bridge --single-version-externally-managed install_data
+[12.597s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_unity_bridge' for CMake config files
+[12.599s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_unity_bridge/lib'
+[12.599s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_unity_bridge/bin'
+[12.599s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_unity_bridge/lib/pkgconfig/game_unity_bridge.pc'
+[12.600s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_unity_bridge/lib/python3.10/site-packages'
+[12.600s] Level 1:colcon.colcon_core.shell:create_environment_hook('game_unity_bridge', 'pythonpath')
+[12.600s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/hook/pythonpath.ps1'
+[12.601s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/hook/pythonpath.dsv'
+[12.601s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/hook/pythonpath.sh'
+[12.602s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_unity_bridge/bin'
+[12.602s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(game_unity_bridge)
+[12.602s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/package.ps1'
+[12.603s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/package.dsv'
+[12.604s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/package.sh'
+[12.608s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/package.bash'
+[12.608s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_unity_bridge/share/game_unity_bridge/package.zsh'
+[12.609s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/game_unity_bridge/share/colcon-core/packages/game_unity_bridge)
+[12.633s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_signal_processing' for CMake module files
+[12.634s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/src/hal_signal_processing' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/hal_signal_processing/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/hal_signal_processing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/hal_signal_processing build --build-base /home/matheus/thesis_ws/build/hal_signal_processing/build install --record /home/matheus/thesis_ws/build/hal_signal_processing/install.log --install-scripts $base/lib/hal_signal_processing --single-version-externally-managed install_data
+[12.634s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_signal_processing' for CMake config files
+[12.635s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_signal_processing/lib'
+[12.635s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_signal_processing/bin'
+[12.635s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_signal_processing/lib/pkgconfig/hal_signal_processing.pc'
+[12.635s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_signal_processing/lib/python3.10/site-packages'
+[12.635s] Level 1:colcon.colcon_core.shell:create_environment_hook('hal_signal_processing', 'pythonpath')
+[12.636s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/hook/pythonpath.ps1'
+[12.636s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/hook/pythonpath.dsv'
+[12.636s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/hook/pythonpath.sh'
+[12.637s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_signal_processing/bin'
+[12.637s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hal_signal_processing)
+[12.638s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/package.ps1'
+[12.638s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/package.dsv'
+[12.644s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/package.sh'
+[12.645s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/package.bash'
+[12.645s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_signal_processing/share/hal_signal_processing/package.zsh'
+[12.646s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/hal_signal_processing/share/colcon-core/packages/hal_signal_processing)
+[12.657s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_device_manager' for CMake module files
+[12.657s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/src/hal_device_manager' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/hal_device_manager/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/hal_device_manager/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/hal_device_manager build --build-base /home/matheus/thesis_ws/build/hal_device_manager/build install --record /home/matheus/thesis_ws/build/hal_device_manager/install.log --install-scripts $base/lib/hal_device_manager --single-version-externally-managed install_data
+[12.657s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_device_manager' for CMake config files
+[12.658s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_device_manager/lib'
+[12.658s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_device_manager/bin'
+[12.658s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_device_manager/lib/pkgconfig/hal_device_manager.pc'
+[12.658s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_device_manager/lib/python3.10/site-packages'
+[12.658s] Level 1:colcon.colcon_core.shell:create_environment_hook('hal_device_manager', 'pythonpath')
+[12.659s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/hook/pythonpath.ps1'
+[12.659s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/hook/pythonpath.dsv'
+[12.659s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/hook/pythonpath.sh'
+[12.660s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/hal_device_manager/bin'
+[12.660s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(hal_device_manager)
+[12.660s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/package.ps1'
+[12.661s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/package.dsv'
+[12.661s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/package.sh'
+[12.661s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/package.bash'
+[12.671s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/hal_device_manager/share/hal_device_manager/package.zsh'
+[12.672s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/hal_device_manager/share/colcon-core/packages/hal_device_manager)
+[12.673s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_device' for CMake module files
+[12.674s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_device' for CMake config files
+[12.674s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/src/encoder_device' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/encoder_device/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/encoder_device build --build-base /home/matheus/thesis_ws/build/encoder_device/build install --record /home/matheus/thesis_ws/build/encoder_device/install.log --install-scripts $base/lib/encoder_device --single-version-externally-managed install_data
+[12.674s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_device/lib'
+[12.674s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_device/bin'
+[12.674s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_device/lib/pkgconfig/encoder_device.pc'
+[12.674s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages'
+[12.674s] Level 1:colcon.colcon_core.shell:create_environment_hook('encoder_device', 'pythonpath')
+[12.675s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/hook/pythonpath.ps1'
+[12.675s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/hook/pythonpath.dsv'
+[12.675s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/hook/pythonpath.sh'
+[12.676s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/encoder_device/bin'
+[12.676s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(encoder_device)
+[12.676s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/package.ps1'
+[12.676s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/package.dsv'
+[12.677s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/package.sh'
+[12.686s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/package.bash'
+[12.686s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/encoder_device/share/encoder_device/package.zsh'
+[12.686s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/encoder_device/share/colcon-core/packages/encoder_device)
+[12.687s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_input_mapping' for CMake module files
+[12.687s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_input_mapping' for CMake config files
+[12.688s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/src/game_input_mapping' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/game_input_mapping/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_input_mapping build --build-base /home/matheus/thesis_ws/build/game_input_mapping/build install --record /home/matheus/thesis_ws/build/game_input_mapping/install.log --install-scripts $base/lib/game_input_mapping --single-version-externally-managed install_data
+[12.688s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_input_mapping/lib'
+[12.688s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_input_mapping/bin'
+[12.688s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_input_mapping/lib/pkgconfig/game_input_mapping.pc'
+[12.688s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages'
+[12.688s] Level 1:colcon.colcon_core.shell:create_environment_hook('game_input_mapping', 'pythonpath')
+[12.688s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/hook/pythonpath.ps1'
+[12.689s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/hook/pythonpath.dsv'
+[12.689s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/hook/pythonpath.sh'
+[12.689s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/game_input_mapping/bin'
+[12.689s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(game_input_mapping)
+[12.690s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/package.ps1'
+[12.690s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/package.dsv'
+[12.690s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/package.sh'
+[12.690s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/package.bash'
+[12.701s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping/package.zsh'
+[12.701s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/game_input_mapping/share/colcon-core/packages/game_input_mapping)
+[12.703s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/data_logger' for CMake module files
+[12.703s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/matheus/thesis_ws/src/data_logger' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/data_logger/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/data_logger/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/data_logger build --build-base /home/matheus/thesis_ws/build/data_logger/build install --record /home/matheus/thesis_ws/build/data_logger/install.log --install-scripts $base/lib/data_logger --single-version-externally-managed install_data
+[12.704s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/data_logger' for CMake config files
+[12.705s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/data_logger/lib'
+[12.705s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/data_logger/bin'
+[12.705s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/data_logger/lib/pkgconfig/data_logger.pc'
+[12.706s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/data_logger/lib/python3.10/site-packages'
+[12.706s] Level 1:colcon.colcon_core.shell:create_environment_hook('data_logger', 'pythonpath')
+[12.706s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/data_logger/share/data_logger/hook/pythonpath.ps1'
+[12.707s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/matheus/thesis_ws/install/data_logger/share/data_logger/hook/pythonpath.dsv'
+[12.707s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/matheus/thesis_ws/install/data_logger/share/data_logger/hook/pythonpath.sh'
+[12.708s] Level 1:colcon.colcon_core.environment:checking '/home/matheus/thesis_ws/install/data_logger/bin'
+[12.708s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(data_logger)
+[12.708s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/data_logger/share/data_logger/package.ps1'
+[12.709s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/matheus/thesis_ws/install/data_logger/share/data_logger/package.dsv'
+[12.710s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/data_logger/share/data_logger/package.sh'
+[12.715s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/data_logger/share/data_logger/package.bash'
+[12.716s] INFO:colcon.colcon_core.shell:Creating package script '/home/matheus/thesis_ws/install/data_logger/share/data_logger/package.zsh'
+[12.717s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/matheus/thesis_ws/install/data_logger/share/colcon-core/packages/data_logger)
+[12.717s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[12.718s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[12.718s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[12.718s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[12.783s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[12.783s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[12.783s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[12.802s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[12.803s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/matheus/thesis_ws/install/local_setup.ps1'
+[12.813s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/matheus/thesis_ws/install/_local_setup_util_ps1.py'
+[12.816s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/matheus/thesis_ws/install/setup.ps1'
+[12.829s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/matheus/thesis_ws/install/local_setup.sh'
+[12.841s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/matheus/thesis_ws/install/_local_setup_util_sh.py'
+[12.842s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/matheus/thesis_ws/install/setup.sh'
+[12.855s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/matheus/thesis_ws/install/local_setup.bash'
+[12.867s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/matheus/thesis_ws/install/setup.bash'
+[12.880s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/matheus/thesis_ws/install/local_setup.zsh'
+[12.892s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/matheus/thesis_ws/install/setup.zsh'

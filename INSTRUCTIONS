@@ -1,0 +1,91 @@
+
+### Step 1: Boot the Hardware
+
+1. Plug the ESP32 into your Linux machine via USB.
+2. Ensure it is mapped to `/dev/ttyUSB0` (or the port you used during firmware flashing). The ESP32 boots automatically as soon as it receives USB power.
+
+---
+
+### Step 2: Spin Up the ROS 2 Stack
+
+Open **four separate terminals** on your Ubuntu machine. In every new terminal, remember to source your workspace first.
+
+#### **Terminal 1: Micro-ROS Agent**
+
+This acts as the bridge for your ESP32, bringing the `/as5600_encoder_node` into the ROS 2 network.
+
+```bash
+source /opt/ros/humble/setup.bash
+ros2 run micro_ros_agent micro_ros_agent serial --dev /dev/ttyUSB0
+
+```
+
+*(If you need to press the `EN`/`RST` button on your ESP32 to restart its connection execution, do it right after stthearting this agent).*
+
+#### **Terminal 2: Device Manager Node**
+
+This node handles active device discovery and configuration.
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/thesis_ws/install/setup.bash
+ros2 run hal_device_manager device_manager_node
+
+```
+
+#### **Terminal 3: Signal Processing Node**
+
+This node intercepts the raw encoder data, processes/normalizes it, and outputs the final state.
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/thesis_ws/install/setup.bash
+ros2 run hal_signal_processing signal_processing_node
+
+```
+
+#### **Terminal 4: Unity TCP Endpoint**
+
+This node opens port `10000` to allow Unity to subscribe to your ROS 2 topics.
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/thesis_ws/install/setup.bash
+ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=0.0.0.0
+
+```
+
+---
+
+#### **Terminal 5: Guidao Node**
+
+This node opens port `10000` to allow Unity to subscribe to your ROS 2 topics.
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/thesis_ws/install/setup.bash
+ros2 run encoder_guidao encoder_guidao_node
+```
+
+#### **Terminal 6: Guidao Controller**
+
+This node opens port `10000` to allow Unity to subscribe to your ROS 2 topics.
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/thesis_ws/install/setup.bash
+ros2 run controller_guidao controller_guidao_node
+
+
+### Step 3: Launch Unity
+
+1. Open your Unity project.
+2. In the Unity top menu, go to **Robotics $\rightarrow$ ROS Settings** and verify the **ROS IP Address** matches your Linux machine's IP (`192.168.15.135`) and the port is set to `10000`.
+3. Select your lever GameObject and verify that the `HalLeverVisualizer` script has its topic set to `/hal/device_state` and the target ID set to `as5600_encoder`.
+4. Press the **Play** button in Unity.
+
+### How to Verify Everything is Working:
+
+* **In Terminal 4 (TCP Endpoint):** You should instantly see a log confirming a successful connection client handshake from Unity.
+* **In Unity's Console:** You should see `"Subscribed to /hal/device_state..."` without any socket exception errors.
+* Move your physical encoder; your 3D Unity lever will follow it in real-time.

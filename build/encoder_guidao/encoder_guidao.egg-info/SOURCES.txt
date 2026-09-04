@@ -1,0 +1,16 @@
+package.xml
+setup.cfg
+setup.py
+../../build/encoder_guidao/encoder_guidao.egg-info/PKG-INFO
+../../build/encoder_guidao/encoder_guidao.egg-info/SOURCES.txt
+../../build/encoder_guidao/encoder_guidao.egg-info/dependency_links.txt
+../../build/encoder_guidao/encoder_guidao.egg-info/entry_points.txt
+../../build/encoder_guidao/encoder_guidao.egg-info/requires.txt
+../../build/encoder_guidao/encoder_guidao.egg-info/top_level.txt
+../../build/encoder_guidao/encoder_guidao.egg-info/zip-safe
+encoder_guidao/__init__.py
+encoder_guidao/encoder_guidao_node.py
+resource/encoder_guidao
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py

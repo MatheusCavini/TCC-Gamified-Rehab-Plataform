@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "hal_interfaces__py",
+		"source" : "/home/matheus/thesis_ws/build/hal_interfaces/hal_interfaces__py"
+	}
+}

@@ -1,0 +1,1 @@
+hal_device_manager

@@ -1,0 +1,162 @@
+[4.367s] Invoking command in '/home/matheus/thesis_ws/build/hal_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/thesis_ws/install/controller_guidao:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --build /home/matheus/thesis_ws/build/hal_interfaces -- -j12 -l12
+[5.071s] [  3%] Built target hal_interfaces__cpp
+[5.072s] [ 12%] Built target hal_interfaces__rosidl_generator_c
+[5.073s] [ 15%] Built target hal_interfaces__rs
+[5.074s] [ 15%] Built target ament_cmake_python_copy_hal_interfaces
+[5.075s] [ 25%] Built target hal_interfaces__rosidl_typesupport_c
+[5.075s] [ 34%] Built target hal_interfaces__rosidl_typesupport_introspection_c
+[5.077s] [ 43%] Built target hal_interfaces__rosidl_typesupport_introspection_cpp
+[5.078s] [ 53%] Built target hal_interfaces__rosidl_typesupport_fastrtps_cpp
+[5.081s] [ 62%] Built target hal_interfaces__rosidl_typesupport_cpp
+[5.083s] [ 71%] Built target hal_interfaces__rosidl_typesupport_fastrtps_c
+[5.083s] [ 71%] Built target hal_interfaces
+[5.084s] [ 75%] Built target hal_interfaces__py
+[5.085s] [ 81%] Built target hal_interfaces__rosidl_generator_py
+[5.085s] [ 87%] Built target hal_interfaces__rosidl_typesupport_introspection_c__pyext
+[5.085s] [ 93%] Built target hal_interfaces__rosidl_typesupport_c__pyext
+[5.085s] [100%] Built target hal_interfaces__rosidl_typesupport_fastrtps_c__pyext
+[5.087s] running egg_info
+[5.087s] writing hal_interfaces.egg-info/PKG-INFO
+[5.087s] writing dependency_links to hal_interfaces.egg-info/dependency_links.txt
+[5.087s] writing top-level names to hal_interfaces.egg-info/top_level.txt
+[5.088s] reading manifest file 'hal_interfaces.egg-info/SOURCES.txt'
+[5.088s] writing manifest file 'hal_interfaces.egg-info/SOURCES.txt'
+[5.095s] [100%] Built target ament_cmake_python_build_hal_interfaces_egg
+[5.149s] Invoked command in '/home/matheus/thesis_ws/build/hal_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/thesis_ws/install/controller_guidao:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --build /home/matheus/thesis_ws/build/hal_interfaces -- -j12 -l12
+[5.174s] Invoking command in '/home/matheus/thesis_ws/build/hal_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/thesis_ws/install/controller_guidao:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --install /home/matheus/thesis_ws/build/hal_interfaces
+[5.195s] -- Install configuration: ""
+[5.195s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/ament_index/resource_index/rosidl_interfaces/hal_interfaces
+[5.195s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[5.196s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg
+[5.196s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg/rosidl_generator_c__visibility_control.h
+[5.196s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[5.196s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/set_string.h
+[5.196s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[5.196s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__struct.h
+[5.196s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__functions.h
+[5.197s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__type_support.h
+[5.197s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__functions.c
+[5.197s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/library_path.sh
+[5.197s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/library_path.dsv
+[5.197s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_generator_c.so
+[5.197s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[5.197s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg
+[5.198s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[5.198s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[5.198s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[5.198s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__rosidl_typesupport_fastrtps_c.h
+[5.198s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_fastrtps_c.so
+[5.198s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[5.199s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg
+[5.199s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[5.199s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[5.199s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[5.199s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__type_support.c
+[5.199s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__rosidl_typesupport_introspection_c.h
+[5.200s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_introspection_c.so
+[5.200s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_c.so
+[5.200s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[5.200s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg
+[5.201s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp
+[5.201s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[5.201s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/set_string.hpp
+[5.201s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[5.201s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__builder.hpp
+[5.201s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__struct.hpp
+[5.201s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__type_support.hpp
+[5.202s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__traits.hpp
+[5.202s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[5.202s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg
+[5.202s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[5.202s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[5.202s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[5.202s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/dds_fastrtps
+[5.202s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__rosidl_typesupport_fastrtps_cpp.hpp
+[5.203s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_fastrtps_cpp.so
+[5.203s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces
+[5.203s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv
+[5.203s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail
+[5.203s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__rosidl_typesupport_introspection_cpp.hpp
+[5.203s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/include/hal_interfaces/hal_interfaces/srv/detail/set_string__type_support.cpp
+[5.203s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_introspection_cpp.so
+[5.204s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_typesupport_cpp.so
+[5.204s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/pythonpath.sh
+[5.204s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/pythonpath.dsv
+[5.204s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces-0.0.0-py3.10.egg-info
+[5.204s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces-0.0.0-py3.10.egg-info/dependency_links.txt
+[5.204s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces-0.0.0-py3.10.egg-info/top_level.txt
+[5.204s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces-0.0.0-py3.10.egg-info/SOURCES.txt
+[5.205s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces-0.0.0-py3.10.egg-info/PKG-INFO
+[5.205s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces
+[5.205s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/_hal_interfaces_s.ep.rosidl_typesupport_introspection_c.c
+[5.205s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv
+[5.205s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv/_set_string_s.c
+[5.205s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv/_set_string.py
+[5.205s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv/__init__.py
+[5.206s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/libhal_interfaces__rosidl_generator_py.so
+[5.206s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/_hal_interfaces_s.ep.rosidl_typesupport_c.c
+[5.206s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/_hal_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c
+[5.206s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[5.206s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/__init__.py
+[5.206s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[5.207s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[5.307s] Listing '/home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces'...
+[5.308s] Listing '/home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/srv'...
+[5.318s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[5.318s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[5.319s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/local/lib/python3.10/dist-packages/hal_interfaces/hal_interfaces_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[5.319s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/lib/libhal_interfaces__rosidl_generator_py.so
+[5.320s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/ament_index/resource_index/rust_packages/hal_interfaces
+[5.320s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust
+[5.320s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/Cargo.toml
+[5.321s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/src
+[5.321s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/src/lib.rs
+[5.321s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/src/srv
+[5.322s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/src/srv/rmw.rs
+[5.322s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/src/srv.rs
+[5.322s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/rust/build.rs
+[5.322s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/srv/SetString.idl
+[5.322s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/srv/SetString.srv
+[5.323s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/srv/SetString_Request.msg
+[5.323s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/srv/SetString_Response.msg
+[5.323s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/ament_index/resource_index/package_run_dependencies/hal_interfaces
+[5.323s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/ament_index/resource_index/parent_prefix_path/hal_interfaces
+[5.324s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/ament_prefix_path.sh
+[5.324s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/ament_prefix_path.dsv
+[5.324s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/path.sh
+[5.324s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/environment/path.dsv
+[5.325s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/local_setup.bash
+[5.325s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/local_setup.sh
+[5.325s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/local_setup.zsh
+[5.325s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/local_setup.dsv
+[5.326s] -- Installing: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.dsv
+[5.326s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/ament_index/resource_index/packages/hal_interfaces
+[5.326s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_generator_cExport.cmake
+[5.326s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_generator_cExport-noconfig.cmake
+[5.326s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_typesupport_fastrtps_cExport.cmake
+[5.327s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[5.327s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_introspection_cExport.cmake
+[5.327s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[5.327s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_cExport.cmake
+[5.327s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_cExport-noconfig.cmake
+[5.327s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_generator_cppExport.cmake
+[5.328s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_typesupport_fastrtps_cppExport.cmake
+[5.328s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[5.328s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_introspection_cppExport.cmake
+[5.328s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[5.328s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_cppExport.cmake
+[5.328s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfaces__rosidl_typesupport_cppExport-noconfig.cmake
+[5.328s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_generator_pyExport.cmake
+[5.328s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/export_hal_interfaces__rosidl_generator_pyExport-noconfig.cmake
+[5.329s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/rosidl_cmake-extras.cmake
+[5.329s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/ament_cmake_export_include_directories-extras.cmake
+[5.329s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/ament_cmake_export_libraries-extras.cmake
+[5.329s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/ament_cmake_export_targets-extras.cmake
+[5.329s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[5.329s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake
+[5.329s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[5.329s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/rosidl_cmake_aggregate_target-extras.cmake
+[5.330s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfacesConfig.cmake
+[5.330s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/cmake/hal_interfacesConfig-version.cmake
+[5.330s] -- Up-to-date: /home/matheus/thesis_ws/install/hal_interfaces/share/hal_interfaces/package.xml
+[5.333s] Invoked command in '/home/matheus/thesis_ws/build/hal_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/matheus/thesis_ws/install/hal_signal_processing:/home/matheus/thesis_ws/install/hal_device_manager:/home/matheus/thesis_ws/install/game_unity_bridge:/home/matheus/thesis_ws/install/game_session:/home/matheus/thesis_ws/install/game_input_mapping:/home/matheus/thesis_ws/install/encoder_guidao:/home/matheus/thesis_ws/install/encoder_device:/home/matheus/thesis_ws/install/data_logger:/home/matheus/thesis_ws/install/controller_guidao:/home/matheus/Desktop/TestesROS2/ros_unity_ws/install/ros_tcp_endpoint:/opt/ros/humble /usr/bin/cmake --install /home/matheus/thesis_ws/build/hal_interfaces

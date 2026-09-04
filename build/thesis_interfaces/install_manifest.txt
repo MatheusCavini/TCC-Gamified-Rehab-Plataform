@@ -1,0 +1,15 @@
+/home/matheus/thesis_ws/install/thesis_interfaces/share/ament_index/resource_index/package_run_dependencies/thesis_interfaces
+/home/matheus/thesis_ws/install/thesis_interfaces/share/ament_index/resource_index/parent_prefix_path/thesis_interfaces
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/environment/ament_prefix_path.sh
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/environment/ament_prefix_path.dsv
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/environment/path.sh
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/environment/path.dsv
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/local_setup.bash
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/local_setup.sh
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/local_setup.zsh
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/local_setup.dsv
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.dsv
+/home/matheus/thesis_ws/install/thesis_interfaces/share/ament_index/resource_index/packages/thesis_interfaces
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/cmake/thesis_interfacesConfig.cmake
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/cmake/thesis_interfacesConfig-version.cmake
+/home/matheus/thesis_ws/install/thesis_interfaces/share/thesis_interfaces/package.xml

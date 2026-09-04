@@ -1,0 +1,258 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-79f48a1e5f3221705e64.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						17,
+						18
+					]
+				},
+				{
+					"build" : "hal_interfaces__py",
+					"jsonFile" : "directory-hal_interfaces__py-514a813931d8613b5afe.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/matheus/thesis_ws/build/hal_interfaces/hal_interfaces__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "hal_interfaces__rs",
+					"jsonFile" : "directory-hal_interfaces__rs-e446ab68884fae2501b7.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/matheus/thesis_ws/build/hal_interfaces/hal_interfaces__rs",
+					"targetIndexes" : 
+					[
+						16
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "hal_interfaces",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_hal_interfaces_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_hal_interfaces_egg-6254d7c707da742a5fa5.json",
+					"name" : "ament_cmake_python_build_hal_interfaces_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_copy_hal_interfaces::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_copy_hal_interfaces-b4c2a422bba4e0273fe4.json",
+					"name" : "ament_cmake_python_copy_hal_interfaces",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces-bf8e82d5f8891040db25.json",
+					"name" : "hal_interfaces",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__cpp-84c109ed86e065018e7a.json",
+					"name" : "hal_interfaces__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "hal_interfaces__py::@00ee93f4f15af692bc69",
+					"jsonFile" : "target-hal_interfaces__py-f560ae2d4e8574fa5cd7.json",
+					"name" : "hal_interfaces__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_generator_c-114904822a67b851dae2.json",
+					"name" : "hal_interfaces__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_generator_py-6ddd82256edaa5fb0e2d.json",
+					"name" : "hal_interfaces__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_typesupport_c-675efb4614d970df279b.json",
+					"name" : "hal_interfaces__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_typesupport_c__pyext-35dd0e50408b3ba332b2.json",
+					"name" : "hal_interfaces__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_typesupport_cpp-d1b37c7caad946386340.json",
+					"name" : "hal_interfaces__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_typesupport_fastrtps_c-107b053206b2ff437389.json",
+					"name" : "hal_interfaces__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_typesupport_fastrtps_c__pyext-41cfb0fca973abc792f1.json",
+					"name" : "hal_interfaces__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_typesupport_fastrtps_cpp-b8bf1ec66121437cdd15.json",
+					"name" : "hal_interfaces__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_typesupport_introspection_c-81f3e8eb71f09d52c425.json",
+					"name" : "hal_interfaces__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_typesupport_introspection_c__pyext-112fa85a4b18e4fdd3fe.json",
+					"name" : "hal_interfaces__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces__rosidl_typesupport_introspection_cpp-83484e391c82295e4e47.json",
+					"name" : "hal_interfaces__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "hal_interfaces__rs::@5a6af2b65079b067088b",
+					"jsonFile" : "target-hal_interfaces__rs-675410bf2f5482084c1c.json",
+					"name" : "hal_interfaces__rs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "hal_interfaces_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-hal_interfaces_uninstall-860553b61bf534d413dd.json",
+					"name" : "hal_interfaces_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-273e331037f50821899c.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/matheus/thesis_ws/build/hal_interfaces",
+		"source" : "/home/matheus/thesis_ws/src/hal_interfaces"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

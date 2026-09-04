@@ -1,0 +1,16 @@
+package.xml
+setup.cfg
+setup.py
+../../build/hal_signal_processing/hal_signal_processing.egg-info/PKG-INFO
+../../build/hal_signal_processing/hal_signal_processing.egg-info/SOURCES.txt
+../../build/hal_signal_processing/hal_signal_processing.egg-info/dependency_links.txt
+../../build/hal_signal_processing/hal_signal_processing.egg-info/entry_points.txt
+../../build/hal_signal_processing/hal_signal_processing.egg-info/requires.txt
+../../build/hal_signal_processing/hal_signal_processing.egg-info/top_level.txt
+../../build/hal_signal_processing/hal_signal_processing.egg-info/zip-safe
+hal_signal_processing/__init__.py
+hal_signal_processing/signal_processing_node.py
+resource/hal_signal_processing
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py

@@ -1,0 +1,4 @@
+source;share/thesis_interfaces/local_setup.bash
+source;share/thesis_interfaces/local_setup.dsv
+source;share/thesis_interfaces/local_setup.sh
+source;share/thesis_interfaces/local_setup.zsh

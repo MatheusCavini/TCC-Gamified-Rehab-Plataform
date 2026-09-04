@@ -1,0 +1,15 @@
+package.xml
+setup.cfg
+setup.py
+../../build/game_input_mapping/game_input_mapping.egg-info/PKG-INFO
+../../build/game_input_mapping/game_input_mapping.egg-info/SOURCES.txt
+../../build/game_input_mapping/game_input_mapping.egg-info/dependency_links.txt
+../../build/game_input_mapping/game_input_mapping.egg-info/entry_points.txt
+../../build/game_input_mapping/game_input_mapping.egg-info/requires.txt
+../../build/game_input_mapping/game_input_mapping.egg-info/top_level.txt
+../../build/game_input_mapping/game_input_mapping.egg-info/zip-safe
+game_input_mapping/__init__.py
+resource/game_input_mapping
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py

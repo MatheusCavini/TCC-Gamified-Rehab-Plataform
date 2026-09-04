@@ -1,0 +1,17 @@
+README.md
+package.xml
+setup.cfg
+setup.py
+../../build/hal_device_manager/hal_device_manager.egg-info/PKG-INFO
+../../build/hal_device_manager/hal_device_manager.egg-info/SOURCES.txt
+../../build/hal_device_manager/hal_device_manager.egg-info/dependency_links.txt
+../../build/hal_device_manager/hal_device_manager.egg-info/entry_points.txt
+../../build/hal_device_manager/hal_device_manager.egg-info/requires.txt
+../../build/hal_device_manager/hal_device_manager.egg-info/top_level.txt
+../../build/hal_device_manager/hal_device_manager.egg-info/zip-safe
+hal_device_manager/__init__.py
+hal_device_manager/device_manager_node.py
+resource/hal_device_manager
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py

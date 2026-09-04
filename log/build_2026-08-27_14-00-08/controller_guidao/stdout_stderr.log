@@ -1,0 +1,35 @@
+running egg_info
+creating ../../build/controller_guidao/controller_guidao.egg-info
+writing ../../build/controller_guidao/controller_guidao.egg-info/PKG-INFO
+writing dependency_links to ../../build/controller_guidao/controller_guidao.egg-info/dependency_links.txt
+writing entry points to ../../build/controller_guidao/controller_guidao.egg-info/entry_points.txt
+writing requirements to ../../build/controller_guidao/controller_guidao.egg-info/requires.txt
+writing top-level names to ../../build/controller_guidao/controller_guidao.egg-info/top_level.txt
+writing manifest file '../../build/controller_guidao/controller_guidao.egg-info/SOURCES.txt'
+reading manifest file '../../build/controller_guidao/controller_guidao.egg-info/SOURCES.txt'
+writing manifest file '../../build/controller_guidao/controller_guidao.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/matheus/thesis_ws/build/controller_guidao/build
+creating /home/matheus/thesis_ws/build/controller_guidao/build/lib
+creating /home/matheus/thesis_ws/build/controller_guidao/build/lib/controller_guidao
+copying controller_guidao/controller_guidao_node.py -> /home/matheus/thesis_ws/build/controller_guidao/build/lib/controller_guidao
+copying controller_guidao/__init__.py -> /home/matheus/thesis_ws/build/controller_guidao/build/lib/controller_guidao
+running install
+running install_lib
+creating /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao
+copying /home/matheus/thesis_ws/build/controller_guidao/build/lib/controller_guidao/controller_guidao_node.py -> /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao
+copying /home/matheus/thesis_ws/build/controller_guidao/build/lib/controller_guidao/__init__.py -> /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao
+byte-compiling /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao/controller_guidao_node.py to controller_guidao_node.cpython-310.pyc
+byte-compiling /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/matheus/thesis_ws/install/controller_guidao/share/ament_index
+creating /home/matheus/thesis_ws/install/controller_guidao/share/ament_index/resource_index
+creating /home/matheus/thesis_ws/install/controller_guidao/share/ament_index/resource_index/packages
+copying resource/controller_guidao -> /home/matheus/thesis_ws/install/controller_guidao/share/ament_index/resource_index/packages
+copying package.xml -> /home/matheus/thesis_ws/install/controller_guidao/share/controller_guidao
+running install_egg_info
+Copying ../../build/controller_guidao/controller_guidao.egg-info to /home/matheus/thesis_ws/install/controller_guidao/lib/python3.10/site-packages/controller_guidao-0.0.0-py3.10.egg-info
+running install_scripts
+Installing controller_guidao_node script to /home/matheus/thesis_ws/install/controller_guidao/lib/controller_guidao
+writing list of installed files to '/home/matheus/thesis_ws/build/controller_guidao/install.log'

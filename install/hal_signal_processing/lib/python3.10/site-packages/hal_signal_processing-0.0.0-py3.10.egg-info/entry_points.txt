@@ -1,0 +1,3 @@
+[console_scripts]
+signal_processing_node = hal_signal_processing.signal_processing_node:main
+

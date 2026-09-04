@@ -1,0 +1,21 @@
+[7.002s] Invoking command in '/home/matheus/thesis_ws/src/hal_device_manager': PYTHONPATH=/home/matheus/thesis_ws/build/hal_device_manager/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/hal_device_manager/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/hal_device_manager build --build-base /home/matheus/thesis_ws/build/hal_device_manager/build install --record /home/matheus/thesis_ws/build/hal_device_manager/install.log --install-scripts $base/lib/hal_device_manager --single-version-externally-managed install_data
+[7.950s] running egg_info
+[7.951s] writing ../../build/hal_device_manager/hal_device_manager.egg-info/PKG-INFO
+[7.952s] writing dependency_links to ../../build/hal_device_manager/hal_device_manager.egg-info/dependency_links.txt
+[7.952s] writing entry points to ../../build/hal_device_manager/hal_device_manager.egg-info/entry_points.txt
+[7.952s] writing requirements to ../../build/hal_device_manager/hal_device_manager.egg-info/requires.txt
+[7.952s] writing top-level names to ../../build/hal_device_manager/hal_device_manager.egg-info/top_level.txt
+[7.955s] reading manifest file '../../build/hal_device_manager/hal_device_manager.egg-info/SOURCES.txt'
+[7.970s] writing manifest file '../../build/hal_device_manager/hal_device_manager.egg-info/SOURCES.txt'
+[7.970s] running build
+[7.970s] running build_py
+[7.970s] running install
+[7.970s] running install_lib
+[7.981s] running install_data
+[7.981s] running install_egg_info
+[7.988s] removing '/home/matheus/thesis_ws/install/hal_device_manager/lib/python3.10/site-packages/hal_device_manager-0.0.0-py3.10.egg-info' (and everything under it)
+[7.989s] Copying ../../build/hal_device_manager/hal_device_manager.egg-info to /home/matheus/thesis_ws/install/hal_device_manager/lib/python3.10/site-packages/hal_device_manager-0.0.0-py3.10.egg-info
+[8.003s] running install_scripts
+[8.059s] Installing device_manager_node script to /home/matheus/thesis_ws/install/hal_device_manager/lib/hal_device_manager
+[8.060s] writing list of installed files to '/home/matheus/thesis_ws/build/hal_device_manager/install.log'
+[8.110s] Invoked command in '/home/matheus/thesis_ws/src/hal_device_manager' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/hal_device_manager/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/hal_device_manager/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/hal_device_manager build --build-base /home/matheus/thesis_ws/build/hal_device_manager/build install --record /home/matheus/thesis_ws/build/hal_device_manager/install.log --install-scripts $base/lib/hal_device_manager --single-version-externally-managed install_data

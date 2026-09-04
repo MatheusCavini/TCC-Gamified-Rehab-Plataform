@@ -1,0 +1,31 @@
+running egg_info
+creating ../../build/game_input_mapping/game_input_mapping.egg-info
+writing ../../build/game_input_mapping/game_input_mapping.egg-info/PKG-INFO
+writing dependency_links to ../../build/game_input_mapping/game_input_mapping.egg-info/dependency_links.txt
+writing entry points to ../../build/game_input_mapping/game_input_mapping.egg-info/entry_points.txt
+writing requirements to ../../build/game_input_mapping/game_input_mapping.egg-info/requires.txt
+writing top-level names to ../../build/game_input_mapping/game_input_mapping.egg-info/top_level.txt
+writing manifest file '../../build/game_input_mapping/game_input_mapping.egg-info/SOURCES.txt'
+reading manifest file '../../build/game_input_mapping/game_input_mapping.egg-info/SOURCES.txt'
+writing manifest file '../../build/game_input_mapping/game_input_mapping.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/matheus/thesis_ws/build/game_input_mapping/build
+creating /home/matheus/thesis_ws/build/game_input_mapping/build/lib
+creating /home/matheus/thesis_ws/build/game_input_mapping/build/lib/game_input_mapping
+copying game_input_mapping/__init__.py -> /home/matheus/thesis_ws/build/game_input_mapping/build/lib/game_input_mapping
+running install
+running install_lib
+creating /home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages/game_input_mapping
+copying /home/matheus/thesis_ws/build/game_input_mapping/build/lib/game_input_mapping/__init__.py -> /home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages/game_input_mapping
+byte-compiling /home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages/game_input_mapping/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/matheus/thesis_ws/install/game_input_mapping/share/ament_index
+creating /home/matheus/thesis_ws/install/game_input_mapping/share/ament_index/resource_index
+creating /home/matheus/thesis_ws/install/game_input_mapping/share/ament_index/resource_index/packages
+copying resource/game_input_mapping -> /home/matheus/thesis_ws/install/game_input_mapping/share/ament_index/resource_index/packages
+copying package.xml -> /home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping
+running install_egg_info
+Copying ../../build/game_input_mapping/game_input_mapping.egg-info to /home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages/game_input_mapping-0.0.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/matheus/thesis_ws/build/game_input_mapping/install.log'

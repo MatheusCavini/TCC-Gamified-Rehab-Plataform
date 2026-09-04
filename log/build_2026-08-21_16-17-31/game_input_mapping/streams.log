@@ -1,0 +1,33 @@
+[3.501s] Invoking command in '/home/matheus/thesis_ws/src/game_input_mapping': PYTHONPATH=/home/matheus/thesis_ws/build/game_input_mapping/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_input_mapping build --build-base /home/matheus/thesis_ws/build/game_input_mapping/build install --record /home/matheus/thesis_ws/build/game_input_mapping/install.log --install-scripts $base/lib/game_input_mapping --single-version-externally-managed install_data
+[3.811s] running egg_info
+[3.812s] creating ../../build/game_input_mapping/game_input_mapping.egg-info
+[3.812s] writing ../../build/game_input_mapping/game_input_mapping.egg-info/PKG-INFO
+[3.812s] writing dependency_links to ../../build/game_input_mapping/game_input_mapping.egg-info/dependency_links.txt
+[3.812s] writing entry points to ../../build/game_input_mapping/game_input_mapping.egg-info/entry_points.txt
+[3.812s] writing requirements to ../../build/game_input_mapping/game_input_mapping.egg-info/requires.txt
+[3.813s] writing top-level names to ../../build/game_input_mapping/game_input_mapping.egg-info/top_level.txt
+[3.813s] writing manifest file '../../build/game_input_mapping/game_input_mapping.egg-info/SOURCES.txt'
+[3.818s] reading manifest file '../../build/game_input_mapping/game_input_mapping.egg-info/SOURCES.txt'
+[3.819s] writing manifest file '../../build/game_input_mapping/game_input_mapping.egg-info/SOURCES.txt'
+[3.819s] running build
+[3.819s] running build_py
+[3.819s] creating /home/matheus/thesis_ws/build/game_input_mapping/build
+[3.819s] creating /home/matheus/thesis_ws/build/game_input_mapping/build/lib
+[3.819s] creating /home/matheus/thesis_ws/build/game_input_mapping/build/lib/game_input_mapping
+[3.819s] copying game_input_mapping/__init__.py -> /home/matheus/thesis_ws/build/game_input_mapping/build/lib/game_input_mapping
+[3.820s] running install
+[3.820s] running install_lib
+[3.821s] creating /home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages/game_input_mapping
+[3.821s] copying /home/matheus/thesis_ws/build/game_input_mapping/build/lib/game_input_mapping/__init__.py -> /home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages/game_input_mapping
+[3.823s] byte-compiling /home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages/game_input_mapping/__init__.py to __init__.cpython-310.pyc
+[3.823s] running install_data
+[3.823s] creating /home/matheus/thesis_ws/install/game_input_mapping/share/ament_index
+[3.823s] creating /home/matheus/thesis_ws/install/game_input_mapping/share/ament_index/resource_index
+[3.823s] creating /home/matheus/thesis_ws/install/game_input_mapping/share/ament_index/resource_index/packages
+[3.824s] copying resource/game_input_mapping -> /home/matheus/thesis_ws/install/game_input_mapping/share/ament_index/resource_index/packages
+[3.824s] copying package.xml -> /home/matheus/thesis_ws/install/game_input_mapping/share/game_input_mapping
+[3.824s] running install_egg_info
+[3.825s] Copying ../../build/game_input_mapping/game_input_mapping.egg-info to /home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages/game_input_mapping-0.0.0-py3.10.egg-info
+[3.826s] running install_scripts
+[3.850s] writing list of installed files to '/home/matheus/thesis_ws/build/game_input_mapping/install.log'
+[3.895s] Invoked command in '/home/matheus/thesis_ws/src/game_input_mapping' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/game_input_mapping/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/game_input_mapping/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/game_input_mapping build --build-base /home/matheus/thesis_ws/build/game_input_mapping/build install --record /home/matheus/thesis_ws/build/game_input_mapping/install.log --install-scripts $base/lib/game_input_mapping --single-version-externally-managed install_data

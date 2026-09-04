@@ -1,0 +1,8 @@
+setup.py
+hal_interfaces/__init__.py
+hal_interfaces.egg-info/PKG-INFO
+hal_interfaces.egg-info/SOURCES.txt
+hal_interfaces.egg-info/dependency_links.txt
+hal_interfaces.egg-info/top_level.txt
+hal_interfaces/srv/__init__.py
+hal_interfaces/srv/_set_string.py

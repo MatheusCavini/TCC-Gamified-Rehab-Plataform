@@ -1,0 +1,35 @@
+running egg_info
+creating ../../build/encoder_guidao/encoder_guidao.egg-info
+writing ../../build/encoder_guidao/encoder_guidao.egg-info/PKG-INFO
+writing dependency_links to ../../build/encoder_guidao/encoder_guidao.egg-info/dependency_links.txt
+writing entry points to ../../build/encoder_guidao/encoder_guidao.egg-info/entry_points.txt
+writing requirements to ../../build/encoder_guidao/encoder_guidao.egg-info/requires.txt
+writing top-level names to ../../build/encoder_guidao/encoder_guidao.egg-info/top_level.txt
+writing manifest file '../../build/encoder_guidao/encoder_guidao.egg-info/SOURCES.txt'
+reading manifest file '../../build/encoder_guidao/encoder_guidao.egg-info/SOURCES.txt'
+writing manifest file '../../build/encoder_guidao/encoder_guidao.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/matheus/thesis_ws/build/encoder_guidao/build
+creating /home/matheus/thesis_ws/build/encoder_guidao/build/lib
+creating /home/matheus/thesis_ws/build/encoder_guidao/build/lib/encoder_guidao
+copying encoder_guidao/encoder_guidao_node.py -> /home/matheus/thesis_ws/build/encoder_guidao/build/lib/encoder_guidao
+copying encoder_guidao/__init__.py -> /home/matheus/thesis_ws/build/encoder_guidao/build/lib/encoder_guidao
+running install
+running install_lib
+creating /home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages/encoder_guidao
+copying /home/matheus/thesis_ws/build/encoder_guidao/build/lib/encoder_guidao/encoder_guidao_node.py -> /home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages/encoder_guidao
+copying /home/matheus/thesis_ws/build/encoder_guidao/build/lib/encoder_guidao/__init__.py -> /home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages/encoder_guidao
+byte-compiling /home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages/encoder_guidao/encoder_guidao_node.py to encoder_guidao_node.cpython-310.pyc
+byte-compiling /home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages/encoder_guidao/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/matheus/thesis_ws/install/encoder_guidao/share/ament_index
+creating /home/matheus/thesis_ws/install/encoder_guidao/share/ament_index/resource_index
+creating /home/matheus/thesis_ws/install/encoder_guidao/share/ament_index/resource_index/packages
+copying resource/encoder_guidao -> /home/matheus/thesis_ws/install/encoder_guidao/share/ament_index/resource_index/packages
+copying package.xml -> /home/matheus/thesis_ws/install/encoder_guidao/share/encoder_guidao
+running install_egg_info
+Copying ../../build/encoder_guidao/encoder_guidao.egg-info to /home/matheus/thesis_ws/install/encoder_guidao/lib/python3.10/site-packages/encoder_guidao-0.0.0-py3.10.egg-info
+running install_scripts
+Installing encoder_guidao_mode script to /home/matheus/thesis_ws/install/encoder_guidao/lib/encoder_guidao
+writing list of installed files to '/home/matheus/thesis_ws/build/encoder_guidao/install.log'

@@ -1,0 +1,33 @@
+[3.504s] Invoking command in '/home/matheus/thesis_ws/src/encoder_device': PYTHONPATH=/home/matheus/thesis_ws/build/encoder_device/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/encoder_device build --build-base /home/matheus/thesis_ws/build/encoder_device/build install --record /home/matheus/thesis_ws/build/encoder_device/install.log --install-scripts $base/lib/encoder_device --single-version-externally-managed install_data
+[3.690s] running egg_info
+[3.690s] creating ../../build/encoder_device/encoder_device.egg-info
+[3.691s] writing ../../build/encoder_device/encoder_device.egg-info/PKG-INFO
+[3.691s] writing dependency_links to ../../build/encoder_device/encoder_device.egg-info/dependency_links.txt
+[3.691s] writing entry points to ../../build/encoder_device/encoder_device.egg-info/entry_points.txt
+[3.691s] writing requirements to ../../build/encoder_device/encoder_device.egg-info/requires.txt
+[3.691s] writing top-level names to ../../build/encoder_device/encoder_device.egg-info/top_level.txt
+[3.691s] writing manifest file '../../build/encoder_device/encoder_device.egg-info/SOURCES.txt'
+[3.703s] reading manifest file '../../build/encoder_device/encoder_device.egg-info/SOURCES.txt'
+[3.704s] writing manifest file '../../build/encoder_device/encoder_device.egg-info/SOURCES.txt'
+[3.704s] running build
+[3.704s] running build_py
+[3.704s] creating /home/matheus/thesis_ws/build/encoder_device/build
+[3.707s] creating /home/matheus/thesis_ws/build/encoder_device/build/lib
+[3.707s] creating /home/matheus/thesis_ws/build/encoder_device/build/lib/encoder_device
+[3.707s] copying encoder_device/__init__.py -> /home/matheus/thesis_ws/build/encoder_device/build/lib/encoder_device
+[3.707s] running install
+[3.707s] running install_lib
+[3.707s] creating /home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages/encoder_device
+[3.707s] copying /home/matheus/thesis_ws/build/encoder_device/build/lib/encoder_device/__init__.py -> /home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages/encoder_device
+[3.707s] byte-compiling /home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages/encoder_device/__init__.py to __init__.cpython-310.pyc
+[3.707s] running install_data
+[3.707s] creating /home/matheus/thesis_ws/install/encoder_device/share/ament_index
+[3.707s] creating /home/matheus/thesis_ws/install/encoder_device/share/ament_index/resource_index
+[3.707s] creating /home/matheus/thesis_ws/install/encoder_device/share/ament_index/resource_index/packages
+[3.707s] copying resource/encoder_device -> /home/matheus/thesis_ws/install/encoder_device/share/ament_index/resource_index/packages
+[3.708s] copying package.xml -> /home/matheus/thesis_ws/install/encoder_device/share/encoder_device
+[3.708s] running install_egg_info
+[3.708s] Copying ../../build/encoder_device/encoder_device.egg-info to /home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages/encoder_device-0.0.0-py3.10.egg-info
+[3.710s] running install_scripts
+[3.725s] writing list of installed files to '/home/matheus/thesis_ws/build/encoder_device/install.log'
+[3.751s] Invoked command in '/home/matheus/thesis_ws/src/encoder_device' returned '0': PYTHONPATH=/home/matheus/thesis_ws/build/encoder_device/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/matheus/thesis_ws/install/encoder_device/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/encoder_device build --build-base /home/matheus/thesis_ws/build/encoder_device/build install --record /home/matheus/thesis_ws/build/encoder_device/install.log --install-scripts $base/lib/encoder_device --single-version-externally-managed install_data
