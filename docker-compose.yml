@@ -1,0 +1,67 @@
+# Configuração comum a todos os serviços. Usamos YAML anchor para não repetir.
+#
+# IMPORTANTE: propositalmente NÃO colocamos `build:` aqui. Com 5 serviços
+# apontando pra mesma `image:`, deixar cada um com seu próprio `build:` faz o
+# `docker compose build` (ou `up --build`) buildar todos em paralelo e tentar
+# taguear a mesma imagem ao mesmo tempo, o que quebra com:
+#   "failed to solve: image ... already exists"
+# Por isso o build é feito uma vez, manualmente, ANTES de subir a stack
+# (veja o passo a passo abaixo). Os serviços só referenciam a imagem já pronta.
+x-ros-common: &ros-common
+  image: rehab-platform:humble
+  # host networking é essencial aqui:
+  #  - Descoberta DDS entre os containers ROS2 depende de multicast/portas dinâmicas
+  #  - A Unity (fora do Docker) precisa alcançar a porta TCP 10000 sem NAT
+  network_mode: host
+  environment:
+    - ROS_DOMAIN_ID=0
+    - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+  restart: unless-stopped
+  tty: true
+  stdin_open: true
+
+services:
+
+  # --- Terminal 1 (ex-Terminal 2): descoberta/config ativa de dispositivos HAL ---
+  device_manager:
+    <<: *ros-common
+    container_name: device_manager
+    command: ros2 run hal_device_manager device_manager_node
+
+  # --- Terminal 2: normalização/processamento do sinal do encoder ---
+  signal_processing:
+    <<: *ros-common
+    container_name: signal_processing
+    depends_on:
+      - device_manager
+    command: ros2 run hal_signal_processing signal_processing_node
+
+  # --- Terminal 3: endpoint TCP consumido pela Unity (ROS-TCP-Connector) ---
+  tcp_endpoint:
+    <<: *ros-common
+    container_name: tcp_endpoint
+    # Redundante em network_mode: host (a porta já fica exposta no host),
+    # mas deixamos explícito para documentar o contrato de rede do serviço.
+    ports:
+      - "10000:10000"
+    command: >
+      ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=0.0.0.0
+
+  # --- Terminal 4: hardware do dispositivo "Guidao" (Arduino em /dev/ttyACM0).
+  #     Este nó lê a serial diretamente via pyserial e cria seu próprio nó
+  #     ROS2 no computador - não depende de nenhum microcontrolador rodando
+  #     micro-ROS. ---
+  guidao_encoder:
+    <<: *ros-common
+    container_name: guidao_encoder
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
+    command: ros2 run encoder_guidao encoder_guidao_node
+
+  # --- Terminal 5: controlador do dispositivo "Guidao" ---
+  guidao_controller:
+    <<: *ros-common
+    container_name: guidao_controller
+    depends_on:
+      - guidao_encoder
+    command: ros2 run controller_guidao controller_guidao_node

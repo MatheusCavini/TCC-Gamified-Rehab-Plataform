@@ -1,0 +1,74 @@
+# Diferenças em relação ao docker-compose.yml original (Linux):
+#   - SEM `network_mode: host` (não suportado de forma confiável no Docker
+#     Desktop/Windows, que roda os containers dentro de uma VM WSL2).
+#   - Todos os serviços entram na rede bridge dedicada `ros2_net`, criada
+#     abaixo. Dentro dela, a descoberta DDS (multicast) entre os containers
+#     ROS2 continua funcionando normalmente, porque a bridge do Docker roda
+#     dentro de um kernel Linux real (o da VM WSL2).
+#   - A ÚNICA porta que precisa atravessar a fronteira container -> Windows
+#     é a do ros_tcp_endpoint (10000), que é a que a Unity (rodando nativa
+#     no Windows) usa para conectar. Por isso ela é publicada via `ports:`.
+#   - O dispositivo serial (/dev/ttyACM0, Arduino do "Guidao") só existe
+#     dentro do container se antes você tiver "emprestado" o dispositivo USB
+#     do Windows para o WSL2 via usbipd-win (ver README-DOCKER.md).
+#   - O antigo pipeline via ESP32 + micro-ROS Agent está deprecado e foi
+#     removido: hoje o encoder_guidao_node lê a serial diretamente
+#     (pyserial) e cria seu próprio nó ROS2 no computador.
+#   - Propositalmente NÃO há `build:` no anchor abaixo (ver README-DOCKER.md):
+#     com 5 serviços na mesma `image:`, builds paralelos por serviço quebram
+#     com "failed to solve: image ... already exists". Builde uma vez com
+#     `docker build -t rehab-platform:humble .` antes do `docker compose up`.
+
+x-ros-common: &ros-common
+  image: rehab-platform:humble
+  networks:
+    - ros2_net
+  environment:
+    - ROS_DOMAIN_ID=0
+    - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+  restart: unless-stopped
+  tty: true
+  stdin_open: true
+
+networks:
+  ros2_net:
+    driver: bridge
+
+services:
+
+  device_manager:
+    <<: *ros-common
+    container_name: device_manager
+    command: ros2 run hal_device_manager device_manager_node
+
+  signal_processing:
+    <<: *ros-common
+    container_name: signal_processing
+    depends_on:
+      - device_manager
+    command: ros2 run hal_signal_processing signal_processing_node
+
+  tcp_endpoint:
+    <<: *ros-common
+    container_name: tcp_endpoint
+    # ESSENCIAL no Windows (ao contrário do Linux com host networking):
+    # é essa publicação de porta que faz a Unity, rodando nativamente no
+    # Windows, conseguir alcançar o endpoint dentro do container.
+    ports:
+      - "10000:10000"
+    command: >
+      ros2 run ros_tcp_endpoint default_server_endpoint --ros-args -p ROS_IP:=0.0.0.0
+
+  guidao_encoder:
+    <<: *ros-common
+    container_name: guidao_encoder
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
+    command: ros2 run encoder_guidao encoder_guidao_node
+
+  guidao_controller:
+    <<: *ros-common
+    container_name: guidao_controller
+    depends_on:
+      - guidao_encoder
+    command: ros2 run controller_guidao controller_guidao_node

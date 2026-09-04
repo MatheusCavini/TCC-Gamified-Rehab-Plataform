@@ -1,0 +1,19 @@
+# Artefatos de build do host - NUNCA devem ir para dentro da imagem.
+# O workspace é recompilado do zero dentro do container.
+build/
+install/
+log/
+
+# Firmware do ESP32/Arduino (PlatformIO) - não faz parte do workspace ROS2,
+# é flasheado separadamente antes de rodar o container.
+firmware/
+
+# Git e docs
+.git/
+.gitignore
+rosgraph.png
+
+# Python/IDE
+__pycache__/
+*.pyc
+.vscode/

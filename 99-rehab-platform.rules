@@ -1,0 +1,15 @@
+# Regra udev opcional - instalar em /etc/udev/rules.d/ no HOST Linux (fora do container).
+# Cria um symlink fixo para que /dev/ttyACM0 não troque de nome dependendo
+# da ordem em que os dispositivos USB são plugados.
+#
+# Como descobrir os valores de idVendor/idProduct do seu Arduino:
+#   udevadm info -a -n /dev/ttyACM0 | grep -E "idVendor|idProduct|serial"
+#
+# Depois de editar, recarregue com:
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+
+# Arduino do dispositivo "Guidao" (ex: Arduino Uno/Mega em /dev/ttyACM0)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2341", SYMLINK+="guidao_arduino"
+
+# Depois de aplicar, no docker-compose.yml troque:
+#   /dev/ttyACM0  ->  /dev/guidao_arduino
