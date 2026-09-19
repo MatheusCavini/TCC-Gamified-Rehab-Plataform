@@ -78,6 +78,7 @@ class EmotivEegNode(Node):
         self.declare_parameter('client_id', '')
         self.declare_parameter('client_secret', '')
         self.declare_parameter('license', '')
+        self.declare_parameter('debit', 0)
         self.declare_parameter('headset_id', '')
         self.declare_parameter('enable_raw_eeg', False)
         self.declare_parameter('info_period_s', 1.0)
@@ -88,6 +89,7 @@ class EmotivEegNode(Node):
         self.client_id = self.get_parameter('client_id').value
         self.client_secret = self.get_parameter('client_secret').value
         self.license = self.get_parameter('license').value
+        self.debit = self.get_parameter('debit').value
         self.headset_id = self.get_parameter('headset_id').value
         self.enable_raw_eeg = self.get_parameter('enable_raw_eeg').value
         self.reconnect_period_s = self.get_parameter('reconnect_period_s').value
@@ -172,6 +174,8 @@ class EmotivEegNode(Node):
 
         while not self._stop_event.is_set():
             client = CortexConnection(self.cortex_url)
+            token = None
+            session_id = None
             try:
                 client.connect()
                 token, session_id = self._open_session(client)
@@ -185,10 +189,20 @@ class EmotivEegNode(Node):
                     self._publish_connection(False, str(error))
             finally:
                 self._connected = False
+                # Closing releases the license's local session quota. Without this,
+                # every reconnect leaves the old session dangling on Cortex and
+                # silently burns quota until "-32019 Session limit" hits.
+                if token and session_id:
+                    try:
+                        client.rpc('updateSession', {
+                            'cortexToken': token, 'session': session_id, 'status': 'close',
+                        }, self._on_cortex_message)
+                    except Exception as error:
+                        self.get_logger().warn(f'Failed to close Cortex session cleanly: {error}')
                 client.close()
 
-            self._stop_event.wait(self.reconnect_period_s)
-
+        self._stop_event.wait(self.reconnect_period_s)
+        
     def _open_session(self, client):
         def rpc(method, params):
             return client.rpc(method, params, self._on_cortex_message)
@@ -199,6 +213,8 @@ class EmotivEegNode(Node):
         auth = {'clientId': self.client_id, 'clientSecret': self.client_secret}
         if self.license:
             auth['license'] = self.license
+        if self.debit:
+            auth['debit'] = self.debit
         token = rpc('authorize', auth)['cortexToken']
 
         headsets = rpc('queryHeadsets', {})
