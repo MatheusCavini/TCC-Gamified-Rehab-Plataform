@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 import json
+import math
 import os
 
 from std_msgs.msg import String, Float32MultiArray
@@ -74,6 +75,17 @@ class EMGProcessor(SignalProcessor):
         activation_intensity = DummyEMGLibrary.process_emg_signal(raw_data)
         return activation_intensity
 
+
+class EEGProcessor(SignalProcessor):
+    """Cortex metrics are already normalized scores and must not be recalibrated."""
+    def metrics(self, raw_data):
+        fields = self.device_info.get('raw_fields', [])
+        return {
+            field: float(value)
+            for field, value in zip(fields, raw_data)
+            if math.isfinite(float(value))
+        }
+
 # =====================================================
 # MAIN ROS2 NODE
 # =====================================================
@@ -89,6 +101,9 @@ class SignalProcessingNode(Node):
         
         # Dictionary to hold dynamic subscribers
         self.subs = {}
+        self.command_subs = {}
+        self.training_subs = {}
+        self.calibration_request_pubs = {}
 
         self.state_pub = self.create_publisher(String, '/hal/device_state', 10)
         self.calib_state_pub = self.create_publisher(String, '/calibration/state', 10)
@@ -125,18 +140,36 @@ class SignalProcessingNode(Node):
                     Float32MultiArray, topic, 
                     lambda msg, d=d_id: self.generic_callback(d, msg), 10
                 )
+                if dev.get('type') == 'eeg':
+                    prefix = f"/device/{d_id}"
+                    self.command_subs[d_id] = self.create_subscription(
+                        String, f'{prefix}/mental_command',
+                        lambda msg, d=d_id: self.mental_command_callback(d, msg), 10
+                    )
+                    self.training_subs[d_id] = self.create_subscription(
+                        String, f'{prefix}/calibration/state',
+                        lambda msg, d=d_id: self.training_state_callback(d, msg), 10
+                    )
+                    self.calibration_request_pubs[d_id] = self.create_publisher(
+                        String, f'{prefix}/calibration/request', 10
+                    )
                 self.get_logger().info(f"Subscribed to dynamic topic: {topic}")
 
         # 2. Cleanup removed devices
         for d_id in list(self.processors.keys()):
             if d_id not in current_ids:
                 self.destroy_subscription(self.subs.pop(d_id))
+                if d_id in self.command_subs:
+                    self.destroy_subscription(self.command_subs.pop(d_id))
+                    self.destroy_subscription(self.training_subs.pop(d_id))
+                    del self.calibration_request_pubs[d_id]
                 del self.processors[d_id]
 
     def _create_processor(self, dev_info):
         """Factory to create processors."""
         if dev_info['type'] == 'encoder': return EncoderProcessor(dev_info)
         if dev_info['type'] == 'emg': return EMGProcessor(dev_info)
+        if dev_info['type'] == 'eeg': return EEGProcessor(dev_info)
         return SignalProcessor(dev_info)
 
     def generic_callback(self, device_id, msg):
@@ -144,7 +177,21 @@ class SignalProcessingNode(Node):
         processor = self.processors.get(device_id)
         if not processor: return
 
-        # Normalization handles internal calibration logic autonomously
+        if isinstance(processor, EEGProcessor):
+            metrics = processor.metrics(msg.data)
+            # EMOTIV's met stream is already a native 0..1 score. Keep its
+            # meaning, including individual field names, for game mappings.
+            state_msg = {
+                "device_id": device_id,
+                "type": "eeg",
+                "unit": "score_0_to_1",
+                "metrics": metrics,
+                "normalized_value": metrics.get("focus"),
+            }
+            self.state_pub.publish(String(data=json.dumps(state_msg)))
+            return
+
+        # Normalization handles physical-sensor calibration autonomously.
         norm_val = processor.normalize(msg.data)
         
         # Only broadcast to game layer if this specific device is NOT calibrating
@@ -157,12 +204,61 @@ class SignalProcessingNode(Node):
             }
             self.state_pub.publish(String(data=json.dumps(state_msg)))
 
+    def mental_command_callback(self, device_id, msg):
+        """Expose the classified command in the common state stream."""
+        try:
+            command = json.loads(msg.data)
+        except json.JSONDecodeError:
+            self.get_logger().warn(f"Malformed mental-command message from {device_id}")
+            return
+        command.update({"device_id": device_id, "type": "eeg_mental_command"})
+        self.state_pub.publish(String(data=json.dumps(command)))
+
+    def training_state_callback(self, device_id, msg):
+        """Relay device-specific Cortex training progress to the HAL topic."""
+        try:
+            state = json.loads(msg.data)
+        except json.JSONDecodeError:
+            self.get_logger().warn(f"Malformed EEG calibration state from {device_id}")
+            return
+        self.calib_state_pub.publish(String(data=json.dumps({device_id: state})))
+
     # --------------------------------------------------
     # SERVICES: Calibration Management
     # --------------------------------------------------
     def handle_device_calibration(self, request, response):
-        """Toggles calibration for a SPECIFIC device_id passed in the request."""
-        target_device_id = request.data
+        """Toggle physical calibration or route an EEG Cortex training command.
+
+        EEG requests use JSON, for example:
+        {"device_id":"emotiv_eeg", "action":"neutral", "status":"start"}.
+        """
+        try:
+            calibration_request = json.loads(request.data)
+        except json.JSONDecodeError:
+            calibration_request = None
+
+        if calibration_request is not None:
+            target_device_id = calibration_request.get('device_id')
+            if target_device_id in self.calibration_request_pubs:
+                if not all(key in calibration_request for key in ('action', 'status')):
+                    response.success = False
+                    response.message = "EEG calibration requires JSON keys: device_id, action, status."
+                    return response
+                self.calibration_request_pubs[target_device_id].publish(
+                    String(data=json.dumps({
+                        'action': calibration_request['action'],
+                        'status': calibration_request['status'],
+                    }))
+                )
+                response.success = True
+                response.message = f"Cortex training request queued for device: {target_device_id}."
+                return response
+            if target_device_id is None:
+                response.success = False
+                response.message = "Calibration JSON must include device_id."
+                return response
+        else:
+            target_device_id = request.data
         
         if target_device_id not in self.processors:
             response.success = False

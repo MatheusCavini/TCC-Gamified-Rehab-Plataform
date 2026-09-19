@@ -36,6 +36,23 @@ services:
       - device_manager
     command: ros2 run hal_signal_processing signal_processing_node
 
+  # --- Optional: EMOTIV headset via the Cortex service running on this host. ---
+  # Start explicitly with: docker compose --profile emotiv up emotiv_eeg
+  # Supply EMOTIV_CLIENT_ID and EMOTIV_CLIENT_SECRET through a local .env file.
+  emotiv_eeg:
+    <<: *ros-common
+    container_name: emotiv_eeg
+    profiles: ["emotiv"]
+    depends_on:
+      - device_manager
+      - signal_processing
+    command: >
+      ros2 run emotiv_eeg emotiv_eeg_node --ros-args
+      -p client_id:=${EMOTIV_CLIENT_ID:-}
+      -p client_secret:=${EMOTIV_CLIENT_SECRET:-}
+      -p license:=${EMOTIV_LICENSE:-}
+      -p enable_raw_eeg:=${EMOTIV_ENABLE_RAW_EEG:-false}
+
   # --- Terminal 3: endpoint TCP consumido pela Unity (ROS-TCP-Connector) ---
   tcp_endpoint:
     <<: *ros-common

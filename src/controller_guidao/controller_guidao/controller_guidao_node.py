@@ -59,7 +59,7 @@ class ImpedanceControllerNode(Node):
         self.declare_parameter('kd', 40.0)        # Aplicado à taxa de variação do erro (de/dt)
 
         # --- Parâmetros Operacionais e de Hardware ---
-        self.declare_parameter('num_load_cells', 6)
+        self.declare_parameter('num_load_cells', 0)
         self.declare_parameter('load_cell_timeout_s', 0.2)
         self.declare_parameter('game_state_timeout_s', 0.5)
         self.declare_parameter('sample_time', 0.01)   # Período de amostragem de 10ms

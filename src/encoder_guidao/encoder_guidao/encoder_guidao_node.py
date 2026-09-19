@@ -24,7 +24,7 @@ LC_PREFIX = "load_cell_guidao_"
 
 # Configuration Defaults
 LEGACY_ARDUINO_CODE = False
-DESIRED_LOAD_CELLS = 6
+DESIRED_LOAD_CELLS = 0
 
 # Theta conversion: encoderPos * (180 / 1000) = 0.18 degrees
 TICKS_TO_DEG = 0.18

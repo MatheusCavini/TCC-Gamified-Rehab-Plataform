@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
         python3-pip \
         python3-serial \
+        python3-websocket \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /ros2_ws
@@ -64,6 +65,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # python3-serial: usado diretamente por encoder_guidao_node (pyserial, /dev/ttyACM0)
 RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-serial \
+        python3-websocket \
         udev \
     && rm -rf /var/lib/apt/lists/*
 
