@@ -1,4 +1,0 @@
-srv/SetString.idl
-srv/SetString.srv
-srv/SetString_Request.msg
-srv/SetString_Response.msg

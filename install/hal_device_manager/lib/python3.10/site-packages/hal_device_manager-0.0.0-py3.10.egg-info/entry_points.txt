@@ -1,3 +1,0 @@
-[console_scripts]
-device_manager_node = hal_device_manager.device_manager_node:main
-

@@ -1,3 +1,0 @@
-[console_scripts]
-controller_guidao_node = controller_guidao.controller_guidao_node:main
-
