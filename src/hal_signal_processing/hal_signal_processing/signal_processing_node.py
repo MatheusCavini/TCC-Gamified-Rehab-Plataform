@@ -7,16 +7,7 @@ import os
 from std_msgs.msg import String, Float32MultiArray
 from std_srvs.srv import Trigger
 from hal_interfaces.srv import SetString
-
-# =====================================================
-# MOCK EXTERNAL LIBRARIES (Delegation Strategy)
-# =====================================================
-class DummyEMGLibrary:
-    @staticmethod
-    def process_emg_signal(raw_data_array):
-        # Placeholder: e.g., Rectify and smooth the signal, return an envelope peak
-        # Here we just return the absolute maximum value in the array block
-        return max([abs(x) for x in raw_data_array])
+from hal_signal_processing.emg_preprocessor import EMGPreprocessor
 
 # =====================================================
 # SIGNAL PROCESSOR STRATEGIES
@@ -35,6 +26,9 @@ class SignalProcessor:
     def process(self, raw_data):
         """Hook for subclasses to apply third-party processing before normalization."""
         return raw_data
+
+    def update_device_info(self, device_info):
+        self.device_info = device_info
 
     def normalize(self, raw_data):
         # 1. Apply any specific processing (e.g., extracting index 0 for encoder)
@@ -70,10 +64,31 @@ class EncoderProcessor(SignalProcessor):
         return position
 
 class EMGProcessor(SignalProcessor):
-    def process(self, raw_data):
-        # Delegate to external biosignal module
-        activation_intensity = DummyEMGLibrary.process_emg_signal(raw_data)
-        return activation_intensity
+    """Adapt raw Noraxon blocks to a continuously filtered RMS envelope."""
+    def __init__(self, device_info):
+        super().__init__(device_info)
+        self.preprocessor = None
+        self._configure_preprocessor(device_info)
+
+    def _configure_preprocessor(self, device_info):
+        sample_rate_hz = float(device_info.get('sample_rate_hz', 1000.0) or 1000.0)
+        highpass_hz = float(device_info.get('emg_highpass_hz', 20.0))
+        # At 1 kHz 450 Hz is valid; keep a safe default if an upstream source
+        # reports a lower actual rate.
+        lowpass_hz = min(float(device_info.get('emg_lowpass_hz', 450.0)), sample_rate_hz * 0.45)
+        rms_window_ms = float(device_info.get('rms_window_ms', 100.0))
+        if self.preprocessor is None:
+            self.preprocessor = EMGPreprocessor(
+                sample_rate_hz, highpass_hz, lowpass_hz, rms_window_ms)
+        else:
+            self.preprocessor.configure(sample_rate_hz, highpass_hz, lowpass_hz, rms_window_ms)
+
+    def update_device_info(self, device_info):
+        super().update_device_info(device_info)
+        self._configure_preprocessor(device_info)
+
+    def rms(self, msg):
+        return self.preprocessor.process(msg)
 
 
 class EEGProcessor(SignalProcessor):
@@ -95,6 +110,9 @@ class SignalProcessingNode(Node):
         
         self.processors = {}
         self.profile_path = os.path.expanduser('~/thesis_ws/calibration_profile.json')
+        self.declare_parameter('emg_highpass_hz', 20.0)
+        self.declare_parameter('emg_lowpass_hz', 450.0)
+        self.declare_parameter('emg_rms_window_ms', 100.0)
 
         # Unified subscription to /devices/available for registry
         self.create_subscription(String, '/devices/available', self.registry_callback, 10)
@@ -104,6 +122,7 @@ class SignalProcessingNode(Node):
         self.command_subs = {}
         self.training_subs = {}
         self.calibration_request_pubs = {}
+        self.emg_rms_pubs = {}
 
         self.state_pub = self.create_publisher(String, '/hal/device_state', 10)
         self.calib_state_pub = self.create_publisher(String, '/calibration/state', 10)
@@ -130,12 +149,14 @@ class SignalProcessingNode(Node):
         # 1. Add new devices dynamically
         for dev in devices:
             d_id = dev['device_id']
+            processor_info = self._with_processing_defaults(dev)
             if d_id not in self.processors:
                 # Instantiate Processor based on type
-                self.processors[d_id] = self._create_processor(dev)
+                self.processors[d_id] = self._create_processor(processor_info)
                 
-                # Dynamically create subscription to topic: /device/{device_id}/raw
-                topic = f"/device/{d_id}/raw"
+                # Hardware may explicitly advertise its raw topic; default to
+                # the established per-device path for older nodes.
+                topic = dev.get('raw_topic', f"/device/{d_id}/raw")
                 self.subs[d_id] = self.create_subscription(
                     Float32MultiArray, topic, 
                     lambda msg, d=d_id: self.generic_callback(d, msg), 10
@@ -153,7 +174,13 @@ class SignalProcessingNode(Node):
                     self.calibration_request_pubs[d_id] = self.create_publisher(
                         String, f'{prefix}/calibration/request', 10
                     )
+                if dev.get('type') == 'emg':
+                    rms_topic = dev.get('rms_topic', f'/device/{d_id}/rms')
+                    self.emg_rms_pubs[d_id] = self.create_publisher(
+                        Float32MultiArray, rms_topic, 10)
                 self.get_logger().info(f"Subscribed to dynamic topic: {topic}")
+            else:
+                self.processors[d_id].update_device_info(processor_info)
 
         # 2. Cleanup removed devices
         for d_id in list(self.processors.keys()):
@@ -163,7 +190,22 @@ class SignalProcessingNode(Node):
                     self.destroy_subscription(self.command_subs.pop(d_id))
                     self.destroy_subscription(self.training_subs.pop(d_id))
                     del self.calibration_request_pubs[d_id]
+                if d_id in self.emg_rms_pubs:
+                    self.destroy_publisher(self.emg_rms_pubs.pop(d_id))
                 del self.processors[d_id]
+
+    def _with_processing_defaults(self, device_info):
+        """Attach node-level EMG settings without changing hardware metadata."""
+        if device_info.get('type') != 'emg':
+            return device_info
+        configured = dict(device_info)
+        configured.setdefault(
+            'emg_highpass_hz', self.get_parameter('emg_highpass_hz').value)
+        configured.setdefault(
+            'emg_lowpass_hz', self.get_parameter('emg_lowpass_hz').value)
+        configured.setdefault(
+            'rms_window_ms', self.get_parameter('emg_rms_window_ms').value)
+        return configured
 
     def _create_processor(self, dev_info):
         """Factory to create processors."""
@@ -189,6 +231,22 @@ class SignalProcessingNode(Node):
                 "normalized_value": metrics.get("focus"),
             }
             self.state_pub.publish(String(data=json.dumps(state_msg)))
+            return
+
+        if isinstance(processor, EMGProcessor):
+            rms_values = processor.rms(msg)
+            if not rms_values:
+                return
+            self.emg_rms_pubs[device_id].publish(Float32MultiArray(data=rms_values))
+            norm_val = processor.normalize(rms_values)
+            if not processor.is_calibrating:
+                self.state_pub.publish(String(data=json.dumps({
+                    "device_id": device_id,
+                    "normalized_value": norm_val,
+                    "rms": rms_values,
+                    "unit": "uV_rms",
+                    "type": "emg",
+                })))
             return
 
         # Normalization handles physical-sensor calibration autonomously.
