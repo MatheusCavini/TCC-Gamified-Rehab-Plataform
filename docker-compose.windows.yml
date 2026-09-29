@@ -48,6 +48,18 @@ services:
       - device_manager
     command: ros2 run hal_signal_processing signal_processing_node
 
+  noraxon_tcp_receiver:
+    <<: *ros-common
+    container_name: noraxon_tcp_receiver
+    depends_on:
+      - device_manager
+      - signal_processing
+    # Windows SDK sender connects to 127.0.0.1; Docker forwards the port to
+    # this receiver, which publishes into the existing ROS graph.
+    ports:
+      - "127.0.0.1:8765:8765"
+    command: ros2 run noraxon_emg noraxon_tcp_receiver
+
   tcp_endpoint:
     <<: *ros-common
     container_name: tcp_endpoint

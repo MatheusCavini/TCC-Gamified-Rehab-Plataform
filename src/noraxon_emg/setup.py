@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'noraxon_emg_node = noraxon_emg.noraxon_emg_node:main',
+            'noraxon_tcp_receiver = noraxon_emg.noraxon_tcp_receiver:main',
         ],
     },
 )

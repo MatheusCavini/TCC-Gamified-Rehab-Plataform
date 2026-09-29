@@ -12,8 +12,8 @@ rodar a stack no Windows. Use `docker-compose.windows.yml` em vez de
 
 - **Rede**: Docker Desktop no Windows roda os containers dentro de uma VM
   Linux (WSL2). `network_mode: host` não é confiável nesse cenário, então
-  `docker-compose.windows.yml` usa uma rede bridge dedicada + publica só a
-  porta `10000` (a que a Unity usa) para o Windows.
+  `docker-compose.windows.yml` usa uma rede bridge dedicada, publica a porta
+  `10000` para a Unity e a `8765` apenas no loopback do Windows para o Noraxon.
 - **Serial/USB**: o Windows não tem `/dev/ttyACM0` — ele vê `COMx`. Para o
   container Linux enxergar o Arduino, é preciso "emprestar" o dispositivo USB
   do Windows para dentro do WSL2 usando o **usbipd-win**.
@@ -74,7 +74,7 @@ usbipd attach --wsl --busid $busid
 
 ### 4. Build da imagem
 
-⚠️ Com 5 serviços apontando pra mesma imagem, **não use `docker compose build`**
+⚠️ Com 6 serviços apontando pra mesma imagem, **não use `docker compose build`**
 — fazer isso dispara um build paralelo por serviço, e todos tentam taguear a
 mesma imagem ao mesmo tempo, o que quebra com
 `failed to solve: image ... already exists`.
@@ -95,8 +95,17 @@ Depois, suba a stack normalmente (sem `--build`, já que a imagem já existe):
 docker compose -f docker-compose.windows.yml up
 ```
 
-Isso sobe os 5 serviços (`device_manager`, `signal_processing`, `tcp_endpoint`,
-`guidao_encoder`, `guidao_controller`), todos na rede bridge `ros2_net`.
+Isso sobe os 6 serviços (`device_manager`, `signal_processing`,
+`noraxon_tcp_receiver`, `tcp_endpoint`, `guidao_encoder`, `guidao_controller`),
+todos na rede bridge `ros2_net`.
+
+### EMG Noraxon
+
+O Compose inicia o receptor TCP do Noraxon dentro do Docker, mas não inicia
+uma fonte de sinais EMG. Para testar com sinais sintéticos enviados do Windows
+ou configurar um sensor real via Noraxon Acquire, siga as instruções em
+[`src/noraxon_emg/README.md`](src/noraxon_emg/README.md). Esse guia explica
+como iniciar o emissor Windows e verificar os tópicos ROS de EMG.
 
 ### 5. Configurar a Unity
 
@@ -118,6 +127,9 @@ docker compose -f docker-compose.windows.yml logs -f tcp_endpoint
 
 Deve aparecer o handshake de conexão assim que a Unity der Play. No console da
 Unity, `"Subscribed to /hal/device_state..."` sem exceptions de socket.
+
+
+EDIT ERIC: Para interromper e desligar, Control+C no terminal que está rodando o docker e depois fazer docker compose down -v 
 
 ## Troubleshooting específico do Windows
 
@@ -143,7 +155,7 @@ dentro do WSL2 (ex: `~/projetos/...`) em vez de usar o caminho do Windows.
 
 **`failed to solve: image "docker.io/library/rehab-platform:humble": already exists`**
 Isso acontece se você rodar `docker compose build` ou `docker compose up --build`
-com os 5 serviços apontando pra mesma imagem — o Compose builda todos em
+com os 6 serviços apontando pra mesma imagem — o Compose builda todos em
 paralelo e eles competem pra taguear a mesma imagem. Solução: builde manualmente
 com `docker build -t rehab-platform:humble .` (uma vez só) e depois suba com
 `docker compose -f docker-compose.windows.yml up`, sem `--build`.
