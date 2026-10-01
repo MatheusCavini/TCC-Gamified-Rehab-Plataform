@@ -96,7 +96,7 @@ class EmotivEegNode(Node):
 
         prefix = f'/device/{self.device_id}'
         self.info_pub = self.create_publisher(String, '/device/info', 10)
-        # /raw is the standard HAL numeric stream.  Its fixed order is declared below.
+        # /raw is the standard HAL numeric stream for metrics/raw signals.
         self.raw_pub = self.create_publisher(Float32MultiArray, f'{prefix}/raw', 10)
         self.metrics_pub = self.create_publisher(String, f'{prefix}/metrics', 10)
         self.command_pub = self.create_publisher(String, f'{prefix}/mental_command', 10)
@@ -124,16 +124,24 @@ class EmotivEegNode(Node):
         # unavailable Cortex/headset as a usable input.
         if not self._connected:
             return
+
+        # Device 1: Raw Signals & Performance Metrics
         self.info_pub.publish(String(data=json.dumps({
             'device_id': self.device_id,
             'type': 'eeg',
             'capabilities': [
                 'performance_metrics', 'focus', 'engagement', 'stress',
-                'mental_command', 'mental_command_training',
             ] + (['raw_eeg'] if self.enable_raw_eeg else []),
             'units': ['score_0_to_1', 'score_0_to_1', 'score_0_to_1'],
             'raw_fields': list(METRIC_FIELDS),
             'raw_topic': f'/device/{self.device_id}/raw',
+        })))
+
+        # Device 2: Mental Commands
+        self.info_pub.publish(String(data=json.dumps({
+            'device_id': f'{self.device_id}_mental_command',
+            'type': 'eeg_mental_command',
+            'capabilities': ['mental_command', 'mental_command_training'],
             'mental_command_topic': f'/device/{self.device_id}/mental_command',
             'calibration_request_topic': f'/device/{self.device_id}/calibration/request',
         })))
@@ -189,9 +197,6 @@ class EmotivEegNode(Node):
                     self._publish_connection(False, str(error))
             finally:
                 self._connected = False
-                # Closing releases the license's local session quota. Without this,
-                # every reconnect leaves the old session dangling on Cortex and
-                # silently burns quota until "-32019 Session limit" hits.
                 if token and session_id:
                     try:
                         client.rpc('updateSession', {
@@ -226,8 +231,6 @@ class EmotivEegNode(Node):
         headset_id = headset['id']
         if headset.get('status') != 'connected':
             rpc('controlDevice', {'command': 'connect', 'headset': headset_id})
-            # Cortex completes connection asynchronously.  Query once more before
-            # opening the session, while retaining a useful error if it is not ready.
             time.sleep(1.0)
 
         session_id = rpc('createSession', {
@@ -258,8 +261,6 @@ class EmotivEegNode(Node):
             try:
                 message = client.receive(0.2)
             except Exception as error:
-                # websocket-client raises a timeout exception while an otherwise
-                # healthy stream is quiet; only reconnect for non-timeout failures.
                 if websocket is not None and isinstance(error, websocket.WebSocketTimeoutException):
                     continue
                 raise
@@ -294,7 +295,7 @@ class EmotivEegNode(Node):
             action = values.get('act', 'neutral')
             power = self._number(values.get('pow'))
             self.command_pub.publish(String(data=json.dumps({
-                'device_id': self.device_id,
+                'device_id': f'{self.device_id}_mental_command',
                 'timestamp': message.get('time'),
                 'action': action,
                 'power': power,

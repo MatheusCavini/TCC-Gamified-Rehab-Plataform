@@ -1,410 +1,516 @@
-import rclpy
-from rclpy.node import Node
 import json
 import math
 import os
 
-from std_msgs.msg import String, Float32MultiArray
-from std_srvs.srv import Trigger
 from hal_interfaces.srv import SetString
 from hal_signal_processing.emg_preprocessor import EMGPreprocessor
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import Float32MultiArray, String
+from std_srvs.srv import Trigger
 
 # =====================================================
 # SIGNAL PROCESSOR STRATEGIES
 # =====================================================
+
+
 class SignalProcessor:
-    def __init__(self, device_info):
-        self.device_info = device_info
-        self.mins = None
-        self.maxs = None
-        self.is_calibrating = False  # Tracked per-device
 
-    def _init_bounds(self, data_len):
-        self.mins = [float('inf')] * data_len
-        self.maxs = [float('-inf')] * data_len
+  def __init__(self, device_info):
+    self.device_info = device_info
+    self.mins = None
+    self.maxs = None
+    self.is_calibrating = False  # Tracked per-device
 
-    def process(self, raw_data):
-        """Hook for subclasses to apply third-party processing before normalization."""
-        return raw_data
+  def _init_bounds(self, data_len):
+    self.mins = [float('inf')] * data_len
+    self.maxs = [float('-inf')] * data_len
 
-    def update_device_info(self, device_info):
-        self.device_info = device_info
+  def process(self, raw_data):
+    """Hook for subclasses to apply third-party processing before normalization."""
+    return raw_data
 
-    def normalize(self, raw_data):
-        # 1. Apply any specific processing (e.g., extracting index 0 for encoder)
-        processed_data = self.process(raw_data)
-        
-        # 2. Ensure data is a list (vectorized)
-        data = list(processed_data) if hasattr(processed_data, '__iter__') else [processed_data]
-        
-        # 3. Lazy initialization of bounds based on input dimension
-        if self.mins is None:
-            self._init_bounds(len(data))
+  def update_device_info(self, device_info):
+    self.device_info = device_info
 
-        # 4. Check this specific device's calibration state
-        if self.is_calibrating:
-            for i, val in enumerate(data):
-                if val < self.mins[i]: self.mins[i] = val
-                if val > self.maxs[i]: self.maxs[i] = val
-            return [0.0] * len(data)
+  def normalize(self, raw_data):
+    # 1. Apply any specific processing
+    processed_data = self.process(raw_data)
 
-        # 5. Vectorized normalization
-        norm_data = []
-        for i, val in enumerate(data):
-            denom = (self.maxs[i] - self.mins[i])
-            norm = (val - self.mins[i]) / denom if denom != 0 else 0.5
-            norm_data.append(max(0.0, min(1.0, norm)))
-        
-        return norm_data[0] if len(norm_data) == 1 else norm_data
+    # 2. Ensure data is a list (vectorized)
+    data = (
+        list(processed_data)
+        if hasattr(processed_data, '__iter__')
+        else [processed_data]
+    )
+
+    # 3. Lazy initialization of bounds based on input dimension
+    if self.mins is None:
+      self._init_bounds(len(data))
+
+    # 4. Check this specific device's calibration state
+    if self.is_calibrating:
+      for i, val in enumerate(data):
+        if val < self.mins[i]:
+          self.mins[i] = val
+        if val > self.maxs[i]:
+          self.maxs[i] = val
+      return [0.0] * len(data)
+
+    # 5. Vectorized normalization
+    norm_data = []
+    for i, val in enumerate(data):
+      denom = self.maxs[i] - self.mins[i]
+      norm = (val - self.mins[i]) / denom if denom != 0 else 0.5
+      norm_data.append(max(0.0, min(1.0, norm)))
+
+    return norm_data[0] if len(norm_data) == 1 else norm_data
+
 
 class EncoderProcessor(SignalProcessor):
-    def process(self, raw_data):
-        # raw_data[0] is position, raw_data[1] is velocity
-        position = raw_data[0] 
-        return position
+
+  def process(self, raw_data):
+    # raw_data[0] is position, raw_data[1] is velocity
+    position = raw_data[0]
+    return position
+
 
 class EMGProcessor(SignalProcessor):
-    """Adapt raw Noraxon blocks to a continuously filtered RMS envelope."""
-    def __init__(self, device_info):
-        super().__init__(device_info)
-        self.preprocessor = None
-        self._configure_preprocessor(device_info)
+  """Adapt raw Noraxon blocks to a continuously filtered RMS envelope."""
 
-    def _configure_preprocessor(self, device_info):
-        sample_rate_hz = float(device_info.get('sample_rate_hz', 1000.0) or 1000.0)
-        highpass_hz = float(device_info.get('emg_highpass_hz', 20.0))
-        # At 1 kHz 450 Hz is valid; keep a safe default if an upstream source
-        # reports a lower actual rate.
-        lowpass_hz = min(float(device_info.get('emg_lowpass_hz', 450.0)), sample_rate_hz * 0.45)
-        rms_window_ms = float(device_info.get('rms_window_ms', 100.0))
-        if self.preprocessor is None:
-            self.preprocessor = EMGPreprocessor(
-                sample_rate_hz, highpass_hz, lowpass_hz, rms_window_ms)
-        else:
-            self.preprocessor.configure(sample_rate_hz, highpass_hz, lowpass_hz, rms_window_ms)
+  def __init__(self, device_info):
+    super().__init__(device_info)
+    self.preprocessor = None
+    self._configure_preprocessor(device_info)
 
-    def update_device_info(self, device_info):
-        super().update_device_info(device_info)
-        self._configure_preprocessor(device_info)
+  def _configure_preprocessor(self, device_info):
+    sample_rate_hz = float(device_info.get('sample_rate_hz', 1000.0) or 1000.0)
+    highpass_hz = float(device_info.get('emg_highpass_hz', 20.0))
+    # At 1 kHz 450 Hz is valid; keep a safe default if an upstream source
+    # reports a lower actual rate.
+    lowpass_hz = min(
+        float(device_info.get('emg_lowpass_hz', 450.0)), sample_rate_hz * 0.45
+    )
+    rms_window_ms = float(device_info.get('rms_window_ms', 100.0))
+    if self.preprocessor is None:
+      self.preprocessor = EMGPreprocessor(
+          sample_rate_hz, highpass_hz, lowpass_hz, rms_window_ms
+      )
+    else:
+      self.preprocessor.configure(
+          sample_rate_hz, highpass_hz, lowpass_hz, rms_window_ms
+      )
 
-    def rms(self, msg):
-        return self.preprocessor.process(msg)
+  def update_device_info(self, device_info):
+    super().update_device_info(device_info)
+    self._configure_preprocessor(device_info)
+
+  def rms(self, msg):
+    return self.preprocessor.process(msg)
 
 
 class EEGProcessor(SignalProcessor):
-    """Cortex metrics are already normalized scores and must not be recalibrated."""
-    def metrics(self, raw_data):
-        fields = self.device_info.get('raw_fields', [])
-        return {
-            field: float(value)
-            for field, value in zip(fields, raw_data)
-            if math.isfinite(float(value))
-        }
+  """Cortex metrics are already normalized scores and must not be recalibrated."""
+
+  def metrics(self, raw_data):
+    fields = self.device_info.get('raw_fields', [])
+    return {
+        field: float(value)
+        for field, value in zip(fields, raw_data)
+        if math.isfinite(float(value))
+    }
+
 
 # =====================================================
 # MAIN ROS2 NODE
 # =====================================================
 class SignalProcessingNode(Node):
-    def __init__(self):
-        super().__init__('signal_processing_node')
-        
-        self.processors = {}
-        self.profile_path = os.path.expanduser('~/thesis_ws/calibration_profile.json')
-        self.declare_parameter('emg_highpass_hz', 20.0)
-        self.declare_parameter('emg_lowpass_hz', 450.0)
-        self.declare_parameter('emg_rms_window_ms', 100.0)
 
-        # Unified subscription to /devices/available for registry
-        self.create_subscription(String, '/devices/available', self.registry_callback, 10)
-        
-        # Dictionary to hold dynamic subscribers
-        self.subs = {}
-        self.command_subs = {}
-        self.training_subs = {}
-        self.calibration_request_pubs = {}
-        self.emg_rms_pubs = {}
+  def __init__(self):
+    super().__init__('signal_processing_node')
 
-        self.state_pub = self.create_publisher(String, '/hal/device_state', 10)
-        self.calib_state_pub = self.create_publisher(String, '/calibration/state', 10)
-        self.calib_profile_pub = self.create_publisher(String, '/calibration/profile', 10)
+    self.processors = {}
+    self.profile_path = os.path.expanduser(
+        '~/thesis_ws/calibration_profile.json'
+    )
+    self.declare_parameter('emg_highpass_hz', 20.0)
+    self.declare_parameter('emg_lowpass_hz', 450.0)
+    self.declare_parameter('emg_rms_window_ms', 100.0)
 
-        # --- Services ---
-        # Toggle uses SetString to specify which device_id to calibrate
-        self.create_service(SetString, '/calibration/toggle_device', self.handle_device_calibration)
-        self.create_service(Trigger, '/calibration/save_profile', self.handle_calib_save)
-        self.create_service(Trigger, '/calibration/load_profile', self.handle_calib_load)
+    # Unified subscription to /devices/available for registry
+    self.create_subscription(
+        String, '/devices/available', self.registry_callback, 10
+    )
 
-        # --- Timers ---
-        self.create_timer(1.0, self.publish_calibration_state)
+    # Dictionaries to hold dynamic subscribers and publishers
+    self.subs = {}
+    self.command_subs = {}
+    self.training_subs = {}
+    self.calibration_request_pubs = {}
+    self.emg_rms_pubs = {}
 
-        self.get_logger().info("HAL Signal Processing Node Initialized.")
+    self.state_pub = self.create_publisher(String, '/hal/device_state', 10)
+    self.calib_state_pub = self.create_publisher(String, '/calibration/state', 10)
+    self.calib_profile_pub = self.create_publisher(
+        String, '/calibration/profile', 10
+    )
 
-    # --------------------------------------------------
-    # CALLBACKS: Registry & Topics
-    # --------------------------------------------------
-    def registry_callback(self, msg):
-        devices = json.loads(msg.data)
-        current_ids = {d['device_id'] for d in devices}
+    # --- Services ---
+    self.create_service(
+        SetString, '/calibration/toggle_device', self.handle_device_calibration
+    )
+    self.create_service(
+        Trigger, '/calibration/save_profile', self.handle_calib_save
+    )
+    self.create_service(
+        Trigger, '/calibration/load_profile', self.handle_calib_load
+    )
 
-        # 1. Add new devices dynamically
-        for dev in devices:
-            d_id = dev['device_id']
-            processor_info = self._with_processing_defaults(dev)
-            if d_id not in self.processors:
-                # Instantiate Processor based on type
-                self.processors[d_id] = self._create_processor(processor_info)
-                
-                # Hardware may explicitly advertise its raw topic; default to
-                # the established per-device path for older nodes.
-                topic = dev.get('raw_topic', f"/device/{d_id}/raw")
-                self.subs[d_id] = self.create_subscription(
-                    Float32MultiArray, topic, 
-                    lambda msg, d=d_id: self.generic_callback(d, msg), 10
-                )
-                if dev.get('type') == 'eeg':
-                    prefix = f"/device/{d_id}"
-                    self.command_subs[d_id] = self.create_subscription(
-                        String, f'{prefix}/mental_command',
-                        lambda msg, d=d_id: self.mental_command_callback(d, msg), 10
-                    )
-                    self.training_subs[d_id] = self.create_subscription(
-                        String, f'{prefix}/calibration/state',
-                        lambda msg, d=d_id: self.training_state_callback(d, msg), 10
-                    )
-                    self.calibration_request_pubs[d_id] = self.create_publisher(
-                        String, f'{prefix}/calibration/request', 10
-                    )
-                if dev.get('type') == 'emg':
-                    rms_topic = dev.get('rms_topic', f'/device/{d_id}/rms')
-                    self.emg_rms_pubs[d_id] = self.create_publisher(
-                        Float32MultiArray, rms_topic, 10)
-                self.get_logger().info(f"Subscribed to dynamic topic: {topic}")
-            else:
-                self.processors[d_id].update_device_info(processor_info)
+    # --- Timers ---
+    self.create_timer(1.0, self.publish_calibration_state)
 
-        # 2. Cleanup removed devices
-        for d_id in list(self.processors.keys()):
-            if d_id not in current_ids:
-                self.destroy_subscription(self.subs.pop(d_id))
-                if d_id in self.command_subs:
-                    self.destroy_subscription(self.command_subs.pop(d_id))
-                    self.destroy_subscription(self.training_subs.pop(d_id))
-                    del self.calibration_request_pubs[d_id]
-                if d_id in self.emg_rms_pubs:
-                    self.destroy_publisher(self.emg_rms_pubs.pop(d_id))
-                del self.processors[d_id]
+    self.get_logger().info('HAL Signal Processing Node Initialized.')
 
-    def _with_processing_defaults(self, device_info):
-        """Attach node-level EMG settings without changing hardware metadata."""
-        if device_info.get('type') != 'emg':
-            return device_info
-        configured = dict(device_info)
-        configured.setdefault(
-            'emg_highpass_hz', self.get_parameter('emg_highpass_hz').value)
-        configured.setdefault(
-            'emg_lowpass_hz', self.get_parameter('emg_lowpass_hz').value)
-        configured.setdefault(
-            'rms_window_ms', self.get_parameter('emg_rms_window_ms').value)
-        return configured
+  # --------------------------------------------------
+  # CALLBACKS: Registry & Topics
+  # --------------------------------------------------
+  def registry_callback(self, msg):
+    devices = json.loads(msg.data)
+    current_ids = {d['device_id'] for d in devices}
 
-    def _create_processor(self, dev_info):
-        """Factory to create processors."""
-        if dev_info['type'] == 'encoder': return EncoderProcessor(dev_info)
-        if dev_info['type'] == 'emg': return EMGProcessor(dev_info)
-        if dev_info['type'] == 'eeg': return EEGProcessor(dev_info)
-        return SignalProcessor(dev_info)
+    # 1. Add new devices dynamically
+    for dev in devices:
+      d_id = dev['device_id']
+      dev_type = dev.get('type')
+      processor_info = self._with_processing_defaults(dev)
 
-    def generic_callback(self, device_id, msg):
-        """Single callback for all devices."""
-        processor = self.processors.get(device_id)
-        if not processor: return
+      if d_id not in self.processors:
+        self.processors[d_id] = self._create_processor(processor_info)
 
-        if isinstance(processor, EEGProcessor):
-            metrics = processor.metrics(msg.data)
-            # EMOTIV's met stream is already a native 0..1 score. Keep its
-            # meaning, including individual field names, for game mappings.
-            state_msg = {
-                "device_id": device_id,
-                "type": "eeg",
-                "unit": "score_0_to_1",
-                "metrics": metrics,
-                "normalized_value": metrics.get("focus"),
-            }
-            self.state_pub.publish(String(data=json.dumps(state_msg)))
-            return
+        if dev_type == 'eeg':
+          raw_topic = dev.get('raw_topic', f'/device/{d_id}/raw')
+          self.subs[d_id] = self.create_subscription(
+              Float32MultiArray,
+              raw_topic,
+              lambda msg, d=d_id: self.generic_callback(d, msg),
+              10,
+          )
+          self.calibration_request_pubs[d_id] = self.create_publisher(
+              String,
+              dev.get(
+                  'calibration_request_topic',
+                  f'/device/{d_id}/calibration/request',
+              ),
+              10,
+          )
+          self.get_logger().info(f'Subscribed to raw EEG topic: {raw_topic}')
 
-        if isinstance(processor, EMGProcessor):
-            rms_values = processor.rms(msg)
-            if not rms_values:
-                return
-            self.emg_rms_pubs[device_id].publish(Float32MultiArray(data=rms_values))
-            norm_val = processor.normalize(rms_values)
-            if not processor.is_calibrating:
-                self.state_pub.publish(String(data=json.dumps({
-                    "device_id": device_id,
-                    "normalized_value": norm_val,
-                    "rms": rms_values,
-                    "unit": "uV_rms",
-                    "type": "emg",
-                })))
-            return
+        elif dev_type == 'eeg_mental_command':
+          base_id = d_id[:-15] if d_id.endswith('_mental_command') else d_id
+          cmd_topic = dev.get(
+              'mental_command_topic', f'/device/{base_id}/mental_command'
+          )
+          calib_state_topic = f'/device/{base_id}/calibration/state'
+          calib_req_topic = dev.get(
+              'calibration_request_topic',
+              f'/device/{base_id}/calibration/request',
+          )
 
-        # Normalization handles physical-sensor calibration autonomously.
-        norm_val = processor.normalize(msg.data)
-        
-        # Only broadcast to game layer if this specific device is NOT calibrating
-        if not processor.is_calibrating:
-            state_msg = {
-                "device_id": device_id,
-                "normalized_value": norm_val,
-                "unit": "normalized_intensity", 
-                "type": processor.device_info.get('type') 
-            }
-            self.state_pub.publish(String(data=json.dumps(state_msg)))
+          self.command_subs[d_id] = self.create_subscription(
+              String,
+              cmd_topic,
+              lambda msg, d=d_id: self.mental_command_callback(d, msg),
+              10,
+          )
+          self.training_subs[d_id] = self.create_subscription(
+              String,
+              calib_state_topic,
+              lambda msg, d=d_id: self.training_state_callback(d, msg),
+              10,
+          )
+          self.calibration_request_pubs[d_id] = self.create_publisher(
+              String, calib_req_topic, 10
+          )
+          self.get_logger().info(
+              f'Subscribed to EEG Mental Command topic: {cmd_topic}'
+          )
 
-    def mental_command_callback(self, device_id, msg):
-        """Expose the classified command in the common state stream."""
-        try:
-            command = json.loads(msg.data)
-        except json.JSONDecodeError:
-            self.get_logger().warn(f"Malformed mental-command message from {device_id}")
-            return
-        command.update({"device_id": device_id, "type": "eeg_mental_command"})
-        self.state_pub.publish(String(data=json.dumps(command)))
-
-    def training_state_callback(self, device_id, msg):
-        """Relay device-specific Cortex training progress to the HAL topic."""
-        try:
-            state = json.loads(msg.data)
-        except json.JSONDecodeError:
-            self.get_logger().warn(f"Malformed EEG calibration state from {device_id}")
-            return
-        self.calib_state_pub.publish(String(data=json.dumps({device_id: state})))
-
-    # --------------------------------------------------
-    # SERVICES: Calibration Management
-    # --------------------------------------------------
-    def handle_device_calibration(self, request, response):
-        """Toggle physical calibration or route an EEG Cortex training command.
-
-        EEG requests use JSON, for example:
-        {"device_id":"emotiv_eeg", "action":"neutral", "status":"start"}.
-        """
-        try:
-            calibration_request = json.loads(request.data)
-        except json.JSONDecodeError:
-            calibration_request = None
-
-        if calibration_request is not None:
-            target_device_id = calibration_request.get('device_id')
-            if target_device_id in self.calibration_request_pubs:
-                if not all(key in calibration_request for key in ('action', 'status')):
-                    response.success = False
-                    response.message = "EEG calibration requires JSON keys: device_id, action, status."
-                    return response
-                self.calibration_request_pubs[target_device_id].publish(
-                    String(data=json.dumps({
-                        'action': calibration_request['action'],
-                        'status': calibration_request['status'],
-                    }))
-                )
-                response.success = True
-                response.message = f"Cortex training request queued for device: {target_device_id}."
-                return response
-            if target_device_id is None:
-                response.success = False
-                response.message = "Calibration JSON must include device_id."
-                return response
         else:
-            target_device_id = request.data
-        
-        if target_device_id not in self.processors:
-            response.success = False
-            response.message = f"Device '{target_device_id}' is not active or registered."
-            return response
-            
-        processor = self.processors[target_device_id]
-        processor.is_calibrating = not processor.is_calibrating
-        
-        if processor.is_calibrating:
-            # Reset only this device's bounds for fresh recording
-            if processor.mins is not None:
-                processor._init_bounds(len(processor.mins))
-            response.message = f"Calibration STARTED for device: {target_device_id}."
-        else:
-            response.message = f"Calibration STOPPED for device: {target_device_id}. Limits locked."
-            
+          topic = f'/device/{d_id}/raw'
+          self.subs[d_id] = self.create_subscription(
+              Float32MultiArray,
+              topic,
+              lambda msg, d=d_id: self.generic_callback(d, msg),
+              10,
+          )
+          self.get_logger().info(f'Subscribed to dynamic topic: {topic}')
+
+        if dev.get('type') == 'emg':
+          rms_topic = dev.get('rms_topic', f'/device/{d_id}/rms')
+          self.emg_rms_pubs[d_id] = self.create_publisher(
+              Float32MultiArray, rms_topic, 10
+          )
+      else:
+        self.processors[d_id].update_device_info(processor_info)
+
+    # 2. Cleanup removed devices
+    for d_id in list(self.processors.keys()):
+      if d_id not in current_ids:
+        if d_id in self.subs:
+          self.destroy_subscription(self.subs.pop(d_id))
+        if d_id in self.command_subs:
+          self.destroy_subscription(self.command_subs.pop(d_id))
+        if d_id in self.training_subs:
+          self.destroy_subscription(self.training_subs.pop(d_id))
+          del self.calibration_request_pubs[d_id]
+        if d_id in self.emg_rms_pubs:
+          self.destroy_publisher(self.emg_rms_pubs.pop(d_id))
+        del self.processors[d_id]
+
+  def _with_processing_defaults(self, device_info):
+    """Attach node-level EMG settings without changing hardware metadata."""
+    if device_info.get('type') != 'emg':
+      return device_info
+    configured = dict(device_info)
+    configured.setdefault(
+        'emg_highpass_hz', self.get_parameter('emg_highpass_hz').value
+    )
+    configured.setdefault(
+        'emg_lowpass_hz', self.get_parameter('emg_lowpass_hz').value
+    )
+    configured.setdefault(
+        'rms_window_ms', self.get_parameter('emg_rms_window_ms').value
+    )
+    return configured
+
+  def _create_processor(self, dev_info):
+    """Factory to create processors."""
+    if dev_info['type'] == 'encoder':
+      return EncoderProcessor(dev_info)
+    if dev_info['type'] == 'emg':
+      return EMGProcessor(dev_info)
+    if dev_info['type'] in ('eeg', 'eeg_mental_command'):
+      return EEGProcessor(dev_info)
+    return SignalProcessor(dev_info)
+
+  def generic_callback(self, device_id, msg):
+    """Single callback for all raw sensor streams."""
+    processor = self.processors.get(device_id)
+    if not processor:
+      return
+
+    if isinstance(processor, EEGProcessor):
+      metrics = processor.metrics(msg.data)
+      state_msg = {
+          'device_id': device_id,
+          'type': 'eeg',
+          'unit': 'score_0_to_1',
+          'metrics': metrics,
+          'normalized_value': metrics.get('focus'),
+      }
+      self.state_pub.publish(String(data=json.dumps(state_msg)))
+      return
+
+    if isinstance(processor, EMGProcessor):
+      rms_values = processor.rms(msg)
+      if not rms_values:
+        return
+      self.emg_rms_pubs[device_id].publish(Float32MultiArray(data=rms_values))
+      norm_val = processor.normalize(rms_values)
+      if not processor.is_calibrating:
+        self.state_pub.publish(
+            String(
+                data=json.dumps({
+                    'device_id': device_id,
+                    'normalized_value': norm_val,
+                    'rms': rms_values,
+                    'unit': 'uV_rms',
+                    'type': 'emg',
+                })
+            )
+        )
+      return
+
+    # Normalization handles physical-sensor calibration autonomously.
+    norm_val = processor.normalize(msg.data)
+
+    if not processor.is_calibrating:
+      state_msg = {
+          'device_id': device_id,
+          'normalized_value': norm_val,
+          'unit': 'normalized_intensity',
+          'type': processor.device_info.get('type'),
+      }
+      self.state_pub.publish(String(data=json.dumps(state_msg)))
+
+  def mental_command_callback(self, device_id, msg):
+    """Expose classified mental command with power as normalized_value."""
+    try:
+      command = json.loads(msg.data)
+    except json.JSONDecodeError:
+      self.get_logger().warn(
+          f'Malformed mental-command message from {device_id}'
+      )
+      return
+
+    dev_id = (
+        device_id
+        if device_id.endswith('_mental_command')
+        else f'{device_id}_mental_command'
+    )
+    command.update({
+        'device_id': dev_id,
+        'type': 'eeg_mental_command',
+        'normalized_value': command.get('power'),
+        'unit': 'score_0_to_1',
+    })
+    self.state_pub.publish(String(data=json.dumps(command)))
+
+  def training_state_callback(self, device_id, msg):
+    """Relay device-specific Cortex training progress to the HAL topic."""
+    try:
+      state = json.loads(msg.data)
+    except json.JSONDecodeError:
+      self.get_logger().warn(f'Malformed EEG calibration state from {device_id}')
+      return
+    self.calib_state_pub.publish(String(data=json.dumps({device_id: state})))
+
+  # --------------------------------------------------
+  # SERVICES: Calibration Management
+  # --------------------------------------------------
+  def handle_device_calibration(self, request, response):
+    """Toggle physical calibration or route an EEG Cortex training command."""
+    try:
+      calibration_request = json.loads(request.data)
+    except json.JSONDecodeError:
+      calibration_request = None
+
+    if calibration_request is not None:
+      target_device_id = calibration_request.get('device_id')
+      if target_device_id in self.calibration_request_pubs:
+        if not all(
+            key in calibration_request for key in ('action', 'status')
+        ):
+          response.success = False
+          response.message = (
+              'EEG calibration requires JSON keys: device_id, action, status.'
+          )
+          return response
+        self.calibration_request_pubs[target_device_id].publish(
+            String(
+                data=json.dumps({
+                    'action': calibration_request['action'],
+                    'status': calibration_request['status'],
+                })
+            )
+        )
         response.success = True
-        self.get_logger().info(response.message)
+        response.message = (
+            f'Cortex training request queued for device: {target_device_id}.'
+        )
         return response
-
-    def handle_calib_save(self, request, response):
-        """Saves current memory limits (arrays) to a persistent JSON file."""
-        profile = {}
-        for dev_id, proc in self.processors.items():
-            # Only save if the device has received data and generated bounds
-            if proc.mins is not None:
-                profile[dev_id] = {
-                    "mins": proc.mins, 
-                    "maxs": proc.maxs,
-                    "type": proc.device_info.get('type')
-                }
-            
-        try:
-            with open(self.profile_path, 'w') as f:
-                json.dump(profile, f)
-            
-            self.calib_profile_pub.publish(String(data=json.dumps(profile)))
-            response.success = True
-            response.message = f"Profile saved for {len(profile)} devices."
-        except Exception as e:
-            response.success = False
-            response.message = f"Failed to save profile: {str(e)}"
+      if target_device_id is None:
+        response.success = False
+        response.message = 'Calibration JSON must include device_id.'
         return response
+    else:
+      target_device_id = request.data
 
-    def handle_calib_load(self, request, response):
-        """Loads array limits from JSON file into the active processors."""
-        if not os.path.exists(self.profile_path):
-            response.success = False
-            response.message = "No profile found to load."
-            return response
-            
-        try:
-            with open(self.profile_path, 'r') as f:
-                profile = json.load(f)
-                
-            loaded_count = 0
-            for dev_id, limits in profile.items():
-                if dev_id in self.processors:
-                    self.processors[dev_id].mins = limits["mins"]
-                    self.processors[dev_id].maxs = limits["maxs"]
-                    loaded_count += 1
-                    
-            response.success = True
-            response.message = f"Calibration profile loaded for {loaded_count} active devices."
-            
-            self.calib_profile_pub.publish(String(data=json.dumps(profile)))
-        except Exception as e:
-            response.success = False
-            response.message = f"Failed to load profile: {str(e)}"
-            
-        return response
+    if target_device_id not in self.processors:
+      response.success = False
+      response.message = (
+          f"Device '{target_device_id}' is not active or registered."
+      )
+      return response
 
-    def publish_calibration_state(self):
-        """Publishes a dictionary mapping device_ids to their boolean calibration state."""
-        state_msg = {dev_id: proc.is_calibrating for dev_id, proc in self.processors.items()}
-        self.calib_state_pub.publish(String(data=json.dumps(state_msg)))
+    processor = self.processors[target_device_id]
+    processor.is_calibrating = not processor.is_calibrating
+
+    if processor.is_calibrating:
+      if processor.mins is not None:
+        processor._init_bounds(len(processor.mins))
+      response.message = f'Calibration STARTED for device: {target_device_id}.'
+    else:
+      response.message = (
+          f'Calibration STOPPED for device: {target_device_id}. Limits locked.'
+      )
+
+    response.success = True
+    self.get_logger().info(response.message)
+    return response
+
+  def handle_calib_save(self, request, response):
+    """Saves current memory limits (arrays) to a persistent JSON file."""
+    profile = {}
+    for dev_id, proc in self.processors.items():
+      if proc.mins is not None:
+        profile[dev_id] = {
+            'mins': proc.mins,
+            'maxs': proc.maxs,
+            'type': proc.device_info.get('type'),
+        }
+
+    try:
+      with open(self.profile_path, 'w') as f:
+        json.dump(profile, f)
+
+      self.calib_profile_pub.publish(String(data=json.dumps(profile)))
+      response.success = True
+      response.message = f'Profile saved for {len(profile)} devices.'
+    except Exception as e:
+      response.success = False
+      response.message = f'Failed to save profile: {str(e)}'
+    return response
+
+  def handle_calib_load(self, request, response):
+    """Loads array limits from JSON file into the active processors."""
+    if not os.path.exists(self.profile_path):
+      response.success = False
+      response.message = 'No profile found to load.'
+      return response
+
+    try:
+      with open(self.profile_path, 'r') as f:
+        profile = json.load(f)
+
+      loaded_count = 0
+      for dev_id, limits in profile.items():
+        if dev_id in self.processors:
+          self.processors[dev_id].mins = limits['mins']
+          self.processors[dev_id].maxs = limits['maxs']
+          loaded_count += 1
+
+      response.success = True
+      response.message = (
+          f'Calibration profile loaded for {loaded_count} active devices.'
+      )
+
+      self.calib_profile_pub.publish(String(data=json.dumps(profile)))
+    except Exception as e:
+      response.success = False
+      response.message = f'Failed to load profile: {str(e)}'
+
+    return response
+
+  def publish_calibration_state(self):
+    """Publishes a dictionary mapping device_ids to their boolean calibration state."""
+    state_msg = {
+        dev_id: proc.is_calibrating for dev_id, proc in self.processors.items()
+    }
+    self.calib_state_pub.publish(String(data=json.dumps(state_msg)))
+
 
 def main(args=None):
-    rclpy.init(args=args)
-    node = SignalProcessingNode()
-    try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        node.destroy_node()
-        rclpy.shutdown()
+  rclpy.init(args=args)
+  node = SignalProcessingNode()
+  try:
+    rclpy.spin(node)
+  except KeyboardInterrupt:
+    pass
+  finally:
+    node.destroy_node()
+    rclpy.shutdown()
+
 
 if __name__ == '__main__':
-    main()
+  main()
