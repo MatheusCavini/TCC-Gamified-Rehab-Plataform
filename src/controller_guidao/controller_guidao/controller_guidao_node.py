@@ -66,6 +66,13 @@ class ImpedanceControllerNode(Node):
         self.declare_parameter('output_min', -178.5)   # Limite PWM (70% de 255)
         self.declare_parameter('output_max', 178.5)
 
+        # --- Modulação opcional por foco EEG ---
+        self.declare_parameter('use_eeg_modulation', False)
+        self.declare_parameter('eeg_device_id', 'emotiv_eeg')
+        self.declare_parameter('eeg_state_timeout_s', 0.5)
+        self.declare_parameter('eeg_saturation_min', 0.0)
+        self.declare_parameter('eeg_saturation_max', 1.0)
+
         self._read_parameters()
 
         # --- Filtros e Estados Internos ---
@@ -95,12 +102,17 @@ class ImpedanceControllerNode(Node):
         self._load_cell_values = {}
         self._load_cell_times = {}
 
+        # Estado EEG recebido pela abstração do HAL.
+        self._eeg_focus = None
+        self._last_eeg_state_time = None
+
         # --- Publishers ---
         self.pub_command_rich = self.create_publisher(String, '/control/command', 10)
         self.pub_actuator = self.create_publisher(Float32, '/device/actuator_command', 10)
 
         # --- Subscriptions ---
         self.create_subscription(String, '/game/state', self._on_game_state, 10)
+        self.create_subscription(String, '/hal/device_state', self._on_device_state, 10)
         self.create_subscription(Float32MultiArray, '/device/encoder/raw', self._on_encoder_raw, 10)
 
         # Inscrição dinâmica nos tópicos de células de carga
@@ -143,6 +155,16 @@ class ImpedanceControllerNode(Node):
         self.sample_time = g('sample_time')
         self.output_min = g('output_min')
         self.output_max = g('output_max')
+        self.use_eeg_modulation = bool(g('use_eeg_modulation'))
+        self.eeg_device_id = str(g('eeg_device_id'))
+        self.eeg_state_timeout_s = max(0.0, g('eeg_state_timeout_s'))
+        self.eeg_saturation_min = max(0.0, min(1.0, g('eeg_saturation_min')))
+        self.eeg_saturation_max = max(0.0, min(1.0, g('eeg_saturation_max')))
+        if self.eeg_saturation_max < self.eeg_saturation_min:
+            self.eeg_saturation_min, self.eeg_saturation_max = (
+                self.eeg_saturation_max,
+                self.eeg_saturation_min,
+            )
 
     # ------------------------------------------------------------------
     # Callbacks dos Tópicos ROS
@@ -162,6 +184,50 @@ class ImpedanceControllerNode(Node):
             self._heading_error_rad = math.radians(head_err_deg)
             self._vehicle_speed = max(0.01, speed)
             self._last_game_state_time = time.monotonic()
+
+    def _on_device_state(self, msg: String):
+        """Read normalized EEG focus from the HAL device-state topic."""
+        try:
+            payload = json.loads(msg.data)
+            if payload.get('type') != 'eeg':
+                return
+            if (
+                self.eeg_device_id
+                and payload.get('device_id') != self.eeg_device_id
+            ):
+                return
+            focus = float(payload['normalized_value'])
+            if not math.isfinite(focus):
+                return
+        except (json.JSONDecodeError, KeyError, TypeError, ValueError):
+            return
+
+        with self._lock:
+            self._eeg_focus = max(0.0, min(1.0, focus))
+            self._last_eeg_state_time = time.monotonic()
+
+    def _eeg_modulation_factor(self, now: float) -> float:
+        """Convert calibrated EEG intensity to the PDF's [0, 1] factor."""
+        if not self.use_eeg_modulation:
+            return 1.0
+
+        with self._lock:
+            focus = self._eeg_focus
+            last_eeg_time = self._last_eeg_state_time
+
+        # No EEG state means normal controller operation remains available.
+        if focus is None or last_eeg_time is None:
+            return 1.0
+        if now - last_eeg_time > self.eeg_state_timeout_s:
+            return 1.0
+
+        low = self.eeg_saturation_min
+        high = self.eeg_saturation_max
+        if focus <= low:
+            return 0.0
+        if focus >= high or high == low:
+            return 1.0
+        return (focus - low) / (high - low)
 
     def _on_encoder_raw(self, msg: Float32MultiArray):
         if len(msg.data) < 2:
@@ -288,6 +354,9 @@ class ImpedanceControllerNode(Node):
         # Sinal total de atuação
         control_output = stiffness_term + derivative_term
         control_output = max(self.output_min, min(self.output_max, control_output))
+
+        # Modulate the final actuator signal only when explicitly enabled.
+        control_output *= self._eeg_modulation_factor(now)
 
         # 5. Publicação de Comandos
         self._publish_command(control_output, setpoint, self.theta_target_smoothed, encoder_angle, stale=False)
