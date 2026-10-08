@@ -110,7 +110,7 @@ class EMGProcessor(SignalProcessor):
 
 
 class EEGProcessor(SignalProcessor):
-  """Cortex metrics are already normalized scores and must not be recalibrated."""
+  """Extract finite Cortex metrics for downstream processing."""
 
   def metrics(self, raw_data):
     fields = self.device_info.get('raw_fields', [])
@@ -301,14 +301,25 @@ class SignalProcessingNode(Node):
 
     if isinstance(processor, EEGProcessor):
       metrics = processor.metrics(msg.data)
+      focus = metrics.get('focus')
+
+      # Focus is the EEG signal exposed as normalized_value.  Calibrate it
+      # through the same min/max path used by every other signal instead of
+      # passing the Cortex score through unchanged.
+      if focus is not None:
+        norm_val = processor.normalize(focus)
+      else:
+        norm_val = None
+
       state_msg = {
           'device_id': device_id,
           'type': 'eeg',
-          'unit': 'score_0_to_1',
+          'unit': 'normalized_intensity',
           'metrics': metrics,
-          'normalized_value': metrics.get('focus'),
+          'normalized_value': norm_val,
       }
-      self.state_pub.publish(String(data=json.dumps(state_msg)))
+      if not processor.is_calibrating:
+        self.state_pub.publish(String(data=json.dumps(state_msg)))
       return
 
     if isinstance(processor, EMGProcessor):
