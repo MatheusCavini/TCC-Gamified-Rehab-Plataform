@@ -81,7 +81,68 @@ class EMGProcessor(SignalProcessor):
   def __init__(self, device_info):
     super().__init__(device_info)
     self.preprocessor = None
+    self.channel_bounds = {}
+    self.calibrating_channels = set()
     self._configure_preprocessor(device_info)
+
+  @property
+  def channel_ids(self):
+    ids = self.device_info.get('channel_ids') or []
+    return [str(channel_id) for channel_id in ids]
+
+  def normalize_channels(self, values):
+    """Normalize each RMS value against bounds belonging to its channel ID."""
+    channel_ids = self.channel_ids
+    if len(channel_ids) != len(values):
+      channel_ids = [f'channel_{index}' for index in range(len(values))]
+
+    normalized = []
+    for channel_id, raw_value in zip(channel_ids, values):
+      value = float(raw_value)
+      bounds = self.channel_bounds.setdefault(
+          channel_id, {'min': float('inf'), 'max': float('-inf')}
+      )
+      if channel_id in self.calibrating_channels:
+        bounds['min'] = min(bounds['min'], value)
+        bounds['max'] = max(bounds['max'], value)
+        normalized.append(0.0)
+        continue
+
+      denominator = bounds['max'] - bounds['min']
+      result = ((value - bounds['min']) / denominator
+                if denominator > 0 else 0.5)
+      normalized.append(max(0.0, min(1.0, result)))
+    return normalized
+
+  def toggle_channel_calibration(self, channel_id):
+    """Start/stop calibration for one channel, resetting bounds on start."""
+    if channel_id not in self.channel_ids:
+      return None
+    if channel_id in self.calibrating_channels:
+      self.calibrating_channels.remove(channel_id)
+      return False
+
+    self.calibrating_channels.add(channel_id)
+    self.channel_bounds[channel_id] = {
+        'min': float('inf'), 'max': float('-inf')
+    }
+    return True
+
+  def toggle_all_channel_calibrations(self):
+    """Compatibility behavior for older device-wide calibration clients."""
+    channel_ids = self.channel_ids
+    if not channel_ids:
+      return None
+    start = not all(cid in self.calibrating_channels for cid in channel_ids)
+    for channel_id in channel_ids:
+      if start:
+        self.calibrating_channels.add(channel_id)
+        self.channel_bounds[channel_id] = {
+            'min': float('inf'), 'max': float('-inf')
+        }
+      else:
+        self.calibrating_channels.discard(channel_id)
+    return start
 
   def _configure_preprocessor(self, device_info):
     sample_rate_hz = float(device_info.get('sample_rate_hz', 1000.0) or 1000.0)
@@ -327,19 +388,20 @@ class SignalProcessingNode(Node):
       if not rms_values:
         return
       self.emg_rms_pubs[device_id].publish(Float32MultiArray(data=rms_values))
-      norm_val = processor.normalize(rms_values)
-      if not processor.is_calibrating:
-        self.state_pub.publish(
-            String(
-                data=json.dumps({
-                    'device_id': device_id,
-                    'normalized_value': norm_val,
-                    'rms': rms_values,
-                    'unit': 'uV_rms',
-                    'type': 'emg',
-                })
-            )
-        )
+      norm_val = processor.normalize_channels(rms_values)
+      self.state_pub.publish(
+          String(
+              data=json.dumps({
+                  'device_id': device_id,
+                  'channel_ids': processor.channel_ids,
+                  'channel_names': processor.device_info.get('channel_names', []),
+                  'normalized_value': norm_val,
+                  'rms': rms_values,
+                  'unit': 'uV_rms',
+                  'type': 'emg',
+              })
+          )
+      )
       return
 
     # Normalization handles physical-sensor calibration autonomously.
@@ -435,6 +497,32 @@ class SignalProcessingNode(Node):
       return response
 
     processor = self.processors[target_device_id]
+    if isinstance(processor, EMGProcessor):
+      channel_id = calibration_request.get('channel_id') if calibration_request else None
+      if channel_id is not None:
+        is_calibrating = processor.toggle_channel_calibration(str(channel_id))
+        if is_calibrating is None:
+          response.success = False
+          response.message = (
+              f"Channel '{channel_id}' is not active on device '{target_device_id}'."
+          )
+          return response
+        state = 'STARTED' if is_calibrating else 'STOPPED'
+        response.message = (
+            f'Calibration {state} for channel {channel_id} on {target_device_id}.'
+        )
+      else:
+        is_calibrating = processor.toggle_all_channel_calibrations()
+        if is_calibrating is None:
+          response.success = False
+          response.message = f"Device '{target_device_id}' has no active EMG channels."
+          return response
+        state = 'STARTED' if is_calibrating else 'STOPPED'
+        response.message = f'Calibration {state} for all channels on {target_device_id}.'
+      response.success = True
+      self.get_logger().info(response.message)
+      return response
+
     processor.is_calibrating = not processor.is_calibrating
 
     if processor.is_calibrating:
@@ -454,7 +542,16 @@ class SignalProcessingNode(Node):
     """Saves current memory limits (arrays) to a persistent JSON file."""
     profile = {}
     for dev_id, proc in self.processors.items():
-      if proc.mins is not None:
+      if isinstance(proc, EMGProcessor) and proc.channel_bounds:
+        profile[dev_id] = {
+            'type': 'emg',
+            'channels': {
+                channel_id: bounds
+                for channel_id, bounds in proc.channel_bounds.items()
+                if math.isfinite(bounds['min']) and math.isfinite(bounds['max'])
+            },
+        }
+      elif proc.mins is not None:
         profile[dev_id] = {
             'mins': proc.mins,
             'maxs': proc.maxs,
@@ -487,8 +584,25 @@ class SignalProcessingNode(Node):
       loaded_count = 0
       for dev_id, limits in profile.items():
         if dev_id in self.processors:
-          self.processors[dev_id].mins = limits['mins']
-          self.processors[dev_id].maxs = limits['maxs']
+          processor = self.processors[dev_id]
+          if isinstance(processor, EMGProcessor) and 'channels' in limits:
+            active_ids = set(processor.channel_ids)
+            processor.channel_bounds.update({
+                channel_id: bounds
+                for channel_id, bounds in limits['channels'].items()
+                if channel_id in active_ids
+            })
+          elif isinstance(processor, EMGProcessor) and 'mins' in limits:
+            # Migrate profiles written before EMG calibration became channel keyed.
+            for index, channel_id in enumerate(processor.channel_ids):
+              if index < len(limits['mins']) and index < len(limits['maxs']):
+                processor.channel_bounds[channel_id] = {
+                    'min': float(limits['mins'][index]),
+                    'max': float(limits['maxs'][index]),
+                }
+          else:
+            processor.mins = limits['mins']
+            processor.maxs = limits['maxs']
           loaded_count += 1
 
       response.success = True
@@ -504,10 +618,17 @@ class SignalProcessingNode(Node):
     return response
 
   def publish_calibration_state(self):
-    """Publishes a dictionary mapping device_ids to their boolean calibration state."""
-    state_msg = {
-        dev_id: proc.is_calibrating for dev_id, proc in self.processors.items()
-    }
+    """Publish legacy device flags plus independent EMG channel flags."""
+    state_msg = {}
+    for dev_id, proc in self.processors.items():
+      if isinstance(proc, EMGProcessor):
+        state_msg[dev_id] = bool(proc.calibrating_channels)
+        for channel_id in proc.channel_ids:
+          state_msg[f'{dev_id}::{channel_id}'] = (
+              channel_id in proc.calibrating_channels
+          )
+      else:
+        state_msg[dev_id] = proc.is_calibrating
     self.calib_state_pub.publish(String(data=json.dumps(state_msg)))
 
 
