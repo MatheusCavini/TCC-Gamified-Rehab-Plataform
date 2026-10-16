@@ -60,6 +60,21 @@ services:
       - "127.0.0.1:8765:8765"
     command: ros2 run noraxon_emg noraxon_tcp_receiver
 
+  # --- Optional: EMOTIV headset via Cortex running on Windows. ---
+  # Set EMOTIV_CLIENT_ID / EMOTIV_CLIENT_SECRET in the shell or local .env.
+  emotiv_eeg:
+    <<: *ros-common
+    container_name: emotiv_eeg
+    depends_on:
+      - device_manager
+      - signal_processing
+    command: >
+      ros2 run emotiv_eeg emotiv_eeg_node --ros-args
+      -p cortex_url:=wss://host.docker.internal:6868
+      -p client_id:=${EMOTIV_CLIENT_ID:-}
+      -p client_secret:=${EMOTIV_CLIENT_SECRET:-}
+      -p enable_raw_eeg:=${EMOTIV_ENABLE_RAW_EEG:-false}
+
   tcp_endpoint:
     <<: *ros-common
     container_name: tcp_endpoint
