@@ -73,6 +73,13 @@ class ImpedanceControllerNode(Node):
         self.declare_parameter('eeg_saturation_min', 0.0)
         self.declare_parameter('eeg_saturation_max', 1.0)
 
+        # --- Modulação opcional por esforço EMG ---
+        self.declare_parameter('use_emg_modulation', False)
+        self.declare_parameter('emg_device_id', 'noraxon_emg')
+        self.declare_parameter('emg_state_timeout_s', 0.5)
+        self.declare_parameter('emg_saturation_min', 0.0)
+        self.declare_parameter('emg_saturation_max', 1.0)
+
         self._read_parameters()
 
         # --- Filtros e Estados Internos ---
@@ -105,6 +112,8 @@ class ImpedanceControllerNode(Node):
         # Estado EEG recebido pela abstração do HAL.
         self._eeg_focus = None
         self._last_eeg_state_time = None
+        self._emg_intensity = None
+        self._last_emg_state_time = None
 
         # --- Publishers ---
         self.pub_command_rich = self.create_publisher(String, '/control/command', 10)
@@ -166,6 +175,17 @@ class ImpedanceControllerNode(Node):
                 self.eeg_saturation_min,
             )
 
+        self.use_emg_modulation = bool(g('use_emg_modulation'))
+        self.emg_device_id = str(g('emg_device_id'))
+        self.emg_state_timeout_s = max(0.0, g('emg_state_timeout_s'))
+        self.emg_saturation_min = max(0.0, min(1.0, g('emg_saturation_min')))
+        self.emg_saturation_max = max(0.0, min(1.0, g('emg_saturation_max')))
+        if self.emg_saturation_max < self.emg_saturation_min:
+            self.emg_saturation_min, self.emg_saturation_max = (
+                self.emg_saturation_max,
+                self.emg_saturation_min,
+            )
+
     # ------------------------------------------------------------------
     # Callbacks dos Tópicos ROS
     # ------------------------------------------------------------------
@@ -186,25 +206,70 @@ class ImpedanceControllerNode(Node):
             self._last_game_state_time = time.monotonic()
 
     def _on_device_state(self, msg: String):
-        """Read normalized EEG focus from the HAL device-state topic."""
+        """Read normalized EEG/EMG values from the HAL device-state topic."""
         try:
             payload = json.loads(msg.data)
-            if payload.get('type') != 'eeg':
-                return
-            if (
-                self.eeg_device_id
-                and payload.get('device_id') != self.eeg_device_id
-            ):
-                return
-            focus = float(payload['normalized_value'])
-            if not math.isfinite(focus):
-                return
         except (json.JSONDecodeError, KeyError, TypeError, ValueError):
             return
 
+        device_type = payload.get('type')
+        device_id = payload.get('device_id')
+        normalized_value = payload.get('normalized_value')
+
+        if device_type == 'eeg':
+            if self.eeg_device_id and device_id != self.eeg_device_id:
+                return
+            try:
+                focus = float(normalized_value)
+            except (TypeError, ValueError):
+                return
+            if not math.isfinite(focus):
+                return
+
+            with self._lock:
+                self._eeg_focus = max(0.0, min(1.0, focus))
+                self._last_eeg_state_time = time.monotonic()
+            return
+
+        if device_type != 'emg':
+            return
+        if self.emg_device_id and device_id != self.emg_device_id:
+            return
+
+        # EMG is channelized; use the geometric mean of the normalized
+        # channel intensities as the single EMG intensity used by the
+        # control-factor mapping.
+        values = (
+            normalized_value
+            if isinstance(normalized_value, (list, tuple))
+            else [normalized_value]
+        )
+        try:
+            intensities = [float(value) for value in values]
+        except (TypeError, ValueError):
+            return
+        intensities = [
+            max(0.0, min(1.0, value))
+            for value in intensities
+            if math.isfinite(value)
+        ]
+        if not intensities:
+            return
+
         with self._lock:
-            self._eeg_focus = max(0.0, min(1.0, focus))
-            self._last_eeg_state_time = time.monotonic()
+            self._emg_intensity = max(
+                0.0, min(1.0, math.prod(intensities) ** (1.0 / len(intensities)))
+            )
+            self._last_emg_state_time = time.monotonic()
+
+    @staticmethod
+    def _saturated_factor(value: float, low: float, high: float) -> float:
+        """Map a normalized biosignal to the PDF's piecewise-linear factor."""
+        if value <= low:
+            return 0.0
+        if value >= high or high == low:
+            return 1.0
+        return (value - low) / (high - low)
 
     def _eeg_modulation_factor(self, now: float) -> float:
         """Convert calibrated EEG intensity to the PDF's [0, 1] factor."""
@@ -221,13 +286,34 @@ class ImpedanceControllerNode(Node):
         if now - last_eeg_time > self.eeg_state_timeout_s:
             return 1.0
 
-        low = self.eeg_saturation_min
-        high = self.eeg_saturation_max
-        if focus <= low:
-            return 0.0
-        if focus >= high or high == low:
+        return self._saturated_factor(
+            focus, self.eeg_saturation_min, self.eeg_saturation_max
+        )
+
+    def _emg_modulation_factor(self, now: float) -> float:
+        """Convert calibrated EMG intensity to the PDF's [0, 1] factor."""
+        if not self.use_emg_modulation:
             return 1.0
-        return (focus - low) / (high - low)
+
+        with self._lock:
+            intensity = self._emg_intensity
+            last_emg_time = self._last_emg_state_time
+
+        # Keep the controller available until a valid EMG stream is present.
+        if intensity is None or last_emg_time is None:
+            return 1.0
+        if now - last_emg_time > self.emg_state_timeout_s:
+            return 1.0
+
+        return self._saturated_factor(
+            intensity, self.emg_saturation_min, self.emg_saturation_max
+        )
+
+    def _biosignal_modulation_factor(self, now: float) -> float:
+        """Combine EEG and EMG factors using their geometric average."""
+        eeg_factor = self._eeg_modulation_factor(now)
+        emg_factor = self._emg_modulation_factor(now)
+        return math.sqrt(max(0.0, eeg_factor * emg_factor))
 
     def _on_encoder_raw(self, msg: Float32MultiArray):
         if len(msg.data) < 2:
@@ -356,7 +442,9 @@ class ImpedanceControllerNode(Node):
         control_output = max(self.output_min, min(self.output_max, control_output))
 
         # Modulate the final actuator signal only when explicitly enabled.
-        control_output *= self._eeg_modulation_factor(now)
+        # EEG and EMG are combined using the geometric average from the
+        # control strategy.
+        control_output *= self._biosignal_modulation_factor(now)
 
         # 5. Publicação de Comandos
         self._publish_command(control_output, setpoint, self.theta_target_smoothed, encoder_angle, stale=False)
