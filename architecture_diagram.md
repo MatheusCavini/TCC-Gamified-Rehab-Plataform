@@ -20,13 +20,14 @@ subgraph DEV ["Physical Devices & micro-ROS"]
     HW_ENC[Rotary Encoder]:::hw
     HW_IMU[IMU]:::hw
     HW_EMG[EMG Sensor]:::hw
-    HW_EEG[EMOTIV EEG Headset]:::hw
-    HW_MOT[Motor / Actuator]:::hw
+    HW_EEG[EEG Interface]:::hw
+    HW_MOT[Joint Motor / Actuator]:::hw
 
     N_ENC([/esp/encoder_node]):::node
     N_IMU([/esp/imu_node]):::node
     N_EMG([/esp/emg_node]):::node
-    N_EEG([/emotiv_eeg_node]):::node
+    N_EEG([/esp/eeg_node]):::node
+
     N_ACT([/esp/actuator_interface_node]):::node
 
     HW_ENC -.-> N_ENC
@@ -44,14 +45,12 @@ end
 T_EncRaw[ /device/encoder/raw ]:::topic
 T_ImuRaw[ /device/imu/raw ]:::topic
 T_EmgRaw[ /biosignals/emg/raw ]:::topic
-T_EegRaw[ /device/emotiv_eeg/raw<br/>focus, engagement, stress ]:::topic
-T_EegCommand[ /device/emotiv_eeg/mental_command ]:::topic
+T_EegRaw[ /biosignals/eeg/raw ]:::topic
 
 N_ENC --> T_EncRaw
 N_IMU --> T_ImuRaw
 N_EMG --> T_EmgRaw
 N_EEG --> T_EegRaw
-N_EEG --> T_EegCommand
 
 %% =====================================================
 %% DEVICE DISCOVERY / REGISTRATION
@@ -76,6 +75,8 @@ subgraph HAL ["Hardware Abstraction Layer"]
 
     N_SIG([/hal/signal_processing_node]):::node
 
+    N_ACTMAP([/hal/actuator_mapping_node]):::node
+
 end
 
 %% =====================================================
@@ -93,11 +94,6 @@ T_EncRaw --> N_SIG
 T_ImuRaw --> N_SIG
 T_EmgRaw --> N_SIG
 T_EegRaw --> N_SIG
-T_EegCommand --> N_SIG
-
-%% =====================================================
-%% DEVICE CAPABILITIES → SIGNAL PROCESSING
-%% =====================================================
 
 T_DevAvail --> N_SIG
 
@@ -112,11 +108,6 @@ S_CalLoad[[ /calibration/load_profile ]]:::service
 S_CalStart -.-> N_SIG
 S_CalSave -.-> N_SIG
 S_CalLoad -.-> N_SIG
-
-T_EegCalRequest[ /device/emotiv_eeg/calibration/request ]:::topic
-T_EegCalState[ /device/emotiv_eeg/calibration/state ]:::topic
-N_SIG --> T_EegCalRequest --> N_EEG
-N_EEG --> T_EegCalState --> N_SIG
 
 %% =====================================================
 %% THERAPEUTIC CALIBRATION ACTION
@@ -168,10 +159,6 @@ T_GameInput[ /game/input_state ]:::topic
 
 N_INPUT --> T_GameInput --> N_GAME
 
-%% =====================================================
-%% DEVICE AVAILABILITY TO GAME
-%% =====================================================
-
 T_DevAvail --> N_GAME
 
 %% =====================================================
@@ -180,20 +167,50 @@ T_DevAvail --> N_GAME
 
 T_GameState[ /game/state ]:::topic
 T_GameMetrics[ /game/performance_metrics ]:::topic
-T_ActCmd[ /device/actuator_command ]:::topic
 
 N_GAME --> T_GameState
 N_GAME --> T_GameMetrics
-N_GAME --> T_ActCmd
-
-%% =====================================================
-%% UNITY / GAME ENGINE BRIDGE
-%% =====================================================
 
 T_GameState --> N_UNITY
 
 %% =====================================================
-%% FEEDBACK / ACTUATION
+%% CONTROL LAYER
+%% =====================================================
+
+subgraph CTRL ["Assistive / Resistive Control Layer"]
+
+    N_CTRL([/control/adaptive_controller_node]):::node
+
+end
+
+%% =====================================================
+%% CONTROL INPUTS
+%% =====================================================
+
+T_DevState --> N_CTRL
+T_GameMetrics --> N_CTRL
+T_GameState --> N_CTRL
+
+%% =====================================================
+%% CONTROL OUTPUT
+%% =====================================================
+
+T_CtrlCmd[ /control/command ]:::topic
+
+N_CTRL --> T_CtrlCmd
+
+%% =====================================================
+%% ACTUATOR ABSTRACTION
+%% =====================================================
+
+T_CtrlCmd --> N_ACTMAP
+
+T_ActCmd[ /device/actuator_command ]:::topic
+
+N_ACTMAP --> T_ActCmd
+
+%% =====================================================
+%% PHYSICAL ACTUATION
 %% =====================================================
 
 T_ActCmd --> N_ACT
@@ -220,6 +237,7 @@ T_DevState --> N_LOG
 T_GameState --> N_LOG
 T_GameMetrics --> N_LOG
 T_CalProfile --> N_LOG
+T_CtrlCmd --> N_LOG
 
 %% =====================================================
 %% MONITOR SUBSCRIPTIONS
@@ -229,6 +247,7 @@ T_DevState --> N_MON
 T_GameState --> N_MON
 T_GameMetrics --> N_MON
 T_CalState --> N_MON
+T_CtrlCmd --> N_MON
 
 %% =====================================================
 %% DATABASE STORAGE

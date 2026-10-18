@@ -82,3 +82,31 @@ services:
     depends_on:
       - guidao_encoder
     command: ros2 run controller_guidao controller_guidao_node
+
+  # --- Optional: dispositivo de reabilitação pulmonar (sensor serial de valor único).
+  #     Suba com: docker compose --profile pulmonary up pulmonary_device
+  #     Ajuste a porta/baud no comando abaixo (ou use um symlink udev fixo). ---
+  pulmonary_device:
+    <<: *ros-common
+    container_name: pulmonary_device
+    profiles: ["pulmonary"]
+    depends_on:
+      - device_manager
+      - signal_processing
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    command: >
+      ros2 run pulmonary_device pulmonary_device_node --ros-args
+      -p serial_port:=/dev/ttyUSB0
+      -p baud_rate:=115200
+
+  # --- Optional: mesmo nó, mas com respiração sintética (sem hardware).
+  #     Suba com: docker compose --profile pulmonary-sim up pulmonary_device_sim ---
+  pulmonary_device_sim:
+    <<: *ros-common
+    container_name: pulmonary_device_sim
+    profiles: ["pulmonary-sim"]
+    depends_on:
+      - device_manager
+      - signal_processing
+    command: ros2 run pulmonary_device pulmonary_device_node --ros-args -p simulate:=true
