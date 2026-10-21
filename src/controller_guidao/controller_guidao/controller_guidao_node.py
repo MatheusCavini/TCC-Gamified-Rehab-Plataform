@@ -66,6 +66,13 @@ class ImpedanceControllerNode(Node):
         self.declare_parameter('output_min', -178.5)   # Limite PWM (70% de 255)
         self.declare_parameter('output_max', 178.5)
 
+        # O modo resistivo aplica torque limitado para afastar o guidão da trajetória.
+        self.declare_parameter('control_mode', 'assisted')
+        self.declare_parameter('resistive_gain', 30.0)
+        self.declare_parameter('resistive_output_limit', 35.0)
+        self.declare_parameter('resistive_deadband_rad', 0.005)
+        self.declare_parameter('resistive_slew_rate', 100.0)
+
         # --- Modulação opcional por foco EEG ---
         self.declare_parameter('use_eeg_modulation', False)
         self.declare_parameter('eeg_device_id', 'emotiv_eeg')
@@ -81,6 +88,10 @@ class ImpedanceControllerNode(Node):
         self.declare_parameter('emg_saturation_max', 1.0)
 
         self._read_parameters()
+        self.control_mode = (
+            self._normalize_control_mode(self.get_parameter('control_mode').value) or 'assisted'
+        )
+        self.resistive_output = 0.0
 
         # --- Filtros e Estados Internos ---
         self.force_filter = MovingAverage(250)
@@ -121,6 +132,7 @@ class ImpedanceControllerNode(Node):
 
         # --- Subscriptions ---
         self.create_subscription(String, '/game/state', self._on_game_state, 10)
+        self.create_subscription(String, '/control/mode', self._on_control_mode, 10)
         self.create_subscription(String, '/hal/device_state', self._on_device_state, 10)
         self.create_subscription(Float32MultiArray, '/device/encoder/raw', self._on_encoder_raw, 10)
 
@@ -164,6 +176,10 @@ class ImpedanceControllerNode(Node):
         self.sample_time = g('sample_time')
         self.output_min = g('output_min')
         self.output_max = g('output_max')
+        self.resistive_gain = max(0.0, float(g('resistive_gain')))
+        self.resistive_output_limit = max(0.0, float(g('resistive_output_limit')))
+        self.resistive_deadband_rad = max(0.0, float(g('resistive_deadband_rad')))
+        self.resistive_slew_rate = max(0.0, float(g('resistive_slew_rate')))
         self.use_eeg_modulation = bool(g('use_eeg_modulation'))
         self.eeg_device_id = str(g('eeg_device_id'))
         self.eeg_state_timeout_s = max(0.0, g('eeg_state_timeout_s'))
@@ -189,12 +205,33 @@ class ImpedanceControllerNode(Node):
     # ------------------------------------------------------------------
     # Callbacks dos Tópicos ROS
     # ------------------------------------------------------------------
+    @staticmethod
+    def _normalize_control_mode(mode):
+        mode = str(mode).strip().lower()
+        return mode if mode in ('assisted', 'resistive') else None
+
+    def _set_control_mode(self, mode):
+        normalized = self._normalize_control_mode(mode)
+        if normalized is None:
+            self.get_logger().warn(f"Modo de controle inválido: {mode!r}; use assisted ou resistive")
+            return
+        if normalized != self.control_mode:
+            self.control_mode = normalized
+            self.integral_sum = 0.0
+            self.pos_error_prev = 0.0
+            self.resistive_output = 0.0
+            self.get_logger().info(f"Modo de controle alterado para {normalized}")
+
+    def _on_control_mode(self, msg: String):
+        self._set_control_mode(msg.data)
+
     def _on_game_state(self, msg: String):
         try:
             payload = json.loads(msg.data)
             lat_err = float(payload.get('lateral_error', 0.0))
             head_err_deg = float(payload.get('heading_error_deg', 0.0))
             speed = float(payload.get('speed', 1.0))
+            requested_mode = payload.get('control_mode')
         except (json.JSONDecodeError, KeyError, ValueError, TypeError) as e:
             self.get_logger().warn(f"Payload inválido em /game/state: {e}")
             return
@@ -204,6 +241,8 @@ class ImpedanceControllerNode(Node):
             self._heading_error_rad = math.radians(head_err_deg)
             self._vehicle_speed = max(0.01, speed)
             self._last_game_state_time = time.monotonic()
+        if requested_mode is not None:
+            self._set_control_mode(requested_mode)
 
     def _on_device_state(self, msg: String):
         """Read normalized EEG/EMG values from the HAL device-state topic."""
@@ -424,26 +463,40 @@ class ImpedanceControllerNode(Node):
             self.setpoint_prev2 = self.setpoint_prev
             self.setpoint_prev = setpoint
 
-        # 4. Controle PID sobre o Erro de Posição
+        # 4. Seleciona o PID assistivo ou a resistência limitada que afasta do setpoint.
         pos_error = setpoint - encoder_angle
 
-        # Termo Proporcional e Integral
-        self.integral_sum += self.ki * pos_error * dt
-        self.integral_sum = max(self.output_min, min(self.output_max, self.integral_sum))
-        stiffness_term = self.kp * pos_error + self.integral_sum
-
-        # Termo Derivativo calculado diretamente sobre o Erro de Posição: (e[k] - e[k-1]) / dt
-        d_error = (pos_error - self.pos_error_prev) / dt
+        if self.control_mode == 'resistive':
+            # Inverte o sentido da assistência para afastar o guidão da trajetória.
+            # A zona morta, o limite de saída e a taxa de variação restringem o comando.
+            error_for_resistance = math.copysign(
+                max(0.0, abs(pos_error) - self.resistive_deadband_rad), pos_error
+            )
+            target_output = max(
+                -self.resistive_output_limit,
+                min(self.resistive_output_limit, -self.resistive_gain * error_for_resistance),
+            )
+            target_output = max(self.output_min, min(self.output_max, target_output))
+            max_delta = self.resistive_slew_rate * dt
+            self.resistive_output += max(
+                -max_delta, min(max_delta, target_output - self.resistive_output)
+            )
+            control_output = self.resistive_output
+            self.integral_sum = 0.0
+        else:
+            self.integral_sum += self.ki * pos_error * dt
+            self.integral_sum = max(self.output_min, min(self.output_max, self.integral_sum))
+            stiffness_term = self.kp * pos_error + self.integral_sum
+            d_error = (pos_error - self.pos_error_prev) / dt
+            derivative_term = self.kd * d_error
+            control_output = max(
+                self.output_min, min(self.output_max, stiffness_term + derivative_term)
+            )
+            self.resistive_output = 0.0
         self.pos_error_prev = pos_error
-        derivative_term = self.kd * d_error
 
-        # Sinal total de atuação
-        control_output = stiffness_term + derivative_term
-        control_output = max(self.output_min, min(self.output_max, control_output))
-
-        # Modulate the final actuator signal only when explicitly enabled.
-        # EEG and EMG are combined using the geometric average from the
-        # control strategy.
+        # Modula o comando final do atuador somente quando habilitado.
+        # EEG e EMG são combinados pela média geométrica definida na estratégia de controle.
         control_output *= self._biosignal_modulation_factor(now)
 
         # 5. Publicação de Comandos
@@ -455,6 +508,7 @@ class ImpedanceControllerNode(Node):
             "setpoint_rad": setpoint,
             "target_stanley_rad": target,
             "encoder_pos_rad": pos,
+            "control_mode": self.control_mode,
             "stale_input": stale
         }
         self.pub_command_rich.publish(String(data=json.dumps(payload)))
