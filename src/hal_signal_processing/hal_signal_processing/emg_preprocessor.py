@@ -91,21 +91,31 @@ class EMGPreprocessor:
 
     def process(self, msg):
         """Return one RMS value per channel after filtering its input block."""
+        _, rms_values = self.process_with_filtered(msg)
+        return rms_values
+
+    def process_with_filtered(self, msg):
+        """Return the filtered channel blocks and their rolling RMS values."""
         blocks = self._decode_channel_major(msg)
         if not blocks:
-            return []
+            return [], []
         self._ensure_channels(len(blocks))
         rms_values = []
+        filtered_blocks = []
         for index, samples in enumerate(blocks):
             window = self._rms_windows[index]
             highpass_state, lowpass_state = self._filters[index]
+            filtered_samples = []
             for raw_value in samples:
                 value = float(raw_value)
                 if not math.isfinite(value):
+                    filtered_samples.append(float('nan'))
                     continue
                 value = self._apply_biquad(value, self._coefficients[0], highpass_state)
                 value = self._apply_biquad(value, self._coefficients[1], lowpass_state)
                 window.append(value)
+                filtered_samples.append(value)
+            filtered_blocks.append(filtered_samples)
             rms_values.append(math.sqrt(sum(value * value for value in window) / len(window))
                               if window else 0.0)
-        return rms_values
+        return filtered_blocks, rms_values

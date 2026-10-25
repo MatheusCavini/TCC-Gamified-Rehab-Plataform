@@ -104,6 +104,7 @@ class NoraxonEmgNode(Node):
             'capabilities': ['raw_emg', 'rms_emg'],
             'units': ['uV'],
             'raw_topic': f'/device/{self.device_id}/raw',
+            'filtered_topic': f'/device/{self.device_id}/filtered',
             'rms_topic': f'/device/{self.device_id}/rms',
             'raw_format': 'channel_major_blocks',
             'channel_names': channel_names,

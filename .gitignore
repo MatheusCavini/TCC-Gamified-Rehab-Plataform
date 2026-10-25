@@ -2,4 +2,7 @@
 /install
 /log
 /firmware
+/data/
+/.env
+*.dump
 *.vscode

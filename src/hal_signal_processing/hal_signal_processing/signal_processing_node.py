@@ -209,6 +209,7 @@ class SignalProcessingNode(Node):
     self.training_subs = {}
     self.calibration_request_pubs = {}
     self.emg_rms_pubs = {}
+    self.emg_filtered_pubs = {}
 
     self.state_pub = self.create_publisher(String, '/hal/device_state', 10)
     self.calib_state_pub = self.create_publisher(String, '/calibration/state', 10)
@@ -311,6 +312,9 @@ class SignalProcessingNode(Node):
           self.emg_rms_pubs[d_id] = self.create_publisher(
               Float32MultiArray, rms_topic, 10
           )
+          self.emg_filtered_pubs[d_id] = self.create_publisher(
+              Float32MultiArray, dev.get('filtered_topic', f'/device/{d_id}/filtered'), 10
+          )
       else:
         self.processors[d_id].update_device_info(processor_info)
 
@@ -326,6 +330,8 @@ class SignalProcessingNode(Node):
           del self.calibration_request_pubs[d_id]
         if d_id in self.emg_rms_pubs:
           self.destroy_publisher(self.emg_rms_pubs.pop(d_id))
+        if d_id in self.emg_filtered_pubs:
+          self.destroy_publisher(self.emg_filtered_pubs.pop(d_id))
         del self.processors[d_id]
 
   def _with_processing_defaults(self, device_info):
@@ -384,9 +390,13 @@ class SignalProcessingNode(Node):
       return
 
     if isinstance(processor, EMGProcessor):
-      rms_values = processor.rms(msg)
+      filtered_blocks, rms_values = processor.preprocessor.process_with_filtered(msg)
       if not rms_values:
         return
+      filtered_msg = Float32MultiArray()
+      filtered_msg.layout = msg.layout
+      filtered_msg.data = [value for channel in filtered_blocks for value in channel]
+      self.emg_filtered_pubs[device_id].publish(filtered_msg)
       self.emg_rms_pubs[device_id].publish(Float32MultiArray(data=rms_values))
       norm_val = processor.normalize_channels(rms_values)
       self.state_pub.publish(
