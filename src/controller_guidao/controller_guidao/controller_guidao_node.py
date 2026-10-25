@@ -13,6 +13,7 @@ Nó corrigido com:
 
 import json
 import math
+import socket
 import threading
 import time
 
@@ -76,12 +77,14 @@ class ImpedanceControllerNode(Node):
         # --- Modulação opcional por foco EEG ---
         self.declare_parameter('use_eeg_modulation', False)
         self.declare_parameter('eeg_device_id', 'emotiv_eeg')
-        self.declare_parameter('eeg_state_timeout_s', 0.5)
+        self.declare_parameter('eeg_state_timeout_s', 3.0)
         self.declare_parameter('eeg_saturation_min', 0.0)
         self.declare_parameter('eeg_saturation_max', 1.0)
 
         # --- Modulação opcional por esforço EMG ---
         self.declare_parameter('use_emg_modulation', False)
+        self.declare_parameter('telemetry_udp_host', '')
+        self.declare_parameter('telemetry_udp_port', 8765)
         self.declare_parameter('emg_device_id', 'noraxon_emg')
         self.declare_parameter('emg_state_timeout_s', 0.5)
         self.declare_parameter('emg_saturation_min', 0.0)
@@ -192,6 +195,9 @@ class ImpedanceControllerNode(Node):
             )
 
         self.use_emg_modulation = bool(g('use_emg_modulation'))
+        self.telemetry_udp_host = str(g('telemetry_udp_host')).strip()
+        self.telemetry_udp_port = int(g('telemetry_udp_port'))
+        self._telemetry_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.emg_device_id = str(g('emg_device_id'))
         self.emg_state_timeout_s = max(0.0, g('emg_state_timeout_s'))
         self.emg_saturation_min = max(0.0, min(1.0, g('emg_saturation_min')))
@@ -422,7 +428,11 @@ class ImpedanceControllerNode(Node):
         # Trava de Segurança (Watchdog para o jogo)
         is_stale = (last_game_time is None) or ((now - last_game_time) > self.game_state_timeout_s)
         if is_stale:
-            self._publish_command(0.0, 0.0, 0.0, encoder_angle, stale=True)
+            with self._lock:
+                calibrated_focus = self._eeg_focus
+            self._publish_command(0.0, 0.0, 0.0, encoder_angle, stale=True,
+                                  modulation_factor=1.0, ideal_output=0.0,
+                                  calibrated_focus=calibrated_focus)
             return
 
         # 1. Alvo de Direção Dinâmico via Controlador Stanley
@@ -497,21 +507,45 @@ class ImpedanceControllerNode(Node):
 
         # Modula o comando final do atuador somente quando habilitado.
         # EEG e EMG são combinados pela média geométrica definida na estratégia de controle.
-        control_output *= self._biosignal_modulation_factor(now)
+        ideal_output = control_output
+        modulation_factor = self._biosignal_modulation_factor(now)
+        with self._lock:
+            calibrated_focus = self._eeg_focus
+        control_output *= modulation_factor
 
         # 5. Publicação de Comandos
-        self._publish_command(control_output, setpoint, self.theta_target_smoothed, encoder_angle, stale=False)
+        self._publish_command(control_output, setpoint, self.theta_target_smoothed,
+                              encoder_angle, stale=False,
+                              modulation_factor=modulation_factor,
+                              ideal_output=ideal_output,
+                              calibrated_focus=calibrated_focus)
 
-    def _publish_command(self, output: float, setpoint: float, target: float, pos: float, stale: bool):
+    def _publish_command(self, output: float, setpoint: float, target: float, pos: float,
+                         stale: bool, modulation_factor: float = 1.0,
+                         ideal_output: float = 0.0, calibrated_focus=None):
         payload = {
             "guidao_pwm": output,
+            "calibrated_focus": calibrated_focus,
+            "modulation_factor": modulation_factor,
+            "ideal_control": ideal_output,
+            "modulated_control": output,
             "setpoint_rad": setpoint,
             "target_stanley_rad": target,
             "encoder_pos_rad": pos,
             "control_mode": self.control_mode,
             "stale_input": stale
         }
-        self.pub_command_rich.publish(String(data=json.dumps(payload)))
+        serialized = json.dumps(payload)
+        self.pub_command_rich.publish(String(data=serialized))
+        if self.telemetry_udp_host:
+            try:
+                self._telemetry_socket.sendto(
+                    serialized.encode('utf-8'),
+                    (self.telemetry_udp_host, self.telemetry_udp_port),
+                )
+            except OSError as exc:
+                self.get_logger().warn(f'Falha ao enviar telemetria UDP: {exc}',
+                                       throttle_duration_sec=5.0)
         self.pub_actuator.publish(Float32(data=float(output)))
 
 

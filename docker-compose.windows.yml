@@ -96,38 +96,43 @@ services:
   guidao_controller:
     <<: *ros-common
     container_name: guidao_controller
+    environment:
+      - ROS_DOMAIN_ID=0
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
     depends_on:
       - guidao_encoder
     command: >
       ros2 run controller_guidao controller_guidao_node --ros-args
-      -p use_eeg_modulation:=true
+      -p use_eeg_modulation:=false
       -p use_emg_modulation:=true
+      -p telemetry_udp_host:=host.docker.internal
+      -p telemetry_udp_port:=8765
 
   # --- Optional: dispositivo de reabilitação pulmonar (sensor serial de valor único).
   #     Como o Guidao, a porta serial só existe no container depois de expor o
   #     USB ao WSL2 via usbipd-win. Suba com:
   #       docker compose -f docker-compose.windows.yml --profile pulmonary up pulmonary_device
-  pulmonary_device:
-    <<: *ros-common
-    container_name: pulmonary_device
-    profiles: ["pulmonary"]
-    depends_on:
-      - device_manager
-      - signal_processing
-    devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"
-    command: >
-      ros2 run pulmonary_device pulmonary_device_node --ros-args
-      -p serial_port:=/dev/ttyUSB0
-      -p baud_rate:=115200
+  # pulmonary_device:
+  #   <<: *ros-common
+  #   container_name: pulmonary_device
+  #   profiles: ["pulmonary"]
+  #   depends_on:
+  #     - device_manager
+  #     - signal_processing
+  #   devices:
+  #     - "/dev/ttyUSB0:/dev/ttyUSB0"
+  #   command: >
+  #     ros2 run pulmonary_device pulmonary_device_node --ros-args
+  #     -p serial_port:=/dev/ttyUSB0
+  #     -p baud_rate:=115200
 
-  # --- Optional: mesmo nó com respiração sintética (sem hardware). Suba com:
-  #       docker compose -f docker-compose.windows.yml --profile pulmonary-sim up pulmonary_device_sim
-  pulmonary_device_sim:
-    <<: *ros-common
-    container_name: pulmonary_device_sim
-    profiles: ["pulmonary-sim"]
-    depends_on:
-      - device_manager
-      - signal_processing
-    command: ros2 run pulmonary_device pulmonary_device_node --ros-args -p simulate:=true
+  # # --- Optional: mesmo nó com respiração sintética (sem hardware). Suba com:
+  # #       docker compose -f docker-compose.windows.yml --profile pulmonary-sim up pulmonary_device_sim
+  # pulmonary_device_sim:
+  #   <<: *ros-common
+  #   container_name: pulmonary_device_sim
+  #   profiles: ["pulmonary-sim"]
+  #   depends_on:
+  #     - device_manager
+  #     - signal_processing
+  #   command: ros2 run pulmonary_device pulmonary_device_node --ros-args -p simulate:=true
