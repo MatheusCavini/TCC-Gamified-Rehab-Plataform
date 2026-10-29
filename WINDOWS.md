@@ -18,6 +18,54 @@ rodar a stack no Windows. Use `docker-compose.windows.yml` em vez de
   container Linux enxergar o Arduino, é preciso "emprestar" o dispositivo USB
   do Windows para dentro do WSL2 usando o **usbipd-win**.
 
+## InicializaÃ§Ã£o pela tela do Unity (recomendado para uso clÃ­nico)
+
+O build Windows da Unity abre primeiro a tela **Preparar sessÃ£o de
+reabilitaÃ§Ã£o**. Selecione os dispositivos que serÃ£o usados e clique em
+**INICIAR SISTEMA**. Ela chama `scripts/Start-RehabSystem.ps1`, que:
+
+1. compartilha/conecta ao WSL2 os USBs selecionados (pedindo UAC apenas quando
+   o `usbipd bind` ainda nÃ£o foi feito);
+2. reutiliza a imagem Docker existente, ou a constrÃ³i na primeira execuÃ§Ã£o;
+3. fecha sessÃµes Emotiv abandonadas antes de subir o nÃ³ EEG;
+4. sobe somente os perfis ROS escolhidos e espera a porta 10000 ficar pronta;
+5. abre o menu de jogos apenas quando o endpoint ROS estiver acessÃ­vel.
+
+NÃ£o Ã© necessÃ¡rio informar BUSID na tela. O lanÃ§ador identifica o USB pelo nome
+exibido por `usbipd list`, inclusive depois de desconectar o cabo ou reiniciar
+o Windows. Caso dois adaptadores tenham descriÃ§Ãµes indistinguÃ­veis, ajuste uma
+vez os padrÃµes `REHAB_GUIDAO_USB_MATCH` e `REHAB_PULMONARY_USB_MATCH` no
+`.env`; o fisioterapeuta continua apenas marcando os dispositivos na tela.
+
+Se o executÃ¡vel Unity for instalado fora desta pasta de trabalho, defina a
+variÃ¡vel de ambiente do Windows `REHAB_PLATFORM_ROOT` apontando para a raiz de
+`TCC-Gamified-Rehab-Plataform`. Quando o build fica dentro do repositÃ³rio Unity
+ou ao lado dele, a tela encontra o repositÃ³rio ROS automaticamente.
+
+As credenciais e configuraÃ§Ãµes especÃ­ficas da instalaÃ§Ã£o devem ficar em um
+arquivo `.env` na raiz do repositÃ³rio ROS (nunca no projeto Unity ou no Git):
+
+```dotenv
+# NecessÃ¡rio somente ao selecionar EEG Emotiv.
+EMOTIV_CLIENT_ID=...
+EMOTIV_CLIENT_SECRET=...
+
+# NecessÃ¡rio somente ao selecionar EMG Noraxon. Deve incluir os channel-id
+# reais configurados no Acquire e usar o ambiente que possui o SDK Noraxon.
+NORAXON_SENDER_COMMAND=uv run --project ..\repo_EMG_noraxon\noraxon-sdk python src\noraxon_emg\scripts\noraxon_tcp_sender.py --use-setup --channel-id "SEU_CHANNEL_ID" --host 127.0.0.1 --port 8765
+```
+
+O Emotiv Launcher/Cortex e o Noraxon Acquire continuam sendo aplicativos
+proprietÃ¡rios do Windows e precisam estar abertos e configurados antes do
+clique. O script pode ser diagnosticado fora da Unity com:
+
+```powershell
+.\scripts\Start-RehabSystem.ps1 -Devices guidao,emotiv
+```
+
+Os serviÃ§os opcionais do Compose usam os perfis `guidao`, `pulmonary`,
+`emotiv` e `noraxon`; nÃ£o Ã© mais necessÃ¡rio comentar/descomentar YAML.
+
 ## Passo a passo
 
 ### 1. Docker Desktop com backend WSL2

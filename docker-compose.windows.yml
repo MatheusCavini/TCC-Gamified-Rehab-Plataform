@@ -51,6 +51,7 @@ services:
   noraxon_tcp_receiver:
     <<: *ros-common
     container_name: noraxon_tcp_receiver
+    profiles: ["noraxon"]
     depends_on:
       - device_manager
       - signal_processing
@@ -65,6 +66,7 @@ services:
   emotiv_eeg:
     <<: *ros-common
     container_name: emotiv_eeg
+    profiles: ["emotiv"]
     depends_on:
       - device_manager
       - signal_processing
@@ -89,6 +91,7 @@ services:
   guidao_encoder:
     <<: *ros-common
     container_name: guidao_encoder
+    profiles: ["guidao"]
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0"
     command: ros2 run encoder_guidao encoder_guidao_node
@@ -96,6 +99,7 @@ services:
   guidao_controller:
     <<: *ros-common
     container_name: guidao_controller
+    profiles: ["guidao"]
     environment:
       - ROS_DOMAIN_ID=0
       - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
@@ -112,19 +116,19 @@ services:
   #     Como o Guidao, a porta serial só existe no container depois de expor o
   #     USB ao WSL2 via usbipd-win. Suba com:
   #       docker compose -f docker-compose.windows.yml --profile pulmonary up pulmonary_device
-  # pulmonary_device:
-  #   <<: *ros-common
-  #   container_name: pulmonary_device
-  #   profiles: ["pulmonary"]
-  #   depends_on:
-  #     - device_manager
-  #     - signal_processing
-  #   devices:
-  #     - "/dev/ttyUSB0:/dev/ttyUSB0"
-  #   command: >
-  #     ros2 run pulmonary_device pulmonary_device_node --ros-args
-  #     -p serial_port:=/dev/ttyUSB0
-  #     -p baud_rate:=115200
+  pulmonary_device:
+    <<: *ros-common
+    container_name: pulmonary_device
+    profiles: ["pulmonary"]
+    depends_on:
+      - device_manager
+      - signal_processing
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    command: >
+      ros2 run pulmonary_device pulmonary_device_node --ros-args
+      -p serial_port:=/dev/ttyUSB0
+      -p baud_rate:=115200
 
   # # --- Optional: mesmo nó com respiração sintética (sem hardware). Suba com:
   # #       docker compose -f docker-compose.windows.yml --profile pulmonary-sim up pulmonary_device_sim
