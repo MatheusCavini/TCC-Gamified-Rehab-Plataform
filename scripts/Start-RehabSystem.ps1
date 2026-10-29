@@ -112,10 +112,36 @@ function Test-RehabTcpEndpoint {
     } catch { return $false }
 }
 
+function Stop-PreviousNoraxonSender {
+    # Only stop our TCP sender, never the user's Noraxon Acquire application.
+    $pidFile = Join-Path $script:RepositoryRoot 'logs\noraxon-sender.pid'
+    $senderPids = @()
+    if (Test-Path $pidFile) {
+        $savedPid = Get-Content $pidFile -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($savedPid -match '^\d+$') { $senderPids += [int]$savedPid }
+    }
+
+    # Also find senders left by launcher versions that did not persist a PID.
+    try {
+        $processes = Get-CimInstance Win32_Process -ErrorAction Stop
+        $legacySenders = @($processes | Where-Object { $_.CommandLine -and $_.CommandLine -like '*noraxon_tcp_sender.py*' } | ForEach-Object { [int]$_.ProcessId })
+        $senderPids += $legacySenders
+    } catch {
+        Write-RehabStatus 4 'Nao foi possivel consultar processos Noraxon antigos; usando o PID salvo, se houver.'
+    }
+
+    foreach ($senderPid in @($senderPids | Sort-Object -Unique)) {
+        if ($senderPid -ne $PID) {
+            & taskkill.exe /PID $senderPid /T /F *> $null
+        }
+    }
+    Remove-Item -LiteralPath $pidFile -Force -ErrorAction SilentlyContinue
+}
+
 function Start-NoraxonSender {
     $command = $env:NORAXON_SENDER_COMMAND
     if ([string]::IsNullOrWhiteSpace($command)) {
-        throw 'Noraxon foi selecionado, mas NORAXON_SENDER_COMMAND nao esta definido. Configure o comando do SDK com os channel-id reais antes de iniciar.'
+        throw 'Noraxon foi selecionado, mas NORAXON_SENDER_COMMAND nao esta definido. Configure o comando do SDK antes de iniciar.'
     }
     if (-not [string]::IsNullOrWhiteSpace($env:NORAXON_SDK_PATH)) {
         # The SDK uses imports from its own repository. Preserve a pre-existing
@@ -124,8 +150,29 @@ function Start-NoraxonSender {
         if (-not [string]::IsNullOrWhiteSpace($env:PYTHONPATH)) { $pythonPath += ";$env:PYTHONPATH" }
         [Environment]::SetEnvironmentVariable('PYTHONPATH', $pythonPath, 'Process')
     }
+    # The Noraxon SDK writes Unicode symbols (for example, arrows) to stdout.
+    # The default Windows console code page may be cp1252 and crash Python while
+    # printing SDK diagnostics, before the stream starts.
+    [Environment]::SetEnvironmentVariable('PYTHONUTF8', '1', 'Process')
+    [Environment]::SetEnvironmentVariable('PYTHONIOENCODING', 'utf-8', 'Process')
+    [Environment]::SetEnvironmentVariable('PYTHONUNBUFFERED', '1', 'Process')
     Write-RehabStatus 80 'Iniciando o emissor Noraxon configurado...'
-    Start-Process -FilePath 'cmd.exe' -ArgumentList @('/c', $command) -WorkingDirectory $script:RepositoryRoot -WindowStyle Hidden | Out-Null
+    $logDirectory = Join-Path $script:RepositoryRoot 'logs'
+    New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null
+    $stdout = Join-Path $logDirectory 'noraxon-sender.log'
+    $stderr = Join-Path $logDirectory 'noraxon-sender-error.log'
+    $script:NoraxonSenderProcess = Start-Process -FilePath 'cmd.exe' `
+        -ArgumentList @('/d', '/c', $command) `
+        -WorkingDirectory $script:RepositoryRoot -WindowStyle Hidden -PassThru `
+        -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+    Set-Content -LiteralPath (Join-Path $logDirectory 'noraxon-sender.pid') `
+        -Value $script:NoraxonSenderProcess.Id -Encoding Ascii
+}
+
+function Test-NoraxonStreamReady {
+    $senderLog = Join-Path $script:RepositoryRoot 'logs\noraxon-sender.log'
+    if (-not (Test-Path $senderLog)) { return $false }
+    return [bool](Select-String -Path $senderLog -Pattern 'NORAXON_RAW_STREAM_ACTIVE' -SimpleMatch -Quiet)
 }
 
 function Invoke-EmotivCleanup {
@@ -144,6 +191,7 @@ function Invoke-EmotivCleanup {
 
 try {
     Import-RehabEnvironment
+    if ($script:SelectedDevices -contains 'noraxon') { Stop-PreviousNoraxonSender }
     Write-RehabStatus 2 'Verificando Docker Desktop...'
     Invoke-Checked 'docker' @('version', '--format', '{{.Server.Version}}') 'Docker Desktop nao esta disponivel'
 
@@ -176,14 +224,35 @@ try {
 
     Write-RehabStatus 85 'Aguardando o endpoint ROS para a Unity...'
     $deadline = (Get-Date).AddSeconds($StartupTimeoutSeconds)
+    $endpointReady = $false
+    $noraxonReady = -not ($script:SelectedDevices -contains 'noraxon')
     while ((Get-Date) -lt $deadline) {
-        if (Test-RehabTcpEndpoint) {
+        if (-not $endpointReady) { $endpointReady = Test-RehabTcpEndpoint }
+        if (-not $noraxonReady) {
+            if ($script:NoraxonSenderProcess.HasExited) {
+                $senderError = Get-Content (Join-Path $script:RepositoryRoot 'logs\noraxon-sender-error.log') -Raw -ErrorAction SilentlyContinue
+                $senderOutput = Get-Content (Join-Path $script:RepositoryRoot 'logs\noraxon-sender.log') -Raw -ErrorAction SilentlyContinue
+                throw "O emissor Noraxon encerrou antes de iniciar o streaming. Veja logs\noraxon-sender-error.log e logs\noraxon-sender.log. $senderError $senderOutput"
+            }
+            $noraxonReady = Test-NoraxonStreamReady
+            if (-not $noraxonReady) {
+                Write-RehabStatus 90 'Aguardando o Noraxon Acquire iniciar o streaming dos canais...'
+            }
+        }
+        if ($endpointReady -and $noraxonReady) {
             Write-RehabStatus 100 'Sistema pronto.'
             exit 0
         }
         Start-Sleep -Seconds 1
     }
-    throw "O endpoint ROS na porta 10000 nao ficou pronto em $StartupTimeoutSeconds segundos. Veja os logs com docker compose -f docker-compose.windows.yml logs."
+    if (-not $endpointReady) {
+        throw "O endpoint ROS na porta 10000 nao ficou pronto em $StartupTimeoutSeconds segundos. Veja os logs com docker compose -f docker-compose.windows.yml logs."
+    }
+    if (-not $noraxonReady) {
+        $senderError = Get-Content (Join-Path $script:RepositoryRoot 'logs\noraxon-sender-error.log') -Raw -ErrorAction SilentlyContinue
+        $senderOutput = Get-Content (Join-Path $script:RepositoryRoot 'logs\noraxon-sender.log') -Raw -ErrorAction SilentlyContinue
+        throw "O Noraxon Acquire nao iniciou o streaming dos sensores em $StartupTimeoutSeconds segundos. Confira o perfil/canais e os channel-id configurados no NORAXON_SENDER_COMMAND. logs\noraxon-sender-error.log: $senderError logs\noraxon-sender.log: $senderOutput"
+    }
 } catch {
     Write-Error $_.Exception.Message
     exit 1

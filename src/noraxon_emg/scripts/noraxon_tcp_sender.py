@@ -19,11 +19,17 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--channel-id', action='append', default=[],
                         help='EMG channel ID; repeat once for each channel, in desired order')
+    parser.add_argument('--channel-line', action='append', default=[],
+                        help='stable EMG line tag (for example noraxon_g3_23857); repeat per channel')
     parser.add_argument('--host', default='127.0.0.1',
                         help='Windows host address for the published Docker port')
     parser.add_argument('--port', type=int, default=8765)
     parser.add_argument('--desired-frequency-hz', type=float, default=2000.0)
     parser.add_argument('--transfer-interval-s', type=float, default=0.005)
+    parser.add_argument('--device-startup-delay-s', type=float, default=3.5,
+                        help='allow the Acquire receiver to settle after channel configuration')
+    parser.add_argument('--connect-timeout-s', type=float, default=120.0,
+                        help='keep retrying the Docker receiver for this long')
     parser.add_argument('--dll-path', default=None)
     parser.add_argument('--use-setup', action='store_true',
                         help='let the SDK choose/configure the Acquire profile')
@@ -33,6 +39,59 @@ def parse_args():
     parser.add_argument('--simulation-rate-hz', type=float, default=1000.0)
     parser.add_argument('--simulation-block-period-s', type=float, default=0.02)
     return parser.parse_args()
+
+
+def connect_with_retry(host, port, timeout_s):
+    """Wait for the Docker receiver, which may still be starting up."""
+    deadline = time.monotonic() + max(0.0, timeout_s)
+    last_error = None
+    while True:
+        try:
+            sock = socket.create_connection((host, port), timeout=3.0)
+            sock.settimeout(None)
+            return sock
+        except OSError as error:
+            last_error = error
+            if time.monotonic() >= deadline:
+                raise ConnectionError(
+                    f'Could not connect to Noraxon receiver at {host}:{port} '
+                    f'within {timeout_s:g} seconds: {last_error}') from error
+            print(f'Noraxon receiver not ready at {host}:{port}; retrying...',
+                  file=sys.stderr, flush=True)
+            time.sleep(1.0)
+
+
+def resolve_channel_lines(device, sdk, requested_lines):
+    """Resolve stable line tags to full IDs from the currently selected device."""
+    from noraxon_sdk.core.others import get_component_interface
+    from noraxon_sdk.core.setup import component_filter
+
+    requested = [
+        line if line.startswith('line.') else f'line.{line}'
+        for line in requested_lines
+    ]
+    if len(set(requested)) != len(requested):
+        raise ValueError(f'Duplicate --channel-line value(s): {requested}')
+
+    found = {}
+    with component_filter(device, 'type.input.analog'):
+        interface = get_component_interface(sdk, 'analog')
+        for index in range(device.GetComponentCount()):
+            component = device.GetComponent(index)
+            channel = component.QueryInterface(interface)
+            channel_id = str(channel.GetId())
+            tags = channel_id.split(';')
+            line_tags = [tag for tag in tags if tag.startswith('line.')]
+            if ('type.input.analog.emg' in tags and len(line_tags) == 1
+                    and line_tags[0] in requested):
+                found[line_tags[0]] = channel_id
+
+    missing = [line for line in requested if line not in found]
+    if missing:
+        raise RuntimeError(
+            f'Requested EMG line(s) not found after Acquire setup: {missing}. '
+            'Check the channel-line values against the manual SDK channel listing.')
+    return [found[line] for line in requested]
 
 
 def send_frame(sock, payload):
@@ -74,11 +133,12 @@ def run_simulation(sock, args):
 
 def main():
     args = parse_args()
-    if not args.simulate and not args.channel_id:
-        raise SystemExit('Pass at least one --channel-id, or use --simulate to test TCP.')
+    if not args.simulate and not args.channel_id and not args.channel_line:
+        raise SystemExit('Pass --channel-id or --channel-line for each channel, or use --simulate.')
+    if args.channel_id and args.channel_line:
+        raise SystemExit('Use either --channel-id or --channel-line, not both.')
     if args.simulate:
-        with socket.create_connection((args.host, args.port), timeout=10.0) as sock:
-            sock.settimeout(None)
+        with connect_with_retry(args.host, args.port, args.connect_timeout_s) as sock:
             print(f'Connected to Docker TCP receiver at {args.host}:{args.port}.')
             run_simulation(sock, args)
         return
@@ -94,21 +154,28 @@ def main():
             'noraxon_sdk, pywin32 and comtypes in the selected Windows environment. '
             f'Import error: {error}') from error
 
-    sock = socket.create_connection((args.host, args.port), timeout=10.0)
-    sock.settimeout(None)
+    sock = connect_with_retry(args.host, args.port, args.connect_timeout_s)
     print(f'Connected to Docker TCP receiver at {args.host}:{args.port}.')
     pythoncom.CoInitialize()
     try:
         sdk, device_manager, device = setup_sdk(
             use_setup=args.use_setup, dll_path=args.dll_path)
+        channel_ids = args.channel_id or resolve_channel_lines(
+            device, sdk, args.channel_line)
+        print(f'Selected {len(channel_ids)} configured EMG channel(s).')
         channels = select_and_configure_channels(
-            device=device, sdk=sdk, channel_ids=args.channel_id,
+            device=device, sdk=sdk, channel_ids=channel_ids,
             desired_frequency=args.desired_frequency_hz)
         if not channels:
             raise RuntimeError('The SDK did not configure any requested channels.')
         if any(channel.component_type != 'analog' or 'analog.emg' not in channel.id
                for channel in channels):
             raise ValueError('Every --channel-id must identify an analog EMG channel.')
+
+        if args.device_startup_delay_s > 0:
+            print(f'Waiting {args.device_startup_delay_s:g} s for the Ultium receiver... ',
+                  flush=True)
+            time.sleep(args.device_startup_delay_s)
 
         with activated_device(device=device, device_manager=device_manager):
             probe_active_channels(channels=channels)
@@ -128,9 +195,11 @@ def main():
                 'units': 'uV',
             })
             print(f'Acquire stream active: {len(channels)} EMG channels at '
-                  f'{sample_rate_hz:g} Hz. Sending batches; press Ctrl+C to stop.')
+                  f'{sample_rate_hz:g} Hz. Sending batches; press Ctrl+C to stop.',
+                  flush=True)
             device.Record()
             pending = [deque() for _ in channels]
+            first_block_sent = False
             try:
                 while True:
                     state = device.Transfer()
@@ -146,6 +215,9 @@ def main():
                                 for index in range(len(pending))
                             ]
                             send_frame(sock, {'kind': 'raw', 'channels': channel_batches})
+                            if not first_block_sent:
+                                first_block_sent = True
+                                print('NORAXON_RAW_STREAM_ACTIVE', flush=True)
                     elif state not in (0, 2):
                         raise RuntimeError(f'Unexpected Noraxon Transfer() state: {state}')
                     if state in (0, 2):

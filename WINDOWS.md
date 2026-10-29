@@ -52,7 +52,7 @@ EMOTIV_CLIENT_SECRET=...
 
 # NecessÃ¡rio somente ao selecionar EMG Noraxon. Deve incluir os channel-id
 # reais configurados no Acquire e usar o ambiente que possui o SDK Noraxon.
-NORAXON_SENDER_COMMAND=uv run --project ..\repo_EMG_noraxon\noraxon-sdk python src\noraxon_emg\scripts\noraxon_tcp_sender.py --use-setup --channel-id "SEU_CHANNEL_ID" --host 127.0.0.1 --port 8765
+NORAXON_SENDER_COMMAND=uv run --project ..\repo_EMG_noraxon\noraxon-sdk python src\noraxon_emg\scripts\noraxon_tcp_sender.py --use-setup --channel-line noraxon_g3_23857 --channel-line noraxon_g3_23858 --host 127.0.0.1 --port 8765
 ```
 
 O Emotiv Launcher/Cortex e o Noraxon Acquire continuam sendo aplicativos
