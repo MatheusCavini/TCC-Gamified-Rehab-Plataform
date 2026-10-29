@@ -117,6 +117,13 @@ function Start-NoraxonSender {
     if ([string]::IsNullOrWhiteSpace($command)) {
         throw 'Noraxon foi selecionado, mas NORAXON_SENDER_COMMAND nao esta definido. Configure o comando do SDK com os channel-id reais antes de iniciar.'
     }
+    if (-not [string]::IsNullOrWhiteSpace($env:NORAXON_SDK_PATH)) {
+        # The SDK uses imports from its own repository. Preserve a pre-existing
+        # PYTHONPATH while ensuring the sender child process can import it.
+        $pythonPath = $env:NORAXON_SDK_PATH
+        if (-not [string]::IsNullOrWhiteSpace($env:PYTHONPATH)) { $pythonPath += ";$env:PYTHONPATH" }
+        [Environment]::SetEnvironmentVariable('PYTHONPATH', $pythonPath, 'Process')
+    }
     Write-RehabStatus 80 'Iniciando o emissor Noraxon configurado...'
     Start-Process -FilePath 'cmd.exe' -ArgumentList @('/c', $command) -WorkingDirectory $script:RepositoryRoot -WindowStyle Hidden | Out-Null
 }
