@@ -422,19 +422,36 @@ function Wait-NoraxonReceiver {
 }
 
 function Start-NoraxonSender {
-    $command = $env:NORAXON_SENDER_COMMAND
-    if ([string]::IsNullOrWhiteSpace($command)) {
-        throw 'Noraxon foi selecionado, mas NORAXON_SENDER_COMMAND nao esta definido. Configure o comando do SDK com os channel-id reais antes de iniciar.'
-    }
-    if (-not [string]::IsNullOrWhiteSpace($env:NORAXON_SDK_PATH)) {
-        # The SDK uses imports from its own repository. Preserve a pre-existing
-        # PYTHONPATH while ensuring the sender child process can import it.
-        $pythonPath = $env:NORAXON_SDK_PATH
-        if (-not [string]::IsNullOrWhiteSpace($env:PYTHONPATH)) { $pythonPath += ";$env:PYTHONPATH" }
-        [Environment]::SetEnvironmentVariable('PYTHONPATH', $pythonPath, 'Process')
-    }
-    Write-RehabStatus 80 'Iniciando o emissor Noraxon configurado...'
-    Start-Process -FilePath 'cmd.exe' -ArgumentList @('/c', $command) -WorkingDirectory $script:RepositoryRoot -WindowStyle Hidden | Out-Null
+    param($Config)
+    # Same environment as the manual procedure: the SDK repository on PYTHONPATH.
+    $pythonPath = $Config.SdkPath
+    if (-not [string]::IsNullOrWhiteSpace($env:PYTHONPATH)) { $pythonPath += ";$env:PYTHONPATH" }
+    $env:PYTHONPATH = $pythonPath
+    $env:PYTHONUNBUFFERED = '1'
+    $env:PYTHONIOENCODING = 'utf-8'
+
+    $senderScript = Join-Path $script:RepositoryRoot 'src\noraxon_emg\scripts\noraxon_tcp_sender.py'
+    $arguments = @('run', '--project', $Config.SdkPath, 'python', '-u', $senderScript)
+    if ($Config.UseSetup) { $arguments += '--use-setup' }
+    foreach ($id in $Config.ChannelIds) { $arguments += @('--channel-id', $id) }
+    $arguments += @('--host', '127.0.0.1', '--port', '8765', '--connect-timeout-s', '30')
+
+    New-Item -ItemType Directory -Force -Path (Split-Path $script:NoraxonLog) | Out-Null
+    Remove-Item $script:NoraxonLog -Force -ErrorAction SilentlyContinue
+
+    # Every argument is quoted explicitly and the whole line is wrapped for
+    # `cmd /s /c`, so the channel IDs reach Python byte-for-byte (the previous
+    # NORAXON_SENDER_COMMAND string was re-parsed by cmd.exe, where single
+    # quotes are not quotes and & splits the command). cmd.exe is kept only to
+    # redirect all output, including uv's own errors, to logs\noraxon_sender.log.
+    # Start-Process without -Redirect* uses ShellExecute, so the long-lived
+    # sender does not inherit Unity's stdout/stderr pipes.
+    $commandLine = (@($Config.Uv) + $arguments | ForEach-Object { ConvertTo-CommandLineArgument $_ }) -join ' '
+    $cmdArguments = '/d /s /c "' + $commandLine + ' > ' + (ConvertTo-CommandLineArgument $script:NoraxonLog) + ' 2>&1"'
+
+    Write-RehabStatus 78 'Iniciando o emissor Noraxon...'
+    Write-RehabLog "Noraxon: $($Config.ChannelIds.Count) canal(is), --use-setup=$($Config.UseSetup), log em logs\noraxon_sender.log"
+    return Start-Process -FilePath $env:ComSpec -ArgumentList $cmdArguments -WorkingDirectory $script:RepositoryRoot -WindowStyle Hidden -PassThru
 }
 
 function Read-NoraxonLog {
@@ -498,6 +515,9 @@ function Wait-NoraxonStream {
 try {
     Update-ProcessPath
     Import-RehabEnvironment
+    $noraxonConfig = $null
+    if (-not $Shutdown -and $script:SelectedDevices -contains 'noraxon') { $noraxonConfig = Get-NoraxonConfiguration }
+
     Write-RehabStatus 2 'Verificando Docker Desktop...'
     Invoke-Checked 'docker' @('version', '--format', '{{.Server.Version}}') 'Docker Desktop nao esta disponivel'
 
@@ -548,18 +568,19 @@ try {
     foreach ($device in $script:SelectedDevices) { $compose += @('--profile', $device) }
     Invoke-Checked 'docker' ($compose + @('up', '-d', '--remove-orphans')) 'Falha ao iniciar os containers'
 
-    if ($script:SelectedDevices -contains 'noraxon') { Start-NoraxonSender }
+    Wait-RosEndpoint
 
-    Write-RehabStatus 85 'Aguardando o endpoint ROS para a Unity...'
-    $deadline = (Get-Date).AddSeconds($StartupTimeoutSeconds)
-    while ((Get-Date) -lt $deadline) {
-        if (Test-RehabTcpEndpoint) {
-            Write-RehabStatus 100 'Sistema pronto.'
-            exit 0
-        }
-        Start-Sleep -Seconds 1
+    if ($noraxonConfig) {
+        # The sender is started only once the receiver is really listening, and
+        # the menu opens only after EMG data has reached ROS.
+        Wait-NoraxonReceiver
+        $sender = Start-NoraxonSender $noraxonConfig
+        Wait-NoraxonStream $sender $noraxonConfig
+        Write-RehabStatus 97 'Noraxon transmitindo EMG.'
     }
-    throw "O endpoint ROS na porta 10000 nao ficou pronto em $StartupTimeoutSeconds segundos. Veja os logs com docker compose -f docker-compose.windows.yml logs."
+
+    Write-RehabStatus 100 'Sistema pronto.'
+    exit 0
 } catch {
     Write-RehabFailure $_.Exception.Message
     exit 1
