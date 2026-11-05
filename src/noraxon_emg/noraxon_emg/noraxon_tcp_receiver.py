@@ -28,6 +28,7 @@ class NoraxonTcpReceiver(Node):
         self.stop_event = threading.Event()
         self.metadata = None
         self.connected = False
+        self.first_raw_block_logged = False
 
         prefix = f'/device/{self.device_id}'
         self.info_pub = self.create_publisher(String, '/device/info', 10)
@@ -152,6 +153,9 @@ class NoraxonTcpReceiver(Node):
                 msg.data = [float(value) for channel in channels for value in channel]
                 self.raw_pub.publish(msg)
                 self.alias_pub.publish(msg)
+                if not self.first_raw_block_logged:
+                    self.first_raw_block_logged = True
+                    self.get_logger().info('Noraxon raw EMG data received')
             elif kind == 'connection':
                 self.connected = bool(event.get('connected'))
                 message = str(event.get('message', ''))

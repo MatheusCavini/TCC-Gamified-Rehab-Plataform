@@ -18,6 +18,74 @@ rodar a stack no Windows. Use `docker-compose.windows.yml` em vez de
   container Linux enxergar o Arduino, é preciso "emprestar" o dispositivo USB
   do Windows para dentro do WSL2 usando o **usbipd-win**.
 
+## Inicialização pela tela do Unity (recomendado para uso clínico)
+
+O build Windows da Unity abre primeiro a tela **Preparar sessão de
+reabilitação**. Selecione os dispositivos que serão usados e clique em
+**INICIAR SISTEMA**. Ela chama `scripts/Start-RehabSystem.ps1`, que:
+
+1. encerra tudo o que restou de execuções anteriores: containers de todos os
+   perfis, containers com os mesmos nomes ou nas portas 10000/8765 vindos de
+   outro projeto Compose (ex.: um clone no WSL), e emissores Noraxon ainda
+   abertos; se alguma porta continuar ocupada, informa qual programa a usa;
+2. compartilha/conecta ao WSL2 os USBs selecionados (pedindo UAC apenas quando
+   o `usbipd bind` ainda não foi feito);
+3. reutiliza a imagem Docker existente, ou a constrói na primeira execução;
+4. fecha sessões Emotiv abandonadas antes de subir o nó EEG;
+5. sobe somente os perfis ROS escolhidos e espera a porta 10000 ficar pronta;
+6. abre o menu de jogos apenas quando o endpoint ROS estiver acessível (e,
+   com Noraxon, quando o primeiro bloco EMG tiver chegado ao ROS).
+
+Ao fechar a Unity (ou sair do Play no Editor) a plataforma é encerrada com
+`.\scripts\Start-RehabSystem.ps1 -Shutdown`, que também pode ser rodado à mão.
+
+Não é necessário informar BUSID na tela. O lançador identifica o USB pelo nome
+exibido por `usbipd list`, inclusive depois de desconectar o cabo ou reiniciar
+o Windows. Caso dois adaptadores tenham descrições indistinguíveis, ajuste uma
+vez os padrões `REHAB_GUIDAO_USB_MATCH` e `REHAB_PULMONARY_USB_MATCH` no
+`.env`; o fisioterapeuta continua apenas marcando os dispositivos na tela.
+
+Se o executável Unity for instalado fora desta pasta de trabalho, defina a
+variável de ambiente do Windows `REHAB_PLATFORM_ROOT` apontando para a raiz de
+`TCC-Gamified-Rehab-Plataform`. Quando o build fica dentro do repositório Unity
+ou ao lado dele, a tela encontra o repositório ROS automaticamente.
+
+As credenciais e configurações específicas da instalação devem ficar em um
+arquivo `.env` na raiz do repositório ROS (nunca no projeto Unity ou no Git).
+Copie `.env.example` e preencha somente o que estiver instalado no PC:
+
+```dotenv
+# Necessário somente ao selecionar EEG Emotiv.
+EMOTIV_CLIENT_ID=...
+EMOTIV_CLIENT_SECRET=...
+
+# Necessário somente ao selecionar EMG Noraxon. Um NORAXON_CHANNEL_ID_n por
+# canal EMG, numerados a partir de 1, com aspas simples e o ID exatamente como
+# o Acquire o lista (barras invertidas simples, sem escapes).
+NORAXON_SDK_PATH='C:\Users\voce\repo_EMG_noraxon\noraxon-sdk'
+NORAXON_CHANNEL_ID_1='line.xxx;type.input.analog.emg;device.xxx;'
+```
+
+O lançador monta e executa por conta própria o mesmo comando do procedimento
+manual (`uv run --project <SDK> python ...noraxon_tcp_sender.py --use-setup
+--channel-id ...`), com o SDK no `PYTHONPATH`. Ele só inicia o emissor depois
+que o receptor Noraxon do Docker está escutando, e só abre o menu de jogos
+depois que o primeiro bloco EMG chega ao ROS. Com `--use-setup` o SDK abre a
+janela de configuração de hardware do Noraxon: ela precisa ser confirmada
+durante a inicialização. A saída completa do emissor fica em
+`logs\noraxon_sender.log`.
+
+O Emotiv Launcher/Cortex e o Noraxon Acquire continuam sendo aplicativos
+proprietários do Windows e precisam estar abertos e configurados antes do
+clique. O script pode ser diagnosticado fora da Unity com:
+
+```powershell
+.\scripts\Start-RehabSystem.ps1 -Devices guidao,emotiv
+```
+
+Os serviços opcionais do Compose usam os perfis `guidao`, `pulmonary`,
+`emotiv` e `noraxon`; não é mais necessário comentar/descomentar YAML.
+
 ## Passo a passo
 
 ### 1. Docker Desktop com backend WSL2
@@ -129,7 +197,16 @@ Deve aparecer o handshake de conexão assim que a Unity der Play. No console da
 Unity, `"Subscribed to /hal/device_state..."` sem exceptions de socket.
 
 
-EDIT ERIC: Para interromper e desligar, Control+C no terminal que está rodando o docker e depois fazer docker compose down -v 
+Para interromper e desligar: Control+C no terminal que está rodando o docker e
+depois encerre **todos os perfis** (um `docker compose down` simples só remove
+os serviços sem perfil e deixa receptor Noraxon, Emotiv, Guidão e pulmonar
+rodando):
+
+```powershell
+.\scripts\Start-RehabSystem.ps1 -Shutdown
+# ou, manualmente:
+docker compose -f docker-compose.windows.yml --profile guidao --profile pulmonary --profile emotiv --profile noraxon down -v
+```
 
 ## Troubleshooting específico do Windows
 
