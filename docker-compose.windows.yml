@@ -112,7 +112,7 @@ services:
       - guidao_encoder
     command: >
       ros2 run controller_guidao controller_guidao_node --ros-args
-      -p use_eeg_modulation:=false
+      -p use_eeg_modulation:=true
       -p use_emg_modulation:=true
       -p telemetry_udp_host:=host.docker.internal
       -p telemetry_udp_port:=8765

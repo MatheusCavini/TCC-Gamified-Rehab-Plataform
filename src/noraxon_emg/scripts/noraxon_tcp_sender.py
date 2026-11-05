@@ -25,8 +25,6 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--channel-id', action='append', default=[],
                         help='EMG channel ID; repeat once for each channel, in desired order')
-    parser.add_argument('--channel-line', action='append', default=[],
-                        help='stable EMG line tag (for example noraxon_g3_23857); repeat per channel')
     parser.add_argument('--host', default='127.0.0.1',
                         help='Windows host address for the published Docker port')
     parser.add_argument('--port', type=int, default=8765)
@@ -34,10 +32,6 @@ def parse_args():
                         help='how long to keep retrying until the Docker receiver accepts')
     parser.add_argument('--desired-frequency-hz', type=float, default=2000.0)
     parser.add_argument('--transfer-interval-s', type=float, default=0.005)
-    parser.add_argument('--device-startup-delay-s', type=float, default=3.5,
-                        help='allow the Acquire receiver to settle after channel configuration')
-    parser.add_argument('--connect-timeout-s', type=float, default=120.0,
-                        help='keep retrying the Docker receiver for this long')
     parser.add_argument('--dll-path', default=None)
     parser.add_argument('--use-setup', action='store_true',
                         help='let the SDK choose/configure the Acquire profile '
@@ -169,11 +163,8 @@ def run_acquire(args):
             status('setup', 'Initializing the Noraxon SDK with the current Acquire device...')
         sdk, device_manager, device = setup_sdk(
             use_setup=args.use_setup, dll_path=args.dll_path)
-        channel_ids = args.channel_id or resolve_channel_lines(
-            device, sdk, args.channel_line)
-        print(f'Selected {len(channel_ids)} configured EMG channel(s).')
         channels = select_and_configure_channels(
-            device=device, sdk=sdk, channel_ids=channel_ids,
+            device=device, sdk=sdk, channel_ids=args.channel_id,
             desired_frequency=args.desired_frequency_hz)
         if not channels:
             raise RuntimeError(
@@ -270,5 +261,12 @@ if __name__ == '__main__':
         raise
     except Exception as error:  # noqa: BLE001 - report every failure to the launcher
         traceback.print_exc()
-        print(f'NORAXON_ERROR {type(error).__name__}: {error}', flush=True)
+        # The SDK attaches the device manager's own message (e.g. "Could not
+        # connect to Ultium receiver ...") as an exception note, which str()
+        # omits; COM errors themselves only say "unspecified error".
+        notes = ' '.join(str(note) for note in getattr(error, '__notes__', []) or [])
+        message = f'{type(error).__name__}: {error}'
+        if notes:
+            message += f' | {notes}'
+        print(f'NORAXON_ERROR {message}', flush=True)
         sys.exit(1)

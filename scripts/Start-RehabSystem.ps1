@@ -230,7 +230,9 @@ function Resolve-UsbDevice {
     param([string] $Label, [string] $MatchPattern)
     # Note: never name a variable $matches - it is PowerShell's automatic
     # $Matches and is overwritten by every -match inside Where-Object.
-    $candidates = @(Get-UsbipdDevices | Where-Object { $_ -match $MatchPattern })
+    # The Noraxon Ultium receiver (16d0:069e) is used by Acquire on Windows and
+    # must never be shared with WSL, whatever the configured pattern matches.
+    $candidates = @(Get-UsbipdDevices | Where-Object { $_ -match $MatchPattern -and $_ -notmatch '16d0:069e' })
     if ($candidates.Count -eq 0) {
         throw "Nao encontrei o USB do $Label. Conecte-o e confira o padrao REHAB_$($Label.ToUpper())_USB_MATCH no .env."
     }
@@ -324,9 +326,6 @@ function Get-NoraxonConfiguration {
         }
         if ($id.StartsWith('"') -or $id.StartsWith("'") -or $id.EndsWith('"') -or $id.EndsWith("'")) {
             throw "O canal Noraxon '$id' tem aspas sobrando. Use uma unica par de aspas simples em volta do valor no .env."
-        }
-        if ($id.Contains('\\')) {
-            Write-RehabLog "AVISO: o canal Noraxon '$id' contem barras invertidas duplicadas. O .env nao processa escapes: copie o ID exatamente como o Acquire o lista."
         }
     }
 
@@ -495,7 +494,11 @@ function Wait-NoraxonStream {
             if ((Get-ContainerLog 'noraxon_tcp_receiver') -match 'Noraxon stream metadata received') { return }
         }
         if ($Process.HasExited) {
-            throw "O emissor Noraxon encerrou: $(Get-NoraxonFailureSummary)"
+            $summary = Get-NoraxonFailureSummary
+            if ($summary -match 'Could not connect to Ultium receiver') {
+                $summary += ' -> O receptor Ultium esta ocupado ou inacessivel: feche o Noraxon Acquire e emissores antigos, confira em usbipd list que o 16d0:069e esta Not shared e reconecte o receptor USB.'
+            }
+            throw "O emissor Noraxon encerrou: $summary"
         }
         Start-Sleep -Milliseconds 500
     }
@@ -545,11 +548,19 @@ try {
         if ([string]::IsNullOrWhiteSpace($env:EMOTIV_CLIENT_ID) -or [string]::IsNullOrWhiteSpace($env:EMOTIV_CLIENT_SECRET)) {
             throw 'Emotiv foi selecionado, mas EMOTIV_CLIENT_ID e EMOTIV_CLIENT_SECRET nao estao definidos.'
         }
-        $python = if ($env:EMOTIV_PYTHON) { $env:EMOTIV_PYTHON } else { 'py' }
-        $emotivArguments = if ($env:EMOTIV_PYTHON) {
-            @((Join-Path $script:RepositoryRoot 'emotiv_cleanup.py'), '--client-id', $env:EMOTIV_CLIENT_ID, '--client-secret', $env:EMOTIV_CLIENT_SECRET)
+        $pythonScript = Join-Path $script:RepositoryRoot 'emotiv_cleanup.py'
+        if (-not [string]::IsNullOrWhiteSpace($env:EMOTIV_PYTHON)) {
+            $python = $env:EMOTIV_PYTHON
+            if (-not (Test-Path $python)) { throw "EMOTIV_PYTHON nao existe: $python" }
+            $emotivArguments = @($pythonScript, '--client-id', $env:EMOTIV_CLIENT_ID, '--client-secret', $env:EMOTIV_CLIENT_SECRET)
+        } elseif (Get-Command 'py' -CommandType Application -ErrorAction SilentlyContinue) {
+            $python = 'py'
+            $emotivArguments = @('-3', $pythonScript, '--client-id', $env:EMOTIV_CLIENT_ID, '--client-secret', $env:EMOTIV_CLIENT_SECRET)
+        } elseif (Get-Command 'python' -CommandType Application -ErrorAction SilentlyContinue) {
+            $python = 'python'
+            $emotivArguments = @($pythonScript, '--client-id', $env:EMOTIV_CLIENT_ID, '--client-secret', $env:EMOTIV_CLIENT_SECRET)
         } else {
-            @('-3', (Join-Path $script:RepositoryRoot 'emotiv_cleanup.py'), '--client-id', $env:EMOTIV_CLIENT_ID, '--client-secret', $env:EMOTIV_CLIENT_SECRET)
+            throw 'Python nao encontrado. Instale Python 3 ou defina EMOTIV_PYTHON no .env com o caminho completo do python.exe.'
         }
         Write-RehabStatus 25 'Limpando sessoes antigas do Emotiv...'
         Invoke-Checked $python $emotivArguments 'A limpeza de sessoes do Emotiv falhou. Confirme que o EMOTIV Launcher/Cortex esta aberto'
