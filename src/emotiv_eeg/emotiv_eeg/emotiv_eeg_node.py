@@ -135,6 +135,8 @@ class EmotivEegNode(Node):
             'units': ['score_0_to_1', 'score_0_to_1', 'score_0_to_1'],
             'raw_fields': list(METRIC_FIELDS),
             'raw_topic': f'/device/{self.device_id}/raw',
+            'eeg_topic': f'/device/{self.device_id}/eeg',
+            'eeg_schema_topic': f'/device/{self.device_id}/eeg_schema',
         })))
 
         # Device 2: Mental Commands

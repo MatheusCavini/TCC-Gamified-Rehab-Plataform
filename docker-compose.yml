@@ -22,6 +22,44 @@ x-ros-common: &ros-common
 
 services:
 
+  # Banco local para sessões e métricas do protótipo.
+  postgres:
+    image: postgres:16-alpine
+    container_name: rehab_postgres
+    environment:
+      POSTGRES_DB: rehab
+      POSTGRES_USER: rehab
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rehab -d rehab"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  data_store:
+    <<: *ros-common
+    container_name: rehab_data_store
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ROS_DOMAIN_ID: 0
+      RMW_IMPLEMENTATION: rmw_fastrtps_cpp
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      POSTGRES_DB: rehab
+      POSTGRES_USER: rehab
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}
+    volumes:
+      - ./data/sessions:/data/sessions
+    command: ros2 run rehab_data_store rehab_data_store
+
   # --- Terminal 1 (ex-Terminal 2): descoberta/config ativa de dispositivos HAL ---
   device_manager:
     <<: *ros-common
@@ -110,3 +148,6 @@ services:
       - device_manager
       - signal_processing
     command: ros2 run pulmonary_device pulmonary_device_node --ros-args -p simulate:=true
+
+volumes:
+  postgres_data:

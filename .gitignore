@@ -3,5 +3,7 @@
 /log
 /logs
 /firmware
+/data/
+/.env
+*.dump
 *.vscode
-.env

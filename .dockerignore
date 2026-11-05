@@ -12,6 +12,9 @@ firmware/
 .git/
 .gitignore
 rosgraph.png
+.env
+data/
+*.dump
 
 # Python/IDE
 __pycache__/
