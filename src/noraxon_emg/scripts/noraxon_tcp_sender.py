@@ -3,6 +3,10 @@
 
 This script deliberately has no ROS dependency. Run it in the Windows Python
 environment that can import the Noraxon SDK and Windows COM packages.
+
+Lines starting with ``NORAXON_STATUS`` / ``NORAXON_ERROR`` are a stable,
+machine-readable channel consumed by scripts/Start-RehabSystem.ps1. Keep them
+unchanged when editing the human-readable messages.
 """
 
 import argparse
@@ -10,9 +14,11 @@ from collections import deque
 import json
 import math
 import random
+import select
 import socket
 import sys
 import time
+import traceback
 
 
 def parse_args():
@@ -24,6 +30,8 @@ def parse_args():
     parser.add_argument('--host', default='127.0.0.1',
                         help='Windows host address for the published Docker port')
     parser.add_argument('--port', type=int, default=8765)
+    parser.add_argument('--connect-timeout-s', type=float, default=30.0,
+                        help='how long to keep retrying until the Docker receiver accepts')
     parser.add_argument('--desired-frequency-hz', type=float, default=2000.0)
     parser.add_argument('--transfer-interval-s', type=float, default=0.005)
     parser.add_argument('--device-startup-delay-s', type=float, default=3.5,
@@ -32,7 +40,8 @@ def parse_args():
                         help='keep retrying the Docker receiver for this long')
     parser.add_argument('--dll-path', default=None)
     parser.add_argument('--use-setup', action='store_true',
-                        help='let the SDK choose/configure the Acquire profile')
+                        help='let the SDK choose/configure the Acquire profile '
+                             '(opens the Noraxon hardware setup dialog)')
     parser.add_argument('--simulate', action='store_true',
                         help='send synthetic TCP frames; does not import the Noraxon SDK')
     parser.add_argument('--simulation-channels', type=int, default=4)
@@ -41,62 +50,60 @@ def parse_args():
     return parser.parse_args()
 
 
-def connect_with_retry(host, port, timeout_s):
-    """Wait for the Docker receiver, which may still be starting up."""
-    deadline = time.monotonic() + max(0.0, timeout_s)
-    last_error = None
-    while True:
-        try:
-            sock = socket.create_connection((host, port), timeout=3.0)
-            sock.settimeout(None)
-            return sock
-        except OSError as error:
-            last_error = error
-            if time.monotonic() >= deadline:
-                raise ConnectionError(
-                    f'Could not connect to Noraxon receiver at {host}:{port} '
-                    f'within {timeout_s:g} seconds: {last_error}') from error
-            print(f'Noraxon receiver not ready at {host}:{port}; retrying...',
-                  file=sys.stderr, flush=True)
-            time.sleep(1.0)
-
-
-def resolve_channel_lines(device, sdk, requested_lines):
-    """Resolve stable line tags to full IDs from the currently selected device."""
-    from noraxon_sdk.core.others import get_component_interface
-    from noraxon_sdk.core.setup import component_filter
-
-    requested = [
-        line if line.startswith('line.') else f'line.{line}'
-        for line in requested_lines
-    ]
-    if len(set(requested)) != len(requested):
-        raise ValueError(f'Duplicate --channel-line value(s): {requested}')
-
-    found = {}
-    with component_filter(device, 'type.input.analog'):
-        interface = get_component_interface(sdk, 'analog')
-        for index in range(device.GetComponentCount()):
-            component = device.GetComponent(index)
-            channel = component.QueryInterface(interface)
-            channel_id = str(channel.GetId())
-            tags = channel_id.split(';')
-            line_tags = [tag for tag in tags if tag.startswith('line.')]
-            if ('type.input.analog.emg' in tags and len(line_tags) == 1
-                    and line_tags[0] in requested):
-                found[line_tags[0]] = channel_id
-
-    missing = [line for line in requested if line not in found]
-    if missing:
-        raise RuntimeError(
-            f'Requested EMG line(s) not found after Acquire setup: {missing}. '
-            'Check the channel-line values against the manual SDK channel listing.')
-    return [found[line] for line in requested]
+def status(code, message):
+    """Emit a launcher-readable status line followed by a human message."""
+    print(f'NORAXON_STATUS {code} {message}', flush=True)
 
 
 def send_frame(sock, payload):
     encoded = json.dumps(payload, separators=(',', ':'), allow_nan=False).encode('utf-8')
     sock.sendall(encoded + b'\n')
+
+
+def peer_closed(sock):
+    """Return True when the receiver side has closed the TCP connection.
+
+    The receiver never sends data, so a readable socket means EOF or reset.
+    """
+    try:
+        readable, _, _ = select.select([sock], [], [], 0)
+        if not readable:
+            return False
+        return sock.recv(1, socket.MSG_PEEK) == b''
+    except OSError:
+        return True
+
+
+def connect_to_receiver(host, port, timeout_s):
+    """Connect to the Docker receiver, retrying until it really accepts.
+
+    Docker Desktop's port proxy accepts connections on the Windows side even
+    while nothing is listening inside the container yet, and then drops them.
+    A plain create_connection() therefore "succeeds" too early, so each attempt
+    is confirmed by checking that the peer did not immediately close it.
+    """
+    deadline = time.monotonic() + max(0.0, timeout_s)
+    last_error = 'no attempt made'
+    while True:
+        sock = None
+        try:
+            sock = socket.create_connection((host, port), timeout=5.0)
+            sock.settimeout(None)
+            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            time.sleep(0.5)
+            if not peer_closed(sock):
+                status('connected', f'Connected to Docker TCP receiver at {host}:{port}.')
+                return sock
+            last_error = 'connection accepted by Docker but closed by the container'
+        except OSError as error:
+            last_error = str(error)
+        if sock is not None:
+            sock.close()
+        if time.monotonic() >= deadline:
+            raise ConnectionError(
+                f'Docker receiver at {host}:{port} is not accepting connections '
+                f'({last_error}). Is the noraxon_tcp_receiver container running?')
+        time.sleep(1.0)
 
 
 def run_simulation(sock, args):
@@ -113,9 +120,10 @@ def run_simulation(sock, args):
         'sample_rate_hz': sample_rate,
         'units': 'uV',
     })
-    print(f'Sending synthetic TCP EMG: {channel_count} channels at {sample_rate:g} Hz. '
-          'Press Ctrl+C to stop.')
+    status('streaming', f'Sending synthetic TCP EMG: {channel_count} channels at '
+                        f'{sample_rate:g} Hz. Press Ctrl+C to stop.')
     phase = 0.0
+    first = True
     while True:
         channels = []
         for channel in range(channel_count):
@@ -128,20 +136,13 @@ def run_simulation(sock, args):
                 phase += 2.0 * math.pi * 0.8 / sample_rate
             channels.append(batch)
         send_frame(sock, {'kind': 'raw', 'channels': channels})
+        if first:
+            status('first_batch', 'First synthetic EMG batch forwarded.')
+            first = False
         time.sleep(args.simulation_block_period_s)
 
 
-def main():
-    args = parse_args()
-    if not args.simulate and not args.channel_id and not args.channel_line:
-        raise SystemExit('Pass --channel-id or --channel-line for each channel, or use --simulate.')
-    if args.channel_id and args.channel_line:
-        raise SystemExit('Use either --channel-id or --channel-line, not both.')
-    if args.simulate:
-        with connect_with_retry(args.host, args.port, args.connect_timeout_s) as sock:
-            print(f'Connected to Docker TCP receiver at {args.host}:{args.port}.')
-            run_simulation(sock, args)
-        return
+def run_acquire(args):
     try:
         import pythoncom
         from noraxon_sdk.core.batches import read_channel_batch
@@ -154,10 +155,18 @@ def main():
             'noraxon_sdk, pywin32 and comtypes in the selected Windows environment. '
             f'Import error: {error}') from error
 
-    sock = connect_with_retry(args.host, args.port, args.connect_timeout_s)
-    print(f'Connected to Docker TCP receiver at {args.host}:{args.port}.')
     pythoncom.CoInitialize()
+    sock = None
     try:
+        # The SDK is configured BEFORE opening the TCP connection. With
+        # --use-setup this may block on the Noraxon hardware setup dialog for
+        # as long as the operator takes to confirm it; an idle socket opened
+        # earlier could be dropped in the meantime.
+        if args.use_setup:
+            status('setup_waiting',
+                   'Waiting for the Noraxon hardware setup dialog to be confirmed...')
+        else:
+            status('setup', 'Initializing the Noraxon SDK with the current Acquire device...')
         sdk, device_manager, device = setup_sdk(
             use_setup=args.use_setup, dll_path=args.dll_path)
         channel_ids = args.channel_id or resolve_channel_lines(
@@ -167,15 +176,13 @@ def main():
             device=device, sdk=sdk, channel_ids=channel_ids,
             desired_frequency=args.desired_frequency_hz)
         if not channels:
-            raise RuntimeError('The SDK did not configure any requested channels.')
+            raise RuntimeError(
+                'The SDK did not configure any requested channels. Check that every '
+                '--channel-id matches the IDs listed by list_device_channels exactly.')
         if any(channel.component_type != 'analog' or 'analog.emg' not in channel.id
                for channel in channels):
             raise ValueError('Every --channel-id must identify an analog EMG channel.')
-
-        if args.device_startup_delay_s > 0:
-            print(f'Waiting {args.device_startup_delay_s:g} s for the Ultium receiver... ',
-                  flush=True)
-            time.sleep(args.device_startup_delay_s)
+        status('configured', f'{len(channels)} EMG channel(s) configured.')
 
         with activated_device(device=device, device_manager=device_manager):
             probe_active_channels(channels=channels)
@@ -186,6 +193,8 @@ def main():
                 raise RuntimeError(
                     f'EMG channels have incompatible sampling rates: {sample_rates}')
             sample_rate_hz = sample_rates.pop()
+
+            sock = connect_to_receiver(args.host, args.port, args.connect_timeout_s)
             send_frame(sock, {
                 'kind': 'schema',
                 'device_id': 'noraxon_emg',
@@ -194,12 +203,11 @@ def main():
                 'sample_rate_hz': sample_rate_hz,
                 'units': 'uV',
             })
-            print(f'Acquire stream active: {len(channels)} EMG channels at '
-                  f'{sample_rate_hz:g} Hz. Sending batches; press Ctrl+C to stop.',
-                  flush=True)
+            status('streaming', f'Acquire stream active: {len(channels)} EMG channels at '
+                                f'{sample_rate_hz:g} Hz. Sending batches; press Ctrl+C to stop.')
             device.Record()
             pending = [deque() for _ in channels]
-            first_block_sent = False
+            first_batch = True
             try:
                 while True:
                     state = device.Transfer()
@@ -214,19 +222,41 @@ def main():
                                 [pending[index].popleft() for _ in range(count)]
                                 for index in range(len(pending))
                             ]
-                            send_frame(sock, {'kind': 'raw', 'channels': channel_batches})
-                            if not first_block_sent:
-                                first_block_sent = True
-                                print('NORAXON_RAW_STREAM_ACTIVE', flush=True)
+                            try:
+                                send_frame(sock, {'kind': 'raw', 'channels': channel_batches})
+                            except OSError as error:
+                                raise ConnectionError(
+                                    f'Docker receiver closed the connection: {error}') from error
+                            if first_batch:
+                                status('first_batch', 'First EMG batch forwarded to Docker.')
+                                first_batch = False
                     elif state not in (0, 2):
                         raise RuntimeError(f'Unexpected Noraxon Transfer() state: {state}')
                     if state in (0, 2):
+                        # Without data flowing a closed receiver (e.g. after
+                        # `docker compose down`) would never be noticed; check
+                        # explicitly so the device is always stopped cleanly.
+                        if peer_closed(sock):
+                            raise ConnectionError('Docker receiver closed the connection.')
                         time.sleep(args.transfer_interval_s)
             finally:
                 device.Stop()
     finally:
-        sock.close()
+        if sock is not None:
+            sock.close()
         pythoncom.CoUninitialize()
+
+
+def main():
+    args = parse_args()
+    if not args.simulate and not args.channel_id:
+        raise SystemExit('Pass at least one --channel-id, or use --simulate to test TCP.')
+    if args.simulate:
+        sock = connect_to_receiver(args.host, args.port, args.connect_timeout_s)
+        with sock:
+            run_simulation(sock, args)
+        return
+    run_acquire(args)
 
 
 if __name__ == '__main__':
@@ -234,3 +264,11 @@ if __name__ == '__main__':
         main()
     except KeyboardInterrupt:
         print('\nStopped Noraxon TCP sender.', file=sys.stderr)
+    except SystemExit as error:
+        if error.code not in (None, 0):
+            print(f'NORAXON_ERROR {error.code}', flush=True)
+        raise
+    except Exception as error:  # noqa: BLE001 - report every failure to the launcher
+        traceback.print_exc()
+        print(f'NORAXON_ERROR {type(error).__name__}: {error}', flush=True)
+        sys.exit(1)

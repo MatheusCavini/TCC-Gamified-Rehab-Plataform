@@ -19,6 +19,11 @@
 #     com "failed to solve: image ... already exists". Builde uma vez com
 #     `docker build -t rehab-platform:humble .` antes do `docker compose up`.
 
+# Nome de projeto fixo: sem ele o Compose usa o nome da pasta, e uma execução
+# feita a partir de outro clone (ex.: no WSL) vira um projeto diferente que o
+# `down` não enxerga. Os container_name fixos abaixo colidiriam entre os dois.
+name: rehab-platform
+
 x-ros-common: &ros-common
   image: rehab-platform:humble
   networks:
