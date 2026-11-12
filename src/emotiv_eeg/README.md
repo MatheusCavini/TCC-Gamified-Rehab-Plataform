@@ -22,7 +22,8 @@ ros2 run emotiv_eeg emotiv_eeg_node --ros-args \
 | `/device/emotiv_eeg/mental_command` | `String` JSON | `action`, `power`, and `is_neutral` |
 | `/device/emotiv_eeg/calibration/request` | `String` JSON | Cortex mental-command training request |
 | `/device/emotiv_eeg/calibration/state` | `String` JSON | Training progress and Cortex system events |
-| `/device/emotiv_eeg/eeg` | `Float32MultiArray` | Optional raw EEG samples |
+| `/device/emotiv_eeg/eeg` | `Float32MultiArray` | Optional raw EEG samples (Cortex stream; 128 Hz per channel) |
+| `/device/emotiv_eeg/eeg_schema` | `String` JSON | EEG channel names, unit, and sample rate (128 Hz) for recording |
 
 For mental-command calibration, train both `neutral` and the desired action.
 Call the central service with `start`, wait for the Cortex system event, then

@@ -81,6 +81,8 @@ class EmotivEegNode(Node):
         self.declare_parameter('debit', 0)
         self.declare_parameter('headset_id', '')
         self.declare_parameter('enable_raw_eeg', False)
+        # Cortex's raw EEG stream is sampled at 128 Hz per channel.
+        self.declare_parameter('eeg_sample_rate_hz', 128.0)
         self.declare_parameter('info_period_s', 1.0)
         self.declare_parameter('reconnect_period_s', 3.0)
 
@@ -92,6 +94,8 @@ class EmotivEegNode(Node):
         self.debit = self.get_parameter('debit').value
         self.headset_id = self.get_parameter('headset_id').value
         self.enable_raw_eeg = self.get_parameter('enable_raw_eeg').value
+        self.eeg_sample_rate_hz = float(
+            self.get_parameter('eeg_sample_rate_hz').value)
         self.reconnect_period_s = self.get_parameter('reconnect_period_s').value
 
         prefix = f'/device/{self.device_id}'
@@ -337,6 +341,8 @@ class EmotivEegNode(Node):
             'device_id': self.device_id,
             'timestamp': message.get('time'),
             'fields': [column for column, _ in numeric_pairs],
+            'sample_rate_hz': self.eeg_sample_rate_hz,
+            'unit': 'microvolts',
         })))
         self.eeg_pub.publish(Float32MultiArray(data=[value for _, value in numeric_pairs]))
 

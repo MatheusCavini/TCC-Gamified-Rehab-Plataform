@@ -35,7 +35,7 @@ class RehabDataStoreNode(Node):
         self.session_id = None
         self.game_session_metadata = {}
         self.device_metadata = {}
-        self.subscriptions = {}
+        self.device_subscriptions = {}
         self.warned_missing_sample_rate = set()
         self.worker_stop = threading.Event()
         self.worker = threading.Thread(target=self._writer_loop, daemon=True)
@@ -129,16 +129,16 @@ class RehabDataStoreNode(Node):
                 if 'raw_eeg' in device.get('capabilities', []):
                     topic = device.get('eeg_topic', f'/device/{device_id}/eeg')
                     key = (device_id, 'raw')
-                    if key not in self.subscriptions:
-                        self.subscriptions[key] = self.create_subscription(
+                    if key not in self.device_subscriptions:
+                        self.device_subscriptions[key] = self.create_subscription(
                             Float32MultiArray, topic,
                             lambda msg, d=device_id: self._on_signal(d, 'raw', msg), 100,
                         )
                     schema_topic = device.get(
                         'eeg_schema_topic', f'/device/{device_id}/eeg_schema')
                     schema_key = (device_id, 'schema')
-                    if schema_key not in self.subscriptions:
-                        self.subscriptions[schema_key] = self.create_subscription(
+                    if schema_key not in self.device_subscriptions:
+                        self.device_subscriptions[schema_key] = self.create_subscription(
                             String, schema_topic,
                             lambda msg, d=device_id: self._on_eeg_schema(d, msg), 10,
                         )
@@ -148,8 +148,8 @@ class RehabDataStoreNode(Node):
                 ('filtered', device.get('filtered_topic', f'/device/{device_id}/filtered')),
             ):
                 key = (device_id, signal_type)
-                if key not in self.subscriptions:
-                    self.subscriptions[key] = self.create_subscription(
+                if key not in self.device_subscriptions:
+                    self.device_subscriptions[key] = self.create_subscription(
                         Float32MultiArray, topic,
                         lambda msg, d=device_id, s=signal_type: self._on_signal(d, s, msg),
                         100,
