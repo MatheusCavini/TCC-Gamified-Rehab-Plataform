@@ -1,12 +1,14 @@
 import json
 import math
 import os
+import time
 
+from hal_interfaces.msg import BiosignalBlock
 from hal_interfaces.srv import SetString
 from hal_signal_processing.emg_preprocessor import EMGPreprocessor
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float32MultiArray, String
+from std_msgs.msg import Float32MultiArray, MultiArrayDimension, String
 from std_srvs.srv import Trigger
 
 # =====================================================
@@ -210,6 +212,8 @@ class SignalProcessingNode(Node):
     self.calibration_request_pubs = {}
     self.emg_rms_pubs = {}
     self.emg_filtered_pubs = {}
+    self.timed_emg_subs = {}
+    self.latency_pub = self.create_publisher(String, '/biosignal/latency', 100)
 
     self.state_pub = self.create_publisher(String, '/hal/device_state', 10)
     self.calib_state_pub = self.create_publisher(String, '/calibration/state', 10)
@@ -250,11 +254,11 @@ class SignalProcessingNode(Node):
         self.processors[d_id] = self._create_processor(processor_info)
 
         if dev_type == 'eeg':
-          raw_topic = dev.get('raw_topic', f'/device/{d_id}/raw')
+          metrics_topic = dev.get('metrics_topic', f'/device/{d_id}/metrics')
           self.subs[d_id] = self.create_subscription(
-              Float32MultiArray,
-              raw_topic,
-              lambda msg, d=d_id: self.generic_callback(d, msg),
+              String,
+              metrics_topic,
+              lambda msg, d=d_id: self.eeg_metrics_callback(d, msg),
               10,
           )
           self.calibration_request_pubs[d_id] = self.create_publisher(
@@ -265,7 +269,7 @@ class SignalProcessingNode(Node):
               ),
               10,
           )
-          self.get_logger().info(f'Subscribed to raw EEG topic: {raw_topic}')
+          self.get_logger().info(f'Subscribed to EEG metrics topic: {metrics_topic}')
 
         elif dev_type == 'eeg_mental_command':
           base_id = d_id[:-15] if d_id.endswith('_mental_command') else d_id
@@ -298,16 +302,24 @@ class SignalProcessingNode(Node):
           )
 
         else:
-          topic = f'/device/{d_id}/raw'
-          self.subs[d_id] = self.create_subscription(
-              Float32MultiArray,
-              topic,
-              lambda msg, d=d_id: self.generic_callback(d, msg),
-              10,
-          )
-          self.get_logger().info(f'Subscribed to dynamic topic: {topic}')
+          if dev_type != 'emg':
+            topic = f'/device/{d_id}/raw'
+            self.subs[d_id] = self.create_subscription(
+                Float32MultiArray,
+                topic,
+                lambda msg, d=d_id: self.generic_callback(d, msg),
+                10,
+            )
+            self.get_logger().info(f'Subscribed to dynamic topic: {topic}')
 
         if dev.get('type') == 'emg':
+          timed_topic = dev.get('timed_raw_topic', f'/device/{d_id}/raw_timed')
+          self.timed_emg_subs[d_id] = self.create_subscription(
+              BiosignalBlock,
+              timed_topic,
+              lambda msg, d=d_id: self.timed_emg_callback(d, msg),
+              100,
+          )
           rms_topic = dev.get('rms_topic', f'/device/{d_id}/rms')
           self.emg_rms_pubs[d_id] = self.create_publisher(
               Float32MultiArray, rms_topic, 10
@@ -323,6 +335,8 @@ class SignalProcessingNode(Node):
       if d_id not in current_ids:
         if d_id in self.subs:
           self.destroy_subscription(self.subs.pop(d_id))
+        if d_id in self.timed_emg_subs:
+          self.destroy_subscription(self.timed_emg_subs.pop(d_id))
         if d_id in self.command_subs:
           self.destroy_subscription(self.command_subs.pop(d_id))
         if d_id in self.training_subs:
@@ -425,6 +439,98 @@ class SignalProcessingNode(Node):
           'type': processor.device_info.get('type'),
       }
       self.state_pub.publish(String(data=json.dumps(state_msg)))
+
+  def _publish_latency(self, modality, sequence, source_timestamp, started_at):
+    """Publish a per-message UTC end-to-end latency observation."""
+    available_at = time.time_ns() / 1_000_000_000.0
+    latency_ms = (available_at - source_timestamp) * 1000.0
+    hal_processing_ms = (time.monotonic() - started_at) * 1000.0
+    self.latency_pub.publish(String(data=json.dumps({
+        'modality': modality,
+        'source': 'sender_sdk_read' if modality == 'emg' else 'cortex_met_received',
+        'sequence': int(sequence),
+        'source_timestamp_unix': source_timestamp,
+        'available_timestamp_unix': available_at,
+        'latency_ms': latency_ms,
+        'hal_processing_ms': hal_processing_ms,
+        'latency_valid': latency_ms >= 0.0,
+        'clock_domain': 'UTC_unix_seconds',
+    })))
+
+  def timed_emg_callback(self, device_id, msg):
+    """Filter a timestamped Noraxon block and preserve its sequence to HAL."""
+    started_at = time.monotonic()
+    processor = self.processors.get(device_id)
+    if not isinstance(processor, EMGProcessor):
+      return
+    if msg.channel_count <= 0 or msg.samples_per_channel <= 0:
+      return
+    if len(msg.data) != msg.channel_count * msg.samples_per_channel:
+      return
+
+    raw = Float32MultiArray()
+    raw.data = list(msg.data)
+    # EMGPreprocessor accepts channel-major blocks through MultiArray dimensions.
+    raw.layout.dim = [
+        MultiArrayDimension(label='channel', size=msg.channel_count,
+                            stride=msg.channel_count * msg.samples_per_channel),
+        MultiArrayDimension(label='sample', size=msg.samples_per_channel,
+                            stride=msg.samples_per_channel),
+    ]
+    filtered_blocks, rms_values = processor.preprocessor.process_with_filtered(raw)
+    if not rms_values:
+      return
+    filtered_msg = Float32MultiArray()
+    filtered_msg.layout = raw.layout
+    filtered_msg.data = [value for channel in filtered_blocks for value in channel]
+    self.emg_filtered_pubs[device_id].publish(filtered_msg)
+    self.emg_rms_pubs[device_id].publish(Float32MultiArray(data=rms_values))
+    norm_val = processor.normalize_channels(rms_values)
+    state = {
+        'device_id': device_id,
+        'channel_ids': processor.channel_ids,
+        'channel_names': processor.device_info.get('channel_names', []),
+        'normalized_value': norm_val,
+        'rms': rms_values,
+        'unit': 'uV_rms',
+        'type': 'emg',
+        'latency_sequence': int(msg.sequence),
+        'source_timestamp_unix': float(msg.source_timestamp_unix),
+    }
+    self.state_pub.publish(String(data=json.dumps(state)))
+    self._publish_latency('emg', msg.sequence, msg.source_timestamp_unix, started_at)
+
+  def eeg_metrics_callback(self, device_id, msg):
+    """Normalize Cortex met data and emit its source-to-HAL latency record."""
+    started_at = time.monotonic()
+    processor = self.processors.get(device_id)
+    if not isinstance(processor, EEGProcessor):
+      return
+    try:
+      payload = json.loads(msg.data)
+      sequence = int(payload['latency_sequence'])
+      source_timestamp = float(payload['driver_received_timestamp_unix'])
+      metrics = payload['metrics']
+    except (json.JSONDecodeError, KeyError, TypeError, ValueError):
+      return
+    if not math.isfinite(source_timestamp) or not isinstance(metrics, dict):
+      return
+    focus = metrics.get('focus')
+    norm_val = processor.normalize(focus) if focus is not None else None
+    if processor.is_calibrating:
+      return
+    state = {
+        'device_id': device_id,
+        'type': 'eeg',
+        'unit': 'normalized_intensity',
+        'metrics': metrics,
+        'normalized_value': norm_val,
+        'latency_sequence': sequence,
+        'source_timestamp_unix': source_timestamp,
+        'cortex_timestamp': payload.get('timestamp'),
+    }
+    self.state_pub.publish(String(data=json.dumps(state)))
+    self._publish_latency('eeg_met', sequence, source_timestamp, started_at)
 
   def mental_command_callback(self, device_id, msg):
     """Expose classified mental command with power as normalized_value."""

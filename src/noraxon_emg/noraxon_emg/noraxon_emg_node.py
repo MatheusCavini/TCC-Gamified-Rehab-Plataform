@@ -11,8 +11,10 @@ import json
 import math
 import random
 import threading
+import time
 from collections import deque
 
+from hal_interfaces.msg import BiosignalBlock
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray, MultiArrayDimension, String
@@ -71,6 +73,8 @@ class NoraxonEmgNode(Node):
         prefix = f'/device/{self.device_id}'
         self.info_pub = self.create_publisher(String, '/device/info', 10)
         self.raw_pub = self.create_publisher(Float32MultiArray, f'{prefix}/raw', qos_depth)
+        self.timed_pub = self.create_publisher(
+            BiosignalBlock, f'{prefix}/raw_timed', qos_depth)
         self.schema_pub = self.create_publisher(String, f'{prefix}/raw_schema', 10)
         self.connection_pub = self.create_publisher(String, f'{prefix}/connection_state', 10)
         self.raw_alias_pub = None
@@ -84,6 +88,7 @@ class NoraxonEmgNode(Node):
         self._channel_names = []
         self._channel_ids = []
         self._sample_rate_hz = None
+        self._block_sequence = 0
         self._worker = threading.Thread(target=self._run, daemon=True)
         self._worker.start()
         self.create_timer(self.get_parameter('info_period_s').value, self._publish_info)
@@ -104,6 +109,7 @@ class NoraxonEmgNode(Node):
             'capabilities': ['raw_emg', 'rms_emg'],
             'units': ['uV'],
             'raw_topic': f'/device/{self.device_id}/raw',
+            'timed_raw_topic': f'/device/{self.device_id}/raw_timed',
             'filtered_topic': f'/device/{self.device_id}/filtered',
             'rms_topic': f'/device/{self.device_id}/rms',
             'raw_format': 'channel_major_blocks',
@@ -149,7 +155,18 @@ class NoraxonEmgNode(Node):
             MultiArrayDimension(label='sample', size=sample_count, stride=sample_count),
         ]
         message.data = [float(value) for batch in channel_batches for value in batch]
+        sequence = self._block_sequence
+        self._block_sequence += 1
+        source_timestamp = time.time_ns() / 1_000_000_000.0
         self.raw_pub.publish(message)
+        timed_message = BiosignalBlock()
+        timed_message.device_id = self.device_id
+        timed_message.sequence = sequence
+        timed_message.source_timestamp_unix = source_timestamp
+        timed_message.channel_count = len(channel_batches)
+        timed_message.samples_per_channel = sample_count
+        timed_message.data = message.data
+        self.timed_pub.publish(timed_message)
         if self.raw_alias_pub is not None:
             self.raw_alias_pub.publish(message)
 

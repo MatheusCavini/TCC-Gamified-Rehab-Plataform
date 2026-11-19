@@ -10,6 +10,10 @@ This package publishes live Noraxon EMG data using the platform device contract:
 - `/device/info`: heartbeat consumed by `hal_device_manager`.
 - `/device/noraxon_emg/rms` (`std_msgs/Float32MultiArray`): filtered 100-ms
   RMS values, published by `hal_signal_processing`.
+- `/device/noraxon_emg/raw_timed` (`hal_interfaces/BiosignalBlock`): each TCP
+  block with its sender sequence and UTC timestamp, used by the HAL latency path.
+- `/biosignal/latency` (`std_msgs/String` JSON): per-block end-to-end latency
+  from SDK block read in the Windows sender through `/hal/device_state`.
 
 The signal processor applies a streaming second-order Butterworth 20--450 Hz
 band-pass filter followed by rolling RMS.  Filter state is preserved across raw
@@ -58,6 +62,15 @@ Docker.
 
    ```powershell
    python src\noraxon_emg\scripts\noraxon_tcp_sender.py --simulate --host 127.0.0.1 --port 8765
+
+For latency measurements, record `/biosignal/latency` during the run (for
+example with `ros2 bag record /biosignal/latency`). The sender timestamps each
+block with UTC immediately after reading it from the SDK. Because the sender
+runs on Windows and the receiver/HAL run in Docker, synchronize the Windows
+host clock and Docker Desktop VM clock before collecting measurements. Check
+for negative or implausible values; those indicate clock offset or a timestamp
+pairing problem. The reported start is SDK block availability in the sender,
+not the sensor's ADC acquisition instant.
    ```
 
    Leave it running and verify changing RMS values using the commands below.

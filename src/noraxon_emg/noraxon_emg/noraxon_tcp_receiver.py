@@ -5,7 +5,9 @@ import json
 import queue
 import socket
 import threading
+import math
 
+from hal_interfaces.msg import BiosignalBlock
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray, MultiArrayDimension, String
@@ -33,6 +35,7 @@ class NoraxonTcpReceiver(Node):
         prefix = f'/device/{self.device_id}'
         self.info_pub = self.create_publisher(String, '/device/info', 10)
         self.raw_pub = self.create_publisher(Float32MultiArray, f'{prefix}/raw', 100)
+        self.timed_pub = self.create_publisher(BiosignalBlock, f'{prefix}/raw_timed', 100)
         self.schema_pub = self.create_publisher(String, f'{prefix}/raw_schema', 10)
         self.connection_pub = self.create_publisher(String, f'{prefix}/connection_state', 10)
         self.alias_pub = self.create_publisher(Float32MultiArray, '/biosignals/emg/raw', 100)
@@ -153,6 +156,24 @@ class NoraxonTcpReceiver(Node):
                 msg.data = [float(value) for channel in channels for value in channel]
                 self.raw_pub.publish(msg)
                 self.alias_pub.publish(msg)
+                try:
+                    sequence = int(event['sequence'])
+                    source_timestamp = float(event['source_timestamp_unix'])
+                except (KeyError, TypeError, ValueError):
+                    self.get_logger().warning(
+                        'Dropping EMG block without latency sequence/timestamp')
+                    continue
+                if sequence < 0 or not math.isfinite(source_timestamp):
+                    self.get_logger().warning('Dropping EMG block with invalid latency metadata')
+                    continue
+                timed_msg = BiosignalBlock()
+                timed_msg.device_id = self.device_id
+                timed_msg.sequence = sequence
+                timed_msg.source_timestamp_unix = source_timestamp
+                timed_msg.channel_count = len(channels)
+                timed_msg.samples_per_channel = sample_count
+                timed_msg.data = msg.data
+                self.timed_pub.publish(timed_msg)
                 if not self.first_raw_block_logged:
                     self.first_raw_block_logged = True
                     self.get_logger().info('Noraxon raw EMG data received')
@@ -178,6 +199,7 @@ class NoraxonTcpReceiver(Node):
             'capabilities': ['raw_emg', 'rms_emg'],
             'units': [self.metadata.get('units', 'uV')],
             'raw_topic': f'/device/{self.device_id}/raw',
+            'timed_raw_topic': f'/device/{self.device_id}/raw_timed',
             'rms_topic': f'/device/{self.device_id}/rms',
             'raw_format': 'channel_major_blocks',
             'channel_names': self.metadata['channel_names'],

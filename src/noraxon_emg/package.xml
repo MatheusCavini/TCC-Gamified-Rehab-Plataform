@@ -8,6 +8,7 @@
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
+  <depend>hal_interfaces</depend>
   <depend>std_msgs</depend>
   <exec_depend>python3-numpy</exec_depend>
 

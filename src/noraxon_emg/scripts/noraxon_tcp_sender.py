@@ -118,6 +118,7 @@ def run_simulation(sock, args):
                         f'{sample_rate:g} Hz. Press Ctrl+C to stop.')
     phase = 0.0
     first = True
+    sequence = 0
     while True:
         channels = []
         for channel in range(channel_count):
@@ -129,7 +130,12 @@ def run_simulation(sock, args):
                 batch.append(envelope * carrier + random.gauss(0.0, 8.0))
                 phase += 2.0 * math.pi * 0.8 / sample_rate
             channels.append(batch)
-        send_frame(sock, {'kind': 'raw', 'channels': channels})
+        acquired_at = time.time_ns() / 1_000_000_000.0
+        send_frame(sock, {
+            'kind': 'raw', 'sequence': sequence,
+            'source_timestamp_unix': acquired_at, 'channels': channels,
+        })
+        sequence += 1
         if first:
             status('first_batch', 'First synthetic EMG batch forwarded.')
             first = False
@@ -199,6 +205,7 @@ def run_acquire(args):
             device.Record()
             pending = [deque() for _ in channels]
             first_batch = True
+            sequence = 0
             try:
                 while True:
                     state = device.Transfer()
@@ -213,11 +220,19 @@ def run_acquire(args):
                                 [pending[index].popleft() for _ in range(count)]
                                 for index in range(len(pending))
                             ]
+                            # This marks SDK block availability in the sender;
+                            # it deliberately does not claim the sensor's ADC time.
+                            acquired_at = time.time_ns() / 1_000_000_000.0
                             try:
-                                send_frame(sock, {'kind': 'raw', 'channels': channel_batches})
+                                send_frame(sock, {
+                                    'kind': 'raw', 'sequence': sequence,
+                                    'source_timestamp_unix': acquired_at,
+                                    'channels': channel_batches,
+                                })
                             except OSError as error:
                                 raise ConnectionError(
                                     f'Docker receiver closed the connection: {error}') from error
+                            sequence += 1
                             if first_batch:
                                 status('first_batch', 'First EMG batch forwarded to Docker.')
                                 first_batch = False

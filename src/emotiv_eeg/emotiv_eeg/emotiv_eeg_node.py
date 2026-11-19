@@ -119,6 +119,7 @@ class EmotivEegNode(Node):
         self._met_cols = []
         self._com_cols = []
         self._eeg_cols = []
+        self._met_sequence = 0
         self._worker = threading.Thread(target=self._run, daemon=True)
         self._worker.start()
         self.get_logger().info('EMOTIV EEG node started; waiting for Cortex service.')
@@ -139,6 +140,7 @@ class EmotivEegNode(Node):
             'units': ['score_0_to_1', 'score_0_to_1', 'score_0_to_1'],
             'raw_fields': list(METRIC_FIELDS),
             'raw_topic': f'/device/{self.device_id}/raw',
+            'metrics_topic': f'/device/{self.device_id}/metrics',
             'eeg_topic': f'/device/{self.device_id}/eeg',
             'eeg_schema_topic': f'/device/{self.device_id}/eeg_schema',
         })))
@@ -314,6 +316,9 @@ class EmotivEegNode(Node):
             self._publish_eeg(message)
 
     def _publish_metrics(self, message):
+        received_at = time.time_ns() / 1_000_000_000.0
+        sequence = self._met_sequence
+        self._met_sequence += 1
         native_metrics = dict(zip(self._met_cols, message['met']))
         metrics = {
             'focus': self._number(native_metrics.get('attention', native_metrics.get('focus'))),
@@ -323,6 +328,8 @@ class EmotivEegNode(Node):
         self.metrics_pub.publish(String(data=json.dumps({
             'device_id': self.device_id,
             'timestamp': message.get('time'),
+            'latency_sequence': sequence,
+            'driver_received_timestamp_unix': received_at,
             'metrics': metrics,
             'native_metrics': native_metrics,
         })))

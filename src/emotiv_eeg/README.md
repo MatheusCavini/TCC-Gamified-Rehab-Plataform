@@ -25,6 +25,13 @@ ros2 run emotiv_eeg emotiv_eeg_node --ros-args \
 | `/device/emotiv_eeg/eeg` | `Float32MultiArray` | Optional raw EEG samples (Cortex stream; 128 Hz per channel) |
 | `/device/emotiv_eeg/eeg_schema` | `String` JSON | EEG channel names, unit, and sample rate (128 Hz) for recording |
 
+For latency analysis of Cortex `met` metrics, `/device/emotiv_eeg/metrics`
+includes `latency_sequence` and `driver_received_timestamp_unix`. The HAL
+publishes the matching end-to-end observation on `/biosignal/latency` when it
+publishes the normalized result to `/hal/device_state`. `timestamp` remains the
+original Cortex sample timestamp; the latency start is the local UTC receipt
+time in the driver.
+
 For mental-command calibration, train both `neutral` and the desired action.
 Call the central service with `start`, wait for the Cortex system event, then
 send `accept` (or `reject`):
